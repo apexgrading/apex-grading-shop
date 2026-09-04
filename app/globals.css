@@ -199,3 +199,18 @@ button, select, input { font-family: inherit; }
 @media (max-width: 640px) {
   .wrap { padding: 0 20px; }
 }
+
+.how-grid, .feature-grid {
+  grid-template-columns: repeat(4, 1fr) !important;
+}
+@media (max-width: 900px) {
+  .how-grid, .feature-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 560px) {
+  .how-grid, .feature-grid { grid-template-columns: 1fr !important; }
+}
+
+details summary::-webkit-details-marker { display: none; }
+details summary { display: flex; align-items: center; justify-content: space-between; }
+details summary::after { content: "+"; color: var(--gold-light); font-size: 20px; margin-left: 12px; }
+details[open] summary::after { content: "–"; }

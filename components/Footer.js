@@ -34,8 +34,14 @@ export default function Footer() {
         }}>
           <div>
             <img src="/assets/apex-logo.jpg" alt="Apex Grading" style={{ height: 28, marginBottom: 14 }} />
-            <p style={{ color: "var(--grey)", fontSize: 13.5, maxWidth: "32ch", lineHeight: 1.6 }}>
-              Independent authentication and grading, with every graded slab sold direct from the source.
+            <p style={{ color: "var(--grey)", fontSize: 13.5, maxWidth: "32ch", lineHeight: 1.6, marginBottom: 14 }}>
+              UK-based trading card authentication and grading. Precision grades, tamper-proof
+              slabs, and a certification database you can trust.
+            </p>
+            <p style={{ color: "var(--grey-dim)", fontSize: 13, lineHeight: 1.7 }}>
+              <a href="mailto:hello@apexgradingcompany.com" style={{ color: "var(--grey-dim)" }}>hello@apexgradingcompany.com</a>
+              <br />
+              18 Glen St, Barrhead, Glasgow G78 1QA
             </p>
           </div>
 
