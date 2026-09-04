@@ -24,6 +24,7 @@ html, body {
   color: var(--white);
   font-family: var(--sans);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 img { display: block; max-width: 100%; }
@@ -113,6 +114,15 @@ button, select, input { font-family: inherit; }
 .search-field { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 4px; padding: 0 12px; background: var(--bg-panel); min-width: 200px; }
 .search-field input { background: transparent; border: none; color: var(--white); padding: 9px 0; font-size: 13.5px; width: 100%; }
 .search-field input:focus { outline: none; }
+
+@media (max-width: 720px) {
+  .filter-row { flex-direction: column; align-items: stretch; }
+  .filter-spacer { display: none; }
+  .chip-group { width: 100%; }
+  .select-field { width: 100%; justify-content: space-between; }
+  .select-field select { flex: 1; max-width: 60%; }
+  .search-field { width: 100%; min-width: 0; }
+}
 
 /* ---------- GRID / CARDS ---------- */
 .result-count { padding: 18px 0 4px; font-size: 13.5px; color: var(--grey-dim); }
