@@ -53,8 +53,31 @@ button, select, input { font-family: inherit; }
 }
 .btn-ghost-nav { padding: 9px 18px; border: 1px solid var(--gold-dim); border-radius: 3px; color: var(--gold-light); }
 .btn-ghost-nav:hover { border-color: var(--gold); background: rgba(212, 167, 60, 0.08); }
+.nav-toggle {
+  display: none; color: var(--white); background: none; border: none; cursor: pointer;
+  padding: 4px; align-items: center; justify-content: center;
+}
+.mobile-menu {
+  display: none;
+}
 
-@media (max-width: 900px) { .nav-links { display: none; } }
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+  .nav-user-email, .nav-signout, .nav-signin { display: none; }
+  .mobile-menu {
+    display: block;
+    border-top: 1px solid var(--line);
+    background: var(--bg);
+    padding: 16px 20px 24px;
+  }
+  .mobile-menu-links { display: flex; flex-direction: column; gap: 2px; }
+  .mobile-menu-links a {
+    padding: 12px 4px; font-size: 15px; color: var(--white); border-bottom: 1px solid var(--line);
+  }
+  .mobile-menu-links a.active { color: var(--gold-light); }
+  .mobile-menu-divider { height: 1px; margin: 14px 0; }
+}
 
 /* ---------- BUTTONS ---------- */
 .btn {

@@ -9,7 +9,8 @@ export async function GET(request) {
   const search = searchParams.get("search") || "";
   const page = parseInt(searchParams.get("page") || "1", 10);
   const includeSold = searchParams.get("includeSold") === "true";
+  const soldOnly = searchParams.get("soldOnly") === "true";
 
-  const result = listCards({ category, grade, sort, search, page, includeSold });
+  const result = listCards({ category, grade, sort, search, page, includeSold, soldOnly });
   return NextResponse.json(result);
 }
