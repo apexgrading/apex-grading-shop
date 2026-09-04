@@ -38,8 +38,6 @@ export default function Nav() {
       <Link href="/sold" className={pathname.startsWith("/sold") ? "active" : ""}>
         Sold
       </Link>
-      <Link href="/#how">Sell to us</Link>
-      <Link href="/#scale">Population report</Link>
       <a href="https://www.apexgradingcompany.com" target="_blank" rel="noopener noreferrer">
         Main site ↗
       </a>
