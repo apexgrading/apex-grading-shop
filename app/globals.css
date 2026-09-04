@@ -222,8 +222,13 @@ button, select, input { font-family: inherit; }
 .how-grid, .feature-grid {
   grid-template-columns: repeat(4, 1fr) !important;
 }
+.hero-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center;
+}
 @media (max-width: 900px) {
   .how-grid, .feature-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .hero-grid { grid-template-columns: 1fr !important; gap: 36px; }
+  .hero-grid > div:last-child { order: -1; min-height: 340px !important; padding: 24px !important; }
 }
 @media (max-width: 560px) {
   .how-grid, .feature-grid { grid-template-columns: 1fr !important; }

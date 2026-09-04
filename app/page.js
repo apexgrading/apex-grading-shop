@@ -48,10 +48,7 @@ export default async function HomePage() {
     <main>
       {/* HERO */}
       <section style={{ padding: "72px 0 0" }}>
-        <div
-          className="wrap"
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 56, alignItems: "center" }}
-        >
+        <div className="wrap hero-grid">
           <div>
             <p style={{ fontSize: 13.5, color: "var(--gold-light)", marginBottom: 18, display: "flex", alignItems: "center", gap: 10 }}>
               <span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--gold)", display: "inline-block" }} />
@@ -76,7 +73,7 @@ export default async function HomePage() {
             display: "flex", alignItems: "center", justifyContent: "center", padding: 36,
           }}>
             {featured[0] && (
-              <div style={{ width: 260, borderRadius: 8, overflow: "hidden", boxShadow: "0 30px 70px rgba(0,0,0,0.7)" }}>
+              <div style={{ width: 260, maxWidth: "100%", borderRadius: 8, overflow: "hidden", boxShadow: "0 30px 70px rgba(0,0,0,0.7)" }}>
                 {featured[0].imageUrl ? (
                   <img src={featured[0].imageUrl} alt={featured[0].title} style={{ width: "100%" }} />
                 ) : (
