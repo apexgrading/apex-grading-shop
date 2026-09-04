@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600;700&family=Anton&display=swap');
 
 :root {
   --bg: #0A0A0A;
@@ -41,6 +41,9 @@ button, select, input { font-family: inherit; }
 }
 .nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
 .nav-mark img { height: 34px; width: auto; }
+.nav-mark { display: flex; align-items: center; gap: 10px; }
+.nav-wordmark { font-family: 'Anton', var(--sans); font-size: 20px; letter-spacing: 0.01em; color: var(--gold); line-height: 1; }
+.nav-wordmark span { color: var(--white); }
 .nav-links { display: flex; gap: 32px; font-size: 14.5px; color: var(--grey); }
 .nav-links a { padding-bottom: 3px; border-bottom: 1px solid transparent; transition: border-color .15s ease, color .15s ease; }
 .nav-links a:hover, .nav-links a.active { border-color: var(--gold); color: var(--white); }

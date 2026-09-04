@@ -32,7 +32,7 @@ export async function POST(request) {
         if (order) {
           await sendEmail({
             to: email,
-            subject: `Your Apex Grading order #${order.id} is confirmed`,
+            subject: `Your Apex Cards order #${order.id} is confirmed`,
             html: orderConfirmationHtml(order),
             type: "order_confirmation",
             orderId: order.id,

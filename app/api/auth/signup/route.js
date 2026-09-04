@@ -26,7 +26,7 @@ export async function POST(request) {
 
   if (subscribeToNewsletter) {
     addSubscriber(email);
-    sendEmail({ to: email, subject: "Welcome to Apex Grading", html: welcomeEmailHtml(email), type: "welcome" });
+    sendEmail({ to: email, subject: "Welcome to Apex Cards", html: welcomeEmailHtml(email), type: "welcome" });
   }
 
   const token = newSessionToken();

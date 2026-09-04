@@ -4,8 +4,8 @@ import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 
 export const metadata = {
-  title: "Apex Grading Company",
-  description: "Graded trading and sports cards, sold direct from the grader.",
+  title: "Apex Cards",
+  description: "Graded trading and sports cards, sold direct — graded in-house by Apex Grading Company.",
 };
 
 export default function RootLayout({ children }) {

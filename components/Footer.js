@@ -33,7 +33,12 @@ export default function Footer() {
           paddingBottom: 40, marginBottom: 28, borderBottom: "1px solid var(--line)",
         }}>
           <div>
-            <img src="/assets/apex-logo.jpg" alt="Apex Grading" style={{ height: 28, marginBottom: 14 }} />
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+              <img src="/assets/apex-icon.jpg" alt="" style={{ height: 28, width: "auto" }} />
+              <span style={{ fontFamily: "'Anton', var(--sans)", fontSize: 19, color: "var(--gold)" }}>
+                APEX <span style={{ color: "var(--white)" }}>CARDS</span>
+              </span>
+            </div>
             <p style={{ color: "var(--grey)", fontSize: 13.5, maxWidth: "32ch", lineHeight: 1.6, marginBottom: 14 }}>
               UK-based trading card authentication and grading. Precision grades, tamper-proof
               slabs, and a certification database you can trust.
@@ -86,7 +91,7 @@ export default function Footer() {
         </div>
 
         <p style={{ color: "var(--grey-dim)", fontSize: 13, margin: 0 }}>
-          © {new Date().getFullYear()} Apex Grading Company. All cards graded in-house.
+          © {new Date().getFullYear()} Apex Cards. Cards graded in-house by Apex Grading Company.
         </p>
       </div>
     </footer>
