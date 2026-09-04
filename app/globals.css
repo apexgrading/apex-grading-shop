@@ -152,10 +152,16 @@ button, select, input { font-family: inherit; }
 .product .p-grade { font-size: 12px; color: var(--grey); }
 .product a { display: block; }
 
-.sold-tag {
-  display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .03em;
-  color: var(--grey-dim); border: 1px solid var(--line); border-radius: 3px; padding: 3px 8px; margin-top: 8px;
+.product-media { position: relative; overflow: hidden; border-radius: 8px; margin-bottom: 14px; }
+.sold-ribbon {
+  position: absolute; top: 16px; right: -38px; z-index: 5;
+  width: 150px; padding: 6px 0; text-align: center;
+  background: var(--gold); color: #141200;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  transform: rotate(40deg); transform-origin: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
+.product-media .real-photo, .product-media .slab-shell { margin-bottom: 0; }
 
 /* ---------- EMPTY STATE ---------- */
 .empty-state { padding: 80px 20px; text-align: center; color: var(--grey); }

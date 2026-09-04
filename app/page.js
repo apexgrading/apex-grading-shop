@@ -2,6 +2,10 @@ import Link from "next/link";
 import { listCards } from "../lib/data";
 import ProductCard from "../components/ProductCard";
 
+// Cards can be sold or added at any time (checkout, admin) — force this page to
+// query the database on every request instead of being statically cached at build time.
+export const dynamic = "force-dynamic";
+
 const scale = [
   { n: 10, name: "Gem Mint", desc: "Flawless to the eye under magnification", w: 100 },
   { n: 9, name: "Mint", desc: "One minor, well-placed flaw at most", w: 92 },
