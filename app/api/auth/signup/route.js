@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createUser, getUserByEmail, createSession, addSubscriber } from "../../../../lib/data";
 import { hashPassword, newSessionToken, sessionExpiry, SESSION_COOKIE } from "../../../../lib/auth";
-import { sendEmail, welcomeEmailHtml } from "../../../../lib/email";
+import { sendEmail, accountConfirmationHtml } from "../../../../lib/email";
 
 export async function POST(request) {
   const body = await request.json().catch(() => null);
@@ -26,8 +26,16 @@ export async function POST(request) {
 
   if (subscribeToNewsletter) {
     addSubscriber(email);
-    sendEmail({ to: email, subject: "Welcome to Apex Cards", html: welcomeEmailHtml(email), type: "welcome" });
   }
+
+  // Always confirm the account was created — separate from, and sent regardless
+  // of, the newsletter opt-in.
+  sendEmail({
+    to: email,
+    subject: "You're signed up — Apex Cards",
+    html: accountConfirmationHtml(email, subscribeToNewsletter),
+    type: "account_confirmation",
+  });
 
   const token = newSessionToken();
   createSession(user.id, token, sessionExpiry());
