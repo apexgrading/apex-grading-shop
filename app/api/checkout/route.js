@@ -33,11 +33,10 @@ export async function POST(request) {
 
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
-    // automatic_payment_methods lets Stripe show Apple Pay / Google Pay automatically
-    // alongside card, based on what's enabled in the Stripe Dashboard and the buyer's
-    // device/browser — no extra integration code needed. Apple Pay also requires
-    // verifying your domain in Stripe: Dashboard → Settings → Payment methods → Apple Pay.
-    automatic_payment_methods: { enabled: true },
+    // Deliberately omitting payment_method_types: Checkout Sessions automatically
+    // offer whatever's enabled in the Stripe Dashboard (card, Apple Pay, Google Pay,
+    // etc.) without any extra parameter. Apple Pay additionally requires verifying
+    // your domain: Dashboard → Settings → Payment methods → Apple Pay.
     line_items: cards.map((card) => ({
       quantity: 1,
       price_data: {
