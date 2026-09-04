@@ -1,13 +1,20 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useCart } from "../lib/cart-context";
 
 export default function ClearCartOnMount() {
-  const { clearCart } = useCart();
+  const { clearCart, loaded } = useCart();
+  const cleared = useRef(false);
+
   useEffect(() => {
-    clearCart();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    // Wait until the cart has actually finished loading from localStorage —
+    // clearing before that point gets silently overwritten by the load.
+    if (loaded && !cleared.current) {
+      cleared.current = true;
+      clearCart();
+    }
+  }, [loaded, clearCart]);
+
   return null;
 }
