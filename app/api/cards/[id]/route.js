@@ -7,7 +7,7 @@ export async function GET(request, { params }) {
     return NextResponse.json({ error: "Invalid card id" }, { status: 400 });
   }
 
-  const card = getCardById(id);
+  const card = await getCardById(id);
   if (!card) {
     return NextResponse.json({ error: "Card not found" }, { status: 404 });
   }

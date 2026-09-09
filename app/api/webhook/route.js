@@ -25,10 +25,10 @@ export async function POST(request) {
     const email = session.customer_details?.email;
 
     if (!Number.isNaN(orderId)) {
-      markOrderPaid(orderId, email);
+      await markOrderPaid(orderId, email);
 
       if (email) {
-        const order = getOrderBySessionId(session.id);
+        const order = await getOrderBySessionId(session.id);
         if (order) {
           await sendEmail({
             to: email,

@@ -12,13 +12,13 @@ export async function POST(request) {
     return NextResponse.json({ error: "Enter your email and password." }, { status: 400 });
   }
 
-  const user = getUserByEmail(email);
+  const user = await getUserByEmail(email);
   if (!user || !verifyPassword(password, user.salt, user.passwordHash)) {
     return NextResponse.json({ error: "Incorrect email or password." }, { status: 401 });
   }
 
   const token = newSessionToken();
-  createSession(user.id, token, sessionExpiry());
+  await createSession(user.id, token, sessionExpiry());
   cookies().set(SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",

@@ -5,7 +5,7 @@ import { SESSION_COOKIE } from "../../../../lib/auth";
 
 export async function POST() {
   const token = cookies().get(SESSION_COOKIE)?.value;
-  if (token) deleteSession(token);
+  if (token) await deleteSession(token);
   cookies().delete(SESSION_COOKIE);
   return NextResponse.json({ ok: true });
 }

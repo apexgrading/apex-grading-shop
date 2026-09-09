@@ -11,6 +11,6 @@ export async function GET(request) {
   const includeSold = searchParams.get("includeSold") === "true";
   const soldOnly = searchParams.get("soldOnly") === "true";
 
-  const result = listCards({ category, grade, sort, search, page, includeSold, soldOnly });
+  const result = await listCards({ category, grade, sort, search, page, includeSold, soldOnly });
   return NextResponse.json(result);
 }

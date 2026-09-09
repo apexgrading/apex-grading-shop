@@ -19,7 +19,7 @@ export async function POST(request) {
   }
 
   const token = newSessionToken();
-  createAdminSession(token, sessionExpiry());
+  await createAdminSession(token, sessionExpiry());
   cookies().set("apex_admin", token, {
     httpOnly: true,
     sameSite: "lax",

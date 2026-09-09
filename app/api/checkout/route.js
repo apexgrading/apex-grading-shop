@@ -15,7 +15,7 @@ export async function POST(request) {
 
   // Every card is a single unique unit — re-check availability against the DB,
   // never trust prices or availability sent from the client.
-  const cards = getAvailableCardsByIds(ids);
+  const cards = await getAvailableCardsByIds(ids);
   const foundIds = new Set(cards.map((c) => c.id));
   const unavailable = ids.filter((id) => !foundIds.has(id));
 
@@ -27,7 +27,7 @@ export async function POST(request) {
   }
 
   const placeholder = `pending_${randomUUID()}`;
-  const orderId = createPendingOrder(placeholder, cards);
+  const orderId = await createPendingOrder(placeholder, cards);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
@@ -54,7 +54,7 @@ export async function POST(request) {
     cancel_url: `${siteUrl}/cart`,
   });
 
-  setOrderStripeSession(orderId, session.id);
+  await setOrderStripeSession(orderId, session.id);
 
   return NextResponse.json({ url: session.url });
 }

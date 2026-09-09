@@ -4,7 +4,7 @@ import ClearCartOnMount from "../../components/ClearCartOnMount";
 
 export default async function SuccessPage({ searchParams }) {
   const sessionId = searchParams?.session_id;
-  const order = sessionId ? getOrderBySessionId(sessionId) : null;
+  const order = sessionId ? await getOrderBySessionId(sessionId) : null;
 
   return (
     <div className="wrap" style={{ padding: "80px 0 100px", textAlign: "center" }}>

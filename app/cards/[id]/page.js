@@ -11,7 +11,7 @@ export default async function CardDetailPage({ params }) {
   const id = parseInt(params.id, 10);
   if (Number.isNaN(id)) notFound();
 
-  const card = getCardById(id);
+  const card = await getCardById(id);
   if (!card) notFound();
 
   return (

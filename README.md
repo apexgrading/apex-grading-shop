@@ -1,14 +1,14 @@
-# Apex Grading Company — shop
+# Apex Cards — shop
 
 A real, working storefront: database of graded cards, cart, and Stripe Checkout.
-Built with Next.js (App Router) and Node's built-in SQLite — no external database
-service or native module install required.
+Built with Next.js (App Router) and hosted Postgres via Supabase.
 
 ## What's in here
 
-- **Catalog** — cards live in a SQLite file at `data/apex.db`. Each card is a single
-  unique unit (no quantities) with a grade, cert number, price, category, and photo
-  or placeholder art.
+- **Catalog** — cards live in a Postgres database, hosted on Supabase, in an
+  isolated `apex_shop` schema (safe alongside other unrelated tables in the same
+  project). Each card is a single unique unit (no quantities) with a grade, cert
+  number, price, category, and photo or placeholder art.
 - **Shop page** (`/shop`) — filters by category and grade, sorts, searches, paginates
   against a live API (`/api/cards`). Built to handle a 200–500 card catalog.
 - **Card detail page** (`/cards/[id]`) — full spec sheet + Add to cart.
@@ -43,14 +43,14 @@ service or native module install required.
 
 ```bash
 npm install
-npm run migrate   # creates the SQLite schema
-npm run seed       # loads your 2 real graded cards + a sample catalog
 npm run dev         # http://localhost:3000
 ```
 
 Copy `.env.example` to `.env` and fill in:
 
 ```
+SUPABASE_URL=https://xkuluggoqxoiqyvbkbaw.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=...   # Dashboard → Settings → API keys → service_role (secret)
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
@@ -101,15 +101,11 @@ one `fetch` call in `lib/email.js`.
 
 ## Growing the catalog to 200–500 cards
 
-Right now `db/seed.mjs` generates a 60-card sample (plus your two real photographed
-cards) so the shop's filtering and pagination have something realistic to work
-against. To load your real inventory:
-
-1. Replace the generated loop in `db/seed.mjs` with real rows (from a CSV export,
-   a spreadsheet, or wherever your grading records live), **or**
-2. Build a small admin form/route that inserts a `cards` row per newly-graded card
-   as it comes off the line (title, category, grade, cert, price, image path) —
-   a natural next step once this is live.
+Add cards any time via `/admin` (password-gated, live immediately, no redeploy
+needed) — that's the normal path now that the catalog lives in Postgres rather
+than a file that resets on redeploy. For bulk-loading many cards at once (e.g. a
+CSV export from your grading records), running a batch of `INSERT`s directly
+against the `apex_shop.cards` table is the fastest route.
 
 Every card needs a unique `cert` value; everything else (filters, sort, search,
 pagination, checkout, sold-tracking) already works against however many rows are
@@ -118,24 +114,16 @@ in the table.
 ## Deploying
 
 This needs a **Node.js server runtime** (not a static host) because of the API
-routes and the SQLite file. Vercel, Render, Railway, or Fly.io all work.
-
-One thing to know about SQLite specifically: on platforms with an ephemeral or
-read-only filesystem (like Vercel's default), the `data/apex.db` file won't persist
-between deploys or across serverless instances. For a small catalog (a few hundred
-cards) this is completely fine on a platform with a persistent disk (Render, Fly.io,
-a VPS, or Vercel with a mounted volume). If you outgrow that, swapping the queries
-in `lib/data.js` for a hosted Postgres database (e.g. via Vercel Postgres, Supabase,
-or Neon) is a contained change — the rest of the app doesn't need to know.
+routes. Vercel, Render, Railway, or Fly.io all work — the database itself is
+already hosted separately on Supabase, so there's nothing host-specific to worry
+about for persistence.
 
 Steps, once you've picked a host:
 
 1. Push this repo to GitHub.
 2. Connect it to your host, set the environment variables above (using your **live**
    Stripe keys once you're ready to take real payments).
-3. Run `npm run migrate && npm run seed` once against the production database (or
-   just `migrate` if you're loading real inventory yourself).
-4. Add a **production** webhook endpoint in the Stripe dashboard pointing at
+3. Add a **production** webhook endpoint in the Stripe dashboard pointing at
    `https://yourdomain.com/api/webhook`, and copy its signing secret into
    `STRIPE_WEBHOOK_SECRET` on your host.
 

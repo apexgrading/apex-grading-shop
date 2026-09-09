@@ -17,15 +17,15 @@ export async function POST(request) {
     );
   }
 
-  if (getUserByEmail(email)) {
+  if (await getUserByEmail(email)) {
     return NextResponse.json({ error: "An account with that email already exists." }, { status: 409 });
   }
 
   const { salt, hash } = hashPassword(password);
-  const user = createUser({ email, passwordHash: hash, salt, subscribed: subscribeToNewsletter });
+  const user = await createUser({ email, passwordHash: hash, salt, subscribed: subscribeToNewsletter });
 
   if (subscribeToNewsletter) {
-    addSubscriber(email);
+    await addSubscriber(email);
   }
 
   // Always confirm the account was created — separate from, and sent regardless
@@ -38,7 +38,7 @@ export async function POST(request) {
   });
 
   const token = newSessionToken();
-  createSession(user.id, token, sessionExpiry());
+  await createSession(user.id, token, sessionExpiry());
   cookies().set(SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",

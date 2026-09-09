@@ -10,7 +10,7 @@ export async function POST(request) {
     return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
   }
 
-  const isNew = addSubscriber(email);
+  const isNew = await addSubscriber(email);
   if (isNew) {
     sendEmail({ to: email, subject: "Welcome to Apex Cards", html: welcomeEmailHtml(email), type: "welcome" });
   }

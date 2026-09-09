@@ -13,7 +13,7 @@ function requireAdmin() {
 }
 
 export async function POST(request) {
-  if (!requireAdmin()) {
+  if (!(await requireAdmin())) {
     return NextResponse.json({ error: "Not authorized." }, { status: 401 });
   }
 
@@ -32,7 +32,7 @@ export async function POST(request) {
   if (grade < 1 || grade > 10) {
     return NextResponse.json({ error: "Grade must be between 1 and 10." }, { status: 400 });
   }
-  if (certExists(cert)) {
+  if (await certExists(cert)) {
     return NextResponse.json({ error: `Cert ${cert} is already on the site.` }, { status: 409 });
   }
 
@@ -63,7 +63,7 @@ export async function POST(request) {
     imageUrl = `/assets/uploads/${filename}`;
   }
 
-  const card = createCard({
+  const card = await createCard({
     title,
     category,
     grade,
