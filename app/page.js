@@ -20,24 +20,24 @@ const scale = [
 ];
 
 const steps = [
-  { n: "01", title: "Submit Your Cards", desc: "Create an account, tell us what you're sending with a simple submission form." },
-  { n: "02", title: "Ship to Us", desc: "Securely package your cards and send them to our UK grading facility." },
-  { n: "03", title: "We Grade & Slab", desc: "Every card is authenticated, graded, and sealed in a tamper-proof slab." },
-  { n: "04", title: "Receive & Verify", desc: "Get your graded cards back with a QR code. Anyone can verify the cert number online." },
+  { n: "01", title: "Browse the catalog", desc: "Filter by game, grade, or price to find the exact card you're after." },
+  { n: "02", title: "Add to cart", desc: "Every listing is a single, physical card — once it sells, it's gone for good." },
+  { n: "03", title: "Checkout securely", desc: "Pay by card or Apple Pay through Stripe. Fully encrypted, no account required." },
+  { n: "04", title: "Ships to your door", desc: "Your graded card arrives protected, with a cert number ready to verify online." },
 ];
 
 const features = [
-  { title: "Precision Grading", desc: "Consistent, rigorous standards with detailed sub-grade analysis on every card." },
-  { title: "Tamper-Proof Slabs", desc: "Crystal-clear encapsulation designed to protect and showcase your collection." },
-  { title: "Cert Database", desc: "Every card gets a unique cert number. Verify grade and authenticity instantly." },
-  { title: "Live Tracking", desc: "Follow your submission through every stage from receipt to return delivery." },
+  { title: "Precision Grading", desc: "Every card is graded to a consistent, rigorous standard before it's ever listed for sale." },
+  { title: "Tamper-Proof Slabs", desc: "Crystal-clear encapsulation designed to protect and showcase the card you're buying." },
+  { title: "Cert Database", desc: "Every card carries a unique cert number. Verify its grade and authenticity any time." },
+  { title: "Order Tracking", desc: "Follow your order from checkout to delivery, every step of the way." },
 ];
 
 const faqs = [
-  { q: "What trading cards do you grade?", a: "We grade all major TCGs — Pokémon, Yu-Gi-Oh!, One Piece, Magic: The Gathering, sports cards, and more. If it's a trading card, we can grade it." },
-  { q: "How does the grading process work?", a: "Submit through our platform, ship your cards to us, and we authenticate, grade, and encapsulate each card in a tamper-proof slab with a unique certification number." },
-  { q: "How do I verify a graded card?", a: "Every card gets a unique cert number. Anyone can look it up on our site to confirm the grade, card details, and authenticity." },
-  { q: "Where are you based?", a: "We're a UK-based grading company. All grading and encapsulation happens right here in the United Kingdom." },
+  { q: "What cards do you sell?", a: "Every listing here is a physical card we've already graded in-house — Pokémon, sports, and other TCGs, Gem Mint 10 down to Poor 1." },
+  { q: "Is each card really one of a kind?", a: "Yes. Every listing is a single physical card, not a print run. Once it sells, it's removed from the site for good." },
+  { q: "How do I know a card is authentic?", a: "Every card carries a unique cert number printed on the slab. Look it up any time to confirm the grade and details match what you received." },
+  { q: "Do you also offer grading services?", a: "Apex Cards is our storefront for cards we've already graded and sell direct. If you'd like your own cards submitted for grading, that's handled by Apex Grading Company." },
 ];
 
 export default async function HomePage() {
@@ -52,15 +52,15 @@ export default async function HomePage() {
           <div>
             <p style={{ fontSize: 13.5, color: "var(--gold-light)", marginBottom: 18, display: "flex", alignItems: "center", gap: 10 }}>
               <span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--gold)", display: "inline-block" }} />
-              UK-based · Independent grading, done in-house
+              UK-based · Every card authenticated & graded in-house
             </p>
             <h1 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(38px, 4.4vw, 58px)", lineHeight: 1.08, margin: "0 0 26px", maxWidth: "15ch" }}>
-              Professional card grading. Sold direct.
+              Graded cards, sold direct.
             </h1>
             <p style={{ fontSize: 18, lineHeight: 1.6, color: "var(--grey)", maxWidth: "48ch", margin: "0 0 34px" }}>
-              Precision grades, tamper-proof slabs, and a certification database you can trust —
-              every card here was authenticated and graded by Apex, then listed the moment the
-              label was set. Pokémon, sports, and TCG, Gem Mint 10 down to Poor 1.
+              Every card here has already been authenticated and graded in-house by Apex —
+              Gem Mint 10 down to Poor 1 — then listed for sale the moment the label is set.
+              Pokémon, sports, and TCG. No middleman.
             </p>
             <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
               <Link href="/shop" className="btn btn-primary">Shop graded cards</Link>
@@ -89,13 +89,13 @@ export default async function HomePage() {
       <section className="section" style={{ paddingBottom: 60 }}>
         <div className="wrap" style={{ maxWidth: 780 }}>
           <h2 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(26px,2.6vw,34px)", margin: "0 0 16px", lineHeight: 1.25 }}>
-            Grading you can trust. Protection your cards deserve.
+            Every card, verified before it's ever listed.
           </h2>
           <p style={{ color: "var(--grey)", fontSize: 16, lineHeight: 1.7, margin: 0 }}>
-            Every card is authenticated, graded by hand, and sealed in a crystal-clear tamper-proof
-            slab with a unique certification number — verifiable online by anyone, anywhere.
-            Industry-standard 1–10 grading scale with sub-grades for centering, edges, corners, and
-            surface. No shortcuts, no inconsistency.
+            We only sell cards we've graded ourselves — each one authenticated, graded by hand,
+            and sealed in a crystal-clear tamper-proof slab with a unique certification number,
+            verifiable online by anyone, anytime. Industry-standard 1–10 scale with sub-grades for
+            centering, edges, corners, and surface. No shortcuts, no inconsistency.
           </p>
         </div>
       </section>
@@ -106,7 +106,7 @@ export default async function HomePage() {
           <div style={{ marginBottom: 44 }}>
             <p style={{ fontSize: 13, color: "var(--gold-light)", marginBottom: 10 }}>How it works</p>
             <h2 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(28px,3vw,38px)", margin: 0 }}>
-              From submission to certified slab.
+              How buying works.
             </h2>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 1, background: "var(--line)", border: "1px solid var(--line)" }} className="how-grid">
@@ -125,9 +125,9 @@ export default async function HomePage() {
       <section className="section">
         <div className="wrap">
           <div style={{ marginBottom: 44 }}>
-            <p style={{ fontSize: 13, color: "var(--gold-light)", marginBottom: 10 }}>Why Apex Grading</p>
+            <p style={{ fontSize: 13, color: "var(--gold-light)", marginBottom: 10 }}>Why buy here</p>
             <h2 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(28px,3vw,38px)", margin: 0 }}>
-              The Apex standard.
+              Backed by the Apex standard.
             </h2>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 28 }} className="feature-grid">

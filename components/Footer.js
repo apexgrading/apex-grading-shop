@@ -40,8 +40,8 @@ export default function Footer() {
               </span>
             </div>
             <p style={{ color: "var(--grey)", fontSize: 13.5, maxWidth: "32ch", lineHeight: 1.6, marginBottom: 14 }}>
-              UK-based trading card authentication and grading. Precision grades, tamper-proof
-              slabs, and a certification database you can trust.
+              A UK-based marketplace for cards graded in-house by Apex Grading Company. Every
+              listing is a unique, authenticated card, sold direct.
             </p>
             <p style={{ color: "var(--grey-dim)", fontSize: 13, lineHeight: 1.7 }}>
               <a href="mailto:hello@apexgradingcompany.com" style={{ color: "var(--grey-dim)" }}>hello@apexgradingcompany.com</a>
