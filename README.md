@@ -55,8 +55,9 @@ STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ADMIN_PASSWORD=pick-something-only-your-team-knows
-RESEND_API_KEY=            # optional, see "Email" below
-EMAIL_FROM="Apex Grading <orders@apexgradingcompany.com>"
+BREVO_API_KEY=              # optional, see "Email" below
+EMAIL_FROM_NAME="Apex Cards"
+EMAIL_FROM_ADDRESS="hello@apexgradingcompany.com"
 ```
 
 Get your test keys from the Stripe dashboard: https://dashboard.stripe.com/test/apikeys
@@ -85,7 +86,7 @@ Two things to do on Stripe's side before it shows up for real customers:
 Every welcome and order-confirmation email is logged to the `notifications` table
 regardless of whether real sending is configured — so you can see what *would* have
 gone out from day one. To actually deliver them, sign up at https://resend.com,
-put the API key in `RESEND_API_KEY`, and set `EMAIL_FROM` to a verified sender.
+put the API key in `BREVO_API_KEY`. `EMAIL_FROM_NAME`/`EMAIL_FROM_ADDRESS` are optional overrides 2014 the address must be a verified sender in your Brevo account.
 Swapping in a different provider (Postmark, SendGrid, etc.) only means editing the
 one `fetch` call in `lib/email.js`.
 
