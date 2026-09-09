@@ -7,6 +7,12 @@ export async function POST(request) {
   const sig = request.headers.get("stripe-signature");
   const rawBody = await request.text();
 
+  // Temporary diagnostics — remove once the signature mismatch is resolved.
+  const secret = process.env.STRIPE_WEBHOOK_SECRET || "";
+  console.log("[webhook diag] secret loaded:", secret ? `${secret.slice(0, 10)}...${secret.slice(-4)} (len ${secret.length})` : "MISSING");
+  console.log("[webhook diag] signature header:", sig ? `${sig.slice(0, 40)}...` : "MISSING");
+  console.log("[webhook diag] rawBody length:", rawBody.length, "| starts:", rawBody.slice(0, 40), "| ends:", rawBody.slice(-40));
+
   let event;
   try {
     event = stripe.webhooks.constructEvent(
