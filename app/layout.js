@@ -4,6 +4,7 @@ import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import AnnouncementBanner from "../components/AnnouncementBanner";
 import CookieConsent from "../components/CookieConsent";
+import SignupPopup from "../components/SignupPopup";
 
 export const metadata = {
   title: "Apex Cards",
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
           {children}
           <Footer />
           <CookieConsent />
+          <SignupPopup />
         </CartProvider>
       </body>
     </html>

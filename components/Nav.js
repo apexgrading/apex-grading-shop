@@ -47,6 +47,9 @@ export default function Nav() {
       <Link href="/track" className={pathname.startsWith("/track") ? "active" : ""}>
         Track Order
       </Link>
+      <Link href="/merch" className={pathname.startsWith("/merch") ? "active" : ""}>
+        Merch
+      </Link>
       <a
         href="https://www.apexgradingcompany.com"
         target="_blank"
