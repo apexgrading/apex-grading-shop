@@ -12,7 +12,7 @@ export default function PokemonSetsPage() {
         <div className="wrap">
           <div className="crumb"><Link href="/">Home</Link> / <Link href="/shop">Shop</Link> / Pokémon Sets</div>
           <h1>Pokémon TCG sets, 1999–2026</h1>
-          <p>{totalSets} main sets across {POKEMON_ERAS.length} eras, from Base Set to today. Tap a set name to search our catalog for cards from it.</p>
+          <p>{totalSets} main sets across {POKEMON_ERAS.length} eras, from Base Set to today. Tap a set to see its full card checklist.</p>
         </div>
       </div>
 
@@ -27,7 +27,7 @@ export default function PokemonSetsPage() {
               {era.sets.map((set) => (
                 <Link
                   key={set}
-                  href={`/shop?search=${encodeURIComponent(set)}`}
+                  href={`/pokemon-sets/${encodeURIComponent(set)}`}
                   style={{
                     fontSize: 13.5, padding: "8px 14px", border: "1px solid var(--line)",
                     borderRadius: 20, color: "var(--grey)", transition: "border-color .15s, color .15s",
