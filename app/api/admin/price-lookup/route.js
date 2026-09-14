@@ -11,11 +11,20 @@ const apiHeaders = process.env.POKEMONTCG_API_KEY
   ? { "X-Api-Key": process.env.POKEMONTCG_API_KEY }
   : {};
 
-async function lookupPokemon(name) {
+async function lookupPokemon(rawInput) {
+  // Support "Dialga 020/025" or "Dialga 20" as well as plain "Dialga" — parsing out
+  // a card number narrows down to the exact printing instead of every card with that name.
+  const numberMatch = rawInput.match(/(\d+)\s*(?:\/\s*\d+)?\s*$/);
+  const number = numberMatch ? String(parseInt(numberMatch[1], 10)) : null;
+  const name = (number ? rawInput.slice(0, numberMatch.index) : rawInput).trim();
+
+  const queryParts = [`name:"${name}"`];
+  if (number) queryParts.push(`number:${number}`);
+
   let res;
   try {
     res = await fetch(
-      `https://api.pokemontcg.io/v2/cards?q=${encodeURIComponent(`name:"${name}"`)}&pageSize=20`,
+      `https://api.pokemontcg.io/v2/cards?q=${encodeURIComponent(queryParts.join(" "))}&pageSize=20`,
       { headers: apiHeaders }
     );
   } catch (err) {
@@ -42,7 +51,7 @@ async function lookupPokemon(name) {
       set: card.set?.name,
       number: card.number,
       rarity: card.rarity,
-      image: card.images?.small,
+      image: card.images?.large || card.images?.small,
       marketPriceUsd: best?.market ?? null,
       priceVariant: best?.variant ?? null,
     };

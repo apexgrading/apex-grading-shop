@@ -135,7 +135,7 @@ function UploadForm() {
             <input
               value={priceSearch}
               onChange={(e) => setPriceSearch(e.target.value)}
-              placeholder={form.category === "Magic: The Gathering" ? "e.g. Black Lotus" : form.category === "Yu-Gi-Oh!" ? "e.g. Blue-Eyes White Dragon" : "e.g. Charizard ex"}
+              placeholder={form.category === "Magic: The Gathering" ? "e.g. Black Lotus" : form.category === "Yu-Gi-Oh!" ? "e.g. Blue-Eyes White Dragon" : "e.g. Dialga 20/25 (name + number for an exact match)"}
               style={{ ...inputStyle, flex: 1 }}
               onKeyDown={(e) => e.key === "Enter" && handlePriceLookup(e)}
             />
@@ -145,15 +145,16 @@ function UploadForm() {
           </div>
           {priceError && <p style={{ color: "#E08A7D", fontSize: 12.5, marginTop: 10 }}>{priceError}</p>}
           {priceResults && (
-            <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 8, maxHeight: 260, overflowY: "auto" }}>
+            <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 10, maxHeight: 420, overflowY: "auto" }}>
               {priceResults.map((r) => (
-                <div key={r.id} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 12.5, padding: "6px 0", borderBottom: "1px solid var(--line)" }}>
-                  {r.image && <img src={r.image} alt="" style={{ width: 28, height: 39, borderRadius: 3 }} />}
+                <div key={r.id} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 12.5, padding: "8px 0", borderBottom: "1px solid var(--line)" }}>
+                  {r.image && <img src={r.image} alt="" style={{ width: 60, height: 84, borderRadius: 4, objectFit: "cover", flexShrink: 0 }} />}
                   <div style={{ flex: 1 }}>
-                    <div style={{ color: "var(--white)" }}>{r.name} <span style={{ color: "var(--grey-dim)" }}>· {r.set} #{r.number}</span></div>
+                    <div style={{ color: "var(--white)", fontWeight: 500 }}>{r.name}</div>
+                    <div style={{ color: "var(--grey)" }}>{r.set} · #{r.number}</div>
                     <div style={{ color: "var(--grey-dim)" }}>{r.rarity}{r.priceVariant ? ` · ${r.priceVariant}` : ""}</div>
                   </div>
-                  <div style={{ textAlign: "right", color: "var(--gold-light)", fontWeight: 600 }}>
+                  <div style={{ textAlign: "right", color: "var(--gold-light)", fontWeight: 600, fontSize: 14 }}>
                     {r.marketPriceUsd != null ? `$${r.marketPriceUsd.toFixed(2)}` : "no price"}
                   </div>
                 </div>
