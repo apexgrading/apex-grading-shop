@@ -253,9 +253,13 @@ button, select, input { font-family: inherit; }
   .how-grid, .feature-grid { grid-template-columns: repeat(2, 1fr) !important; }
   .hero-grid { grid-template-columns: 1fr !important; gap: 36px; }
   .hero-grid > div:last-child { order: -1; min-height: 340px !important; padding: 24px !important; }
+  .scale-row { grid-template-columns: 56px 1fr 160px !important; gap: 16px !important; }
+  .scale-desc { font-size: 12.5px !important; }
 }
 @media (max-width: 560px) {
   .how-grid, .feature-grid { grid-template-columns: 1fr !important; }
+  .scale-row { grid-template-columns: 44px 1fr !important; gap: 14px !important; }
+  .scale-desc { display: none; }
 }
 
 details summary::-webkit-details-marker { display: none; }

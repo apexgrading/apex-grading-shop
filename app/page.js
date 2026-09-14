@@ -183,7 +183,7 @@ export default async function HomePage() {
           </div>
           <div style={{ borderTop: "1px solid var(--line)" }}>
             {scale.map((s) => (
-              <div key={s.n} style={{ display: "grid", gridTemplateColumns: "64px 1fr 240px", alignItems: "center", gap: 24, padding: "16px 0", borderBottom: "1px solid var(--line)" }}>
+              <div key={s.n} className="scale-row" style={{ display: "grid", gridTemplateColumns: "64px 1fr 240px", alignItems: "center", gap: 24, padding: "16px 0", borderBottom: "1px solid var(--line)" }}>
                 <div style={{ fontFamily: "var(--serif)", fontSize: 30, color: "var(--gold-light)" }}>{s.n}</div>
                 <div>
                   <div style={{ fontSize: 16, fontWeight: 500 }}>{s.name}</div>
@@ -191,7 +191,7 @@ export default async function HomePage() {
                     <div style={{ width: `${s.w}%`, height: "100%", borderRadius: 3, background: "var(--gold)" }} />
                   </div>
                 </div>
-                <div style={{ fontSize: 13.5, color: "var(--grey-dim)", textAlign: "right" }}>{s.desc}</div>
+                <div className="scale-desc" style={{ fontSize: 13.5, color: "var(--grey-dim)", textAlign: "right" }}>{s.desc}</div>
               </div>
             ))}
           </div>
