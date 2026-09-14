@@ -120,7 +120,7 @@ export default function CartPage() {
           </button>
 
           <div style={{ marginTop: 18 }}>
-            <PaymentBadges />
+            <PaymentBadges linkToCart={false} />
             <p style={{ color: "var(--grey-dim)", fontSize: 12, margin: "10px 0 0" }}>
               We never see or store your card details.
             </p>

@@ -1,5 +1,9 @@
-export default function PaymentBadges({ compact = false }) {
-  return (
+"use client";
+
+import Link from "next/link";
+
+export default function PaymentBadges({ compact = false, linkToCart = true }) {
+  const content = (
     <div style={{ display: "flex", alignItems: "center", gap: compact ? 10 : 14, flexWrap: "wrap" }}>
       {/* Visa */}
       <svg width="38" height="24" viewBox="0 0 38 24" aria-label="Visa">
@@ -32,5 +36,13 @@ export default function PaymentBadges({ compact = false }) {
         Powered by <strong style={{ color: "var(--grey)" }}>Stripe</strong>
       </span>
     </div>
+  );
+
+  if (!linkToCart) return content;
+
+  return (
+    <Link href="/cart" aria-label="Go to checkout" style={{ display: "inline-block" }}>
+      {content}
+    </Link>
   );
 }
