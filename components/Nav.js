@@ -88,7 +88,10 @@ export default function Nav() {
               </button>
             </>
           ) : (
-            <Link href="/signin" className="btn-ghost-nav nav-signin">Sign in</Link>
+            <>
+              <Link href="/signin" className="btn-ghost-nav nav-signin">Sign in</Link>
+              <Link href="/signup" className="btn btn-primary nav-signup" style={{ padding: "9px 16px", fontSize: 13.5 }}>Sign up</Link>
+            </>
           )}
         </div>
       </div>
@@ -105,9 +108,14 @@ export default function Nav() {
               </button>
             </>
           ) : (
-            <Link href="/signin" className="btn btn-secondary" style={{ width: "100%", textAlign: "center" }}>
-              Sign in
-            </Link>
+            <div style={{ display: "flex", gap: 10 }}>
+              <Link href="/signin" className="btn btn-secondary" style={{ flex: 1, textAlign: "center" }}>
+                Sign in
+              </Link>
+              <Link href="/signup" className="btn btn-primary" style={{ flex: 1, textAlign: "center" }}>
+                Sign up
+              </Link>
+            </div>
           )}
         </div>
       )}
