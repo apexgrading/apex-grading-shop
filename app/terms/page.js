@@ -50,9 +50,32 @@ export default function TermsPage() {
         </Section>
 
         <Section title="6. Returns">
-          [Add your return policy here — e.g. time window, condition requirements for a return,
-          who pays return shipping, and any exceptions for cards found to be inaccurately described.
-          Placeholder — have a lawyer draft this to match your actual policy and local consumer law.]
+          <p style={{ margin: "0 0 12px" }}>
+            If you're a UK or EU consumer, you have a legal right to cancel your order within 14
+            days of receiving it, without giving a reason, under the Consumer Contracts
+            Regulations 2013. To cancel, email us at{" "}
+            <a href="mailto:hello@apexgradingcompany.com" style={{ color: "var(--gold-light)" }}>hello@apexgradingcompany.com</a>{" "}
+            within 14 days of delivery, then return the item to us within a further 14 days.
+          </p>
+          <p style={{ margin: "0 0 12px" }}>
+            The card must be returned in the same condition it was sent — for graded cards, in
+            its original sealed slab with the certification label intact; for raw singles, in the
+            same condition described at sale. We may make a deduction from your refund if the
+            item's value has been reduced by handling beyond what's needed to check it (for
+            example, a cracked or opened slab).
+          </p>
+          <p style={{ margin: "0 0 12px" }}>
+            You're responsible for return postage unless the card arrived faulty, damaged in
+            transit, or materially different from how it was described — in those cases, we'll
+            cover return shipping and refund your original delivery cost too.
+          </p>
+          <p style={{ margin: 0 }}>
+            Refunds are issued to your original payment method within 14 days of us receiving the
+            returned item. This is in addition to, and doesn't affect, your other statutory rights
+            — for example under the Consumer Rights Act 2015 if a card is faulty or not as
+            described. If you're ordering from outside the UK/EU, local consumer protection laws
+            may differ; contact us and we'll always try to resolve a genuine issue fairly.
+          </p>
         </Section>
 
         <Section title="7. Accounts">
@@ -61,7 +84,18 @@ export default function TermsPage() {
         </Section>
 
         <Section title="8. Limitation of liability">
-          [Standard liability limitation language — have a lawyer draft this for your jurisdiction.]
+          <p style={{ margin: "0 0 12px" }}>
+            To the fullest extent permitted by law, our liability to you for any claim arising
+            from your order — whether in contract, negligence, or otherwise — is limited to the
+            amount you paid for the affected item(s). We aren't liable for indirect or
+            consequential losses, such as loss of profit or opportunity.
+          </p>
+          <p style={{ margin: 0 }}>
+            Nothing in these terms excludes or limits liability that cannot be excluded under
+            applicable law, including liability for death or personal injury caused by negligence,
+            or for fraud. A card's grade reflects Apex Grading Company's professional opinion at
+            the time of assessment and is not a guarantee of future market value.
+          </p>
         </Section>
 
         <Section title="9. Changes to these terms">
@@ -84,7 +118,7 @@ function Section({ title, children }) {
   return (
     <div style={{ marginBottom: 28 }}>
       <h2 style={{ fontSize: 17, fontWeight: 600, color: "var(--white)", marginBottom: 8 }}>{title}</h2>
-      <p style={{ margin: 0 }}>{children}</p>
+      <div style={{ margin: 0 }}>{children}</div>
     </div>
   );
 }
