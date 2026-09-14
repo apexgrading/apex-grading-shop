@@ -40,6 +40,7 @@ button, select, input { font-family: inherit; }
   backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--line);
 }
+#scale { scroll-margin-top: 84px; }
 .nav { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
 .nav-mark img { height: 34px; width: auto; }
 .nav-mark { display: flex; align-items: center; gap: 10px; }
