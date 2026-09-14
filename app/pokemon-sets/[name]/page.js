@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +25,34 @@ async function getCards(setId) {
 export default async function PokemonSetDetailPage({ params }) {
   const name = decodeURIComponent(params.name);
   const set = await findSet(name);
-  if (!set) notFound();
+
+  if (!set) {
+    return (
+      <div>
+        <div className="page-head">
+          <div className="wrap">
+            <div className="crumb">
+              <Link href="/">Home</Link> / <Link href="/pokemon-sets">Pokémon Sets</Link> / {name}
+            </div>
+            <h1>{name}</h1>
+          </div>
+        </div>
+        <div className="wrap" style={{ padding: "40px 0 100px" }}>
+          <div className="empty-state">
+            <h3>Checklist not available yet</h3>
+            <p>
+              {name} is a genuine, recently released set — our card database just hasn't
+              been updated with it yet. Check back soon, or search our{" "}
+              <Link href={`/shop?search=${encodeURIComponent(name)}`} style={{ color: "var(--gold-light)" }}>
+                live catalog
+              </Link>{" "}
+              directly.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const cards = await getCards(set.id);
 
