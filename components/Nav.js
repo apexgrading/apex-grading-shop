@@ -44,8 +44,14 @@ export default function Nav() {
       <Link href="/pokemon-sets" className={pathname.startsWith("/pokemon-sets") ? "active" : ""}>
         Pokémon Sets
       </Link>
-      <a href="https://www.apexgradingcompany.com" target="_blank" rel="noopener noreferrer">
-        Main site ↗
+      <a
+        href="https://www.apexgradingcompany.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="main-site-cta"
+      >
+        <img src="/assets/apex-icon.jpg" alt="" />
+        Get your cards graded — head over to our main site
       </a>
     </>
   );

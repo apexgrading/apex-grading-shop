@@ -80,6 +80,7 @@ button, select, input { font-family: inherit; }
     padding: 12px 4px; font-size: 15px; color: var(--white); border-bottom: 1px solid var(--line);
   }
   .mobile-menu-links a.active { color: var(--gold-light); }
+  .mobile-menu-links .main-site-cta { color: #E5484D; }
   .mobile-menu-divider { height: 1px; margin: 14px 0; }
 }
 
@@ -240,3 +241,11 @@ details summary::after { content: "+"; color: var(--gold-light); font-size: 20px
 details[open] summary::after { content: "–"; }
 
 .set-chip:hover { border-color: var(--gold); color: var(--gold-light); }
+
+.main-site-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: #E5484D; font-weight: 700; font-size: 14px;
+  padding: 2px 0; transition: color .15s ease, opacity .15s ease;
+}
+.main-site-cta img { height: 20px; width: auto; border-radius: 3px; }
+.main-site-cta:hover { color: #FF6B60; opacity: 0.9; }

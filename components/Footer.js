@@ -58,7 +58,10 @@ export default function Footer() {
 
           <div>
             <h5 style={{ fontSize: 12, textTransform: "uppercase", letterSpacing: ".06em", color: "var(--grey-dim)", marginBottom: 14 }}>Company</h5>
-            <a href="https://www.apexgradingcompany.com" target="_blank" rel="noopener noreferrer" style={{ display: "block", fontSize: 14, color: "var(--grey)", marginBottom: 10 }}>Main website ↗</a>
+            <a href="https://www.apexgradingcompany.com" target="_blank" rel="noopener noreferrer" className="main-site-cta" style={{ marginBottom: 10 }}>
+              <img src="/assets/apex-icon.jpg" alt="" />
+              Get your cards graded — main site
+            </a>
             <Link href="/terms" style={{ display: "block", fontSize: 14, color: "var(--grey)", marginBottom: 10 }}>Terms &amp; conditions</Link>
             <Link href="/privacy" style={{ display: "block", fontSize: 14, color: "var(--grey)", marginBottom: 10 }}>Privacy policy</Link>
           </div>
