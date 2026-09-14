@@ -38,6 +38,9 @@ export default function Nav() {
       <Link href="/sold" className={pathname.startsWith("/sold") ? "active" : ""}>
         Sold
       </Link>
+      <Link href="/pokemon-sets" className={pathname.startsWith("/pokemon-sets") ? "active" : ""}>
+        Pokémon Sets
+      </Link>
       <a href="https://www.apexgradingcompany.com" target="_blank" rel="noopener noreferrer">
         Main site ↗
       </a>

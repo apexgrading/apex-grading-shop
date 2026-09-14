@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import ProductCard from "../../components/ProductCard";
 
 const CATEGORIES = [
@@ -18,10 +19,19 @@ const CATEGORIES = [
 ];
 
 export default function ShopPage() {
+  return (
+    <Suspense fallback={null}>
+      <ShopPageInner />
+    </Suspense>
+  );
+}
+
+function ShopPageInner() {
+  const urlParams = useSearchParams();
   const [category, setCategory] = useState("all");
   const [grade, setGrade] = useState("any");
   const [sort, setSort] = useState("newest");
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(urlParams.get("search") || "");
   const [page, setPage] = useState(1);
 
   const [data, setData] = useState({ cards: [], total: 0, totalPages: 1 });

@@ -238,3 +238,5 @@ details summary::-webkit-details-marker { display: none; }
 details summary { display: flex; align-items: center; justify-content: space-between; }
 details summary::after { content: "+"; color: var(--gold-light); font-size: 20px; margin-left: 12px; }
 details[open] summary::after { content: "–"; }
+
+.set-chip:hover { border-color: var(--gold); color: var(--gold-light); }
