@@ -12,7 +12,7 @@ export async function POST(request) {
 
   const isNew = await addSubscriber(email);
   if (isNew) {
-    sendEmail({ to: email, subject: "Welcome to Apex Cards", html: welcomeEmailHtml(email), type: "welcome" });
+    await sendEmail({ to: email, subject: "Welcome to Apex Cards", html: welcomeEmailHtml(email), type: "welcome" });
   }
 
   return NextResponse.json({ ok: true });

@@ -30,7 +30,7 @@ export async function POST(request) {
 
   // Always confirm the account was created — separate from, and sent regardless
   // of, the newsletter opt-in.
-  sendEmail({
+  await sendEmail({
     to: email,
     subject: "You're signed up — Apex Cards",
     html: accountConfirmationHtml(email, subscribeToNewsletter),
