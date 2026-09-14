@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import PaymentBadges from "./PaymentBadges";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -93,17 +94,11 @@ export default function Footer() {
           </div>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 14 }}>
           <p style={{ color: "var(--grey-dim)", fontSize: 13, margin: 0 }}>
             © {new Date().getFullYear()} Apex Cards. Cards graded in-house by Apex Grading Company.
           </p>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, color: "var(--grey-dim)", fontSize: 12.5 }}>
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="4" y="11" width="16" height="10" rx="2" />
-              <path d="M8 11V7a4 4 0 0 1 8 0v4" />
-            </svg>
-            Secure checkout via Stripe · SSL encrypted
-          </div>
+          <PaymentBadges compact />
         </div>
       </div>
     </footer>
