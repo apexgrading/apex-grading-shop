@@ -2,11 +2,16 @@ import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
+const apiHeaders = process.env.POKEMONTCG_API_KEY
+  ? { "X-Api-Key": process.env.POKEMONTCG_API_KEY }
+  : {};
+
 async function findSet(name) {
   const res = await fetch(
     `https://api.pokemontcg.io/v2/sets?q=${encodeURIComponent(`name:"${name}"`)}`,
-    { next: { revalidate: 3600 } }
+    { headers: apiHeaders, next: { revalidate: 3600 } }
   );
+  if (res.status === 429) return { rateLimited: true };
   if (!res.ok) return null;
   const json = await res.json();
   return json.data?.[0] || null;
@@ -15,18 +20,19 @@ async function findSet(name) {
 async function getCards(setId) {
   const res = await fetch(
     `https://api.pokemontcg.io/v2/cards?q=${encodeURIComponent(`set.id:${setId}`)}&pageSize=250&orderBy=number`,
-    { next: { revalidate: 3600 } }
+    { headers: apiHeaders, next: { revalidate: 3600 } }
   );
-  if (!res.ok) return [];
+  if (!res.ok) return { cards: [], rateLimited: res.status === 429 };
   const json = await res.json();
-  return json.data || [];
+  return { cards: json.data || [], rateLimited: false };
 }
 
 export default async function PokemonSetDetailPage({ params }) {
   const name = decodeURIComponent(params.name);
   const set = await findSet(name);
 
-  if (!set) {
+  if (!set || set.rateLimited) {
+    const rateLimited = set?.rateLimited;
     return (
       <div>
         <div className="page-head">
@@ -39,10 +45,12 @@ export default async function PokemonSetDetailPage({ params }) {
         </div>
         <div className="wrap" style={{ padding: "40px 0 100px" }}>
           <div className="empty-state">
-            <h3>Checklist not available yet</h3>
+            <h3>{rateLimited ? "Too many requests — try again in a moment" : "Checklist not available yet"}</h3>
             <p>
-              {name} is a genuine, recently released set — our card database just hasn't
-              been updated with it yet. Check back soon, or search our{" "}
+              {rateLimited
+                ? "Our card database is briefly rate-limited. Wait a few seconds and refresh this page."
+                : <>{name} is a genuine set — our card database just hasn't caught up with it yet.</>}{" "}
+              Or search our{" "}
               <Link href={`/shop?search=${encodeURIComponent(name)}`} style={{ color: "var(--gold-light)" }}>
                 live catalog
               </Link>{" "}
@@ -54,7 +62,7 @@ export default async function PokemonSetDetailPage({ params }) {
     );
   }
 
-  const cards = await getCards(set.id);
+  const { cards, rateLimited: cardsRateLimited } = await getCards(set.id);
 
   return (
     <div>
@@ -89,8 +97,8 @@ export default async function PokemonSetDetailPage({ params }) {
 
         {cards.length === 0 ? (
           <div className="empty-state">
-            <h3>Couldn't load this set's checklist right now</h3>
-            <p>The card database may be temporarily unavailable — try again shortly.</p>
+            <h3>{cardsRateLimited ? "Too many requests — try again in a moment" : "Couldn't load this set's checklist right now"}</h3>
+            <p>{cardsRateLimited ? "Wait a few seconds and refresh this page." : "The card database may be temporarily unavailable — try again shortly."}</p>
           </div>
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: 18 }}>
