@@ -10,6 +10,7 @@ export default function ProductCard({ card }) {
       <Link href={`/cards/${card.id}`}>
         <div className="product-media">
           {card.sold && <div className="sold-ribbon">Sold</div>}
+          {!card.sold && card.isPreorder && <div className="preorder-ribbon">Pre-order</div>}
           {card.imageUrl ? (
             <div className="real-photo">
               <img
@@ -48,6 +49,9 @@ export default function ProductCard({ card }) {
           <div className="price">{formatPrice(card.price)}</div>
           <div className="p-grade">{card.isGraded ? `Grade ${card.grade}` : card.condition}</div>
         </div>
+        {card.isPreorder && !card.sold && card.expectedDate && (
+          <div style={{ fontSize: 11.5, color: "#3B7DD8", marginTop: 4 }}>Expected {card.expectedDate}</div>
+        )}
       </Link>
     </div>
   );

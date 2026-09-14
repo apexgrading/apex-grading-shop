@@ -50,7 +50,7 @@ export default function AdminPage() {
 function UploadForm() {
   const [form, setForm] = useState({
     title: "", category: "Pokémon", isGraded: "true", grade: "10", cert: "",
-    condition: "Near Mint", price: "", imageUrl: "",
+    condition: "Near Mint", price: "", imageUrl: "", isPreorder: "false", expectedDate: "",
   });
   const [file, setFile] = useState(null);
   const [status, setStatus] = useState("idle"); // idle | saving | done | error
@@ -86,7 +86,7 @@ function UploadForm() {
     setStatus("done");
     setForm({
       title: "", category: "Pokémon", isGraded: form.isGraded, grade: "10", cert: "",
-      condition: "Near Mint", price: "", imageUrl: "",
+      condition: "Near Mint", price: "", imageUrl: "", isPreorder: "false", expectedDate: "",
     });
     setFile(null);
     setPriceResults(null);
@@ -240,6 +240,25 @@ function UploadForm() {
 
         <Field label="Price (GBP)">
           <input required type="number" step="0.01" min="0" value={form.price} onChange={(e) => update("price", e.target.value)} style={inputStyle} placeholder="249.00" />
+        </Field>
+
+        <Field label="Availability">
+          <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13.5, color: "var(--grey)", cursor: "pointer" }}>
+            <input
+              type="checkbox"
+              checked={form.isPreorder === "true"}
+              onChange={(e) => update("isPreorder", e.target.checked ? "true" : "false")}
+            />
+            This is a pre-order (not yet in hand)
+          </label>
+          {form.isPreorder === "true" && (
+            <input
+              value={form.expectedDate}
+              onChange={(e) => update("expectedDate", e.target.value)}
+              style={{ ...inputStyle, marginTop: 10 }}
+              placeholder="Expected date, e.g. 'Late October 2026'"
+            />
+          )}
         </Field>
 
         <Field label="Photo upload (works when the site runs on persistent storage)">

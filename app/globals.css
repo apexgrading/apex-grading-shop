@@ -188,6 +188,15 @@ button, select, input { font-family: inherit; }
 }
 .product-media .real-photo, .product-media .slab-shell { margin-bottom: 0; }
 
+.preorder-ribbon {
+  position: absolute; top: 16px; left: -38px; z-index: 5;
+  width: 150px; padding: 6px 0; text-align: center;
+  background: #3B7DD8; color: #fff;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  transform: rotate(-40deg); transform-origin: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
 /* ---------- EMPTY STATE ---------- */
 .empty-state { padding: 80px 20px; text-align: center; color: var(--grey); }
 .empty-state h3 { font-family: var(--serif); font-weight: 500; font-size: 24px; color: var(--white); margin: 0 0 10px; }

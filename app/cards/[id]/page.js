@@ -79,8 +79,22 @@ export default async function CardDetailPage({ params }) {
               <div className="spec-row"><span className="k">Condition</span><span className="v">{card.condition}</span></div>
             )}
             <div className="spec-row"><span className="k">Category</span><span className="v">{card.category}</span></div>
-            <div className="spec-row"><span className="k">Availability</span><span className="v">{card.sold ? "Sold" : "In stock — 1 available"}</span></div>
+            <div className="spec-row">
+              <span className="k">Availability</span>
+              <span className="v">
+                {card.sold ? "Sold" : card.isPreorder ? `Pre-order${card.expectedDate ? ` — expected ${card.expectedDate}` : ""}` : "In stock — 1 available"}
+              </span>
+            </div>
           </div>
+
+          {card.isPreorder && !card.sold && (
+            <p style={{
+              fontSize: 13.5, color: "#8FB8EA", background: "rgba(59,125,216,0.12)",
+              border: "1px solid rgba(59,125,216,0.3)", borderRadius: 6, padding: "10px 14px", margin: "0 0 20px",
+            }}>
+              This is a pre-order — you're reserving this card ahead of arrival. Payment is taken now; it ships once it's in hand.
+            </p>
+          )}
 
           <p style={{ color: "var(--grey)", fontSize: 14.5, lineHeight: 1.65, maxWidth: "48ch" }}>
             {card.isGraded

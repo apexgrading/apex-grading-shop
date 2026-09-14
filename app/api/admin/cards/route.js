@@ -24,6 +24,8 @@ export async function POST(request) {
   const grade = parseInt(formData.get("grade"), 10);
   const cert = formData.get("cert")?.toString().trim();
   const condition = formData.get("condition")?.toString().trim();
+  const isPreorder = formData.get("isPreorder")?.toString() === "true";
+  const expectedDate = formData.get("expectedDate")?.toString().trim();
   const priceDollars = parseFloat(formData.get("price"));
   const file = formData.get("image");
   const pastedImageUrl = formData.get("imageUrl")?.toString().trim();
@@ -82,6 +84,8 @@ export async function POST(request) {
     imageUrl,
     isGraded,
     condition,
+    isPreorder,
+    expectedDate,
   });
 
   return NextResponse.json({ card });

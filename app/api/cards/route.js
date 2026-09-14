@@ -12,7 +12,11 @@ export async function GET(request) {
   const soldOnly = searchParams.get("soldOnly") === "true";
   const gradedParam = searchParams.get("graded"); // "true" | "false" | absent
   const isGraded = gradedParam === "true" ? true : gradedParam === "false" ? false : null;
+  const preorderParam = searchParams.get("preorder");
+  const isPreorder = preorderParam === "true" ? true : preorderParam === "false" ? false : null;
+  const sinceDaysParam = searchParams.get("sinceDays");
+  const sinceDays = sinceDaysParam ? parseInt(sinceDaysParam, 10) : null;
 
-  const result = await listCards({ category, grade, sort, search, page, includeSold, soldOnly, isGraded });
+  const result = await listCards({ category, grade, sort, search, page, includeSold, soldOnly, isGraded, isPreorder, sinceDays });
   return NextResponse.json(result);
 }
