@@ -2,6 +2,7 @@ import "./globals.css";
 import { CartProvider } from "../lib/cart-context";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
+import AnnouncementBanner from "../components/AnnouncementBanner";
 
 export const metadata = {
   title: "Apex Cards",
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <CartProvider>
+          <AnnouncementBanner />
           <Nav />
           {children}
           <Footer />

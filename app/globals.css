@@ -249,3 +249,12 @@ details[open] summary::after { content: "–"; }
 }
 .main-site-cta img { height: 20px; width: auto; border-radius: 3px; }
 .main-site-cta:hover { color: #FF6B60; opacity: 0.9; }
+
+.announcement-banner {
+  background: #C4302B; color: #fff; text-align: center;
+  padding: 12px 16px; font-weight: 800; letter-spacing: 0.03em;
+  font-size: 15px; text-transform: uppercase;
+}
+@media (max-width: 640px) {
+  .announcement-banner { font-size: 12.5px; padding: 10px 12px; }
+}
