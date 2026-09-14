@@ -27,9 +27,12 @@ export async function POST(request) {
     if (!Number.isNaN(orderId)) {
       await markOrderPaid(orderId, email);
 
+      // Stripe moved shipping_details into collected_information in newer API
+      // versions (this account is on one) — check both for compatibility.
+      const shippingDetails = session.collected_information?.shipping_details || session.shipping_details;
       await setOrderShippingDetails(orderId, {
-        name: session.shipping_details?.name || null,
-        address: session.shipping_details?.address || null,
+        name: shippingDetails?.name || null,
+        address: shippingDetails?.address || null,
         shippingCost: session.shipping_cost?.amount_total ?? null,
       });
 
