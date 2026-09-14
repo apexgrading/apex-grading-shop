@@ -99,7 +99,7 @@ function UploadForm() {
     setPriceLoading(true);
     setPriceError(null);
     setPriceResults(null);
-    const game = form.category === "Magic: The Gathering" ? "mtg" : "pokemon";
+    const game = form.category === "Magic: The Gathering" ? "mtg" : form.category === "Yu-Gi-Oh!" ? "yugioh" : "pokemon";
     try {
       const res = await fetch(`/api/admin/price-lookup?name=${encodeURIComponent(priceSearch)}&game=${game}`);
       const json = await res.json();
@@ -128,14 +128,14 @@ function UploadForm() {
         <a href="/admin/orders" style={{ color: "var(--gold-light)", fontSize: 13.5 }}>View orders & mark shipped →</a>
       </p>
 
-      {(form.category === "Pokémon" || form.category === "Magic: The Gathering") && (
+      {(form.category === "Pokémon" || form.category === "Magic: The Gathering" || form.category === "Yu-Gi-Oh!") && (
         <div style={{ background: "var(--bg-panel)", border: "1px solid var(--line)", borderRadius: 8, padding: 16, marginBottom: 28 }}>
           <div style={{ fontSize: 13.5, fontWeight: 600, marginBottom: 10 }}>Check live market price</div>
           <div style={{ display: "flex", gap: 8 }}>
             <input
               value={priceSearch}
               onChange={(e) => setPriceSearch(e.target.value)}
-              placeholder={form.category === "Magic: The Gathering" ? "e.g. Black Lotus" : "e.g. Charizard ex"}
+              placeholder={form.category === "Magic: The Gathering" ? "e.g. Black Lotus" : form.category === "Yu-Gi-Oh!" ? "e.g. Blue-Eyes White Dragon" : "e.g. Charizard ex"}
               style={{ ...inputStyle, flex: 1 }}
               onKeyDown={(e) => e.key === "Enter" && handlePriceLookup(e)}
             />
@@ -161,7 +161,7 @@ function UploadForm() {
             </div>
           )}
           <p style={{ fontSize: 11.5, color: "var(--grey-dim)", marginTop: 10, marginBottom: 0 }}>
-            USD market prices from {form.category === "Magic: The Gathering" ? "Scryfall/TCGPlayer" : "TCGPlayer, via the Pokémon TCG database"}. Convert to GBP and set your own price with margin — not auto-filled.
+            USD market prices from {form.category === "Magic: The Gathering" ? "Scryfall/TCGPlayer" : form.category === "Yu-Gi-Oh!" ? "YGOPRODeck/TCGPlayer" : "TCGPlayer, via the Pokémon TCG database"}. Convert to GBP and set your own price with margin — not auto-filled.
           </p>
         </div>
       )}

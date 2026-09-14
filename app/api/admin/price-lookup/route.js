@@ -70,6 +70,31 @@ async function lookupMtg(name) {
   return { results };
 }
 
+async function lookupYugioh(name) {
+  const res = await fetch(`https://db.ygoprodeck.com/api/v7/cardinfo.php?fname=${encodeURIComponent(name)}`);
+  if (res.status === 429) return { error: "rateLimited" };
+  if (res.status === 400) return { results: [] }; // YGOPRODeck 400s on zero matches, not an error
+  if (!res.ok) return { error: "unreachable" };
+
+  const json = await res.json();
+  const results = (json.data || []).slice(0, 20).map((card) => {
+    const price = card.card_prices?.[0];
+    const usd = price?.tcgplayer_price ? parseFloat(price.tcgplayer_price) : null;
+
+    return {
+      id: card.id,
+      name: card.name,
+      set: card.card_sets?.[0]?.set_name || card.type,
+      number: card.card_sets?.[0]?.set_code || "",
+      rarity: card.card_sets?.[0]?.set_rarity || "",
+      image: card.card_images?.[0]?.image_url_small,
+      marketPriceUsd: usd && usd > 0 ? usd : null,
+      priceVariant: null,
+    };
+  });
+  return { results };
+}
+
 export async function GET(request) {
   if (!(await requireAdmin())) {
     return NextResponse.json({ error: "Not authorized." }, { status: 401 });
@@ -77,12 +102,14 @@ export async function GET(request) {
 
   const { searchParams } = new URL(request.url);
   const name = searchParams.get("name")?.trim();
-  const game = searchParams.get("game") === "mtg" ? "mtg" : "pokemon";
+  const gameParam = searchParams.get("game");
+  const game = gameParam === "mtg" ? "mtg" : gameParam === "yugioh" ? "yugioh" : "pokemon";
   if (!name) {
     return NextResponse.json({ error: "Provide a card name to search." }, { status: 400 });
   }
 
-  const { results, error } = game === "mtg" ? await lookupMtg(name) : await lookupPokemon(name);
+  const { results, error } =
+    game === "mtg" ? await lookupMtg(name) : game === "yugioh" ? await lookupYugioh(name) : await lookupPokemon(name);
 
   if (error === "rateLimited") {
     return NextResponse.json({ error: "Price database is briefly rate-limited — try again in a moment." }, { status: 429 });
