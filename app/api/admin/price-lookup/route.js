@@ -49,6 +49,7 @@ async function lookupPokemon(rawInput) {
       id: card.id,
       name: card.name,
       set: card.set?.name || "Unknown set",
+      setYear: card.set?.releaseDate ? card.set.releaseDate.split("/")[0] : null,
       number: card.number || "—",
       rarity: card.rarity || "Rarity not listed",
       image: card.images?.large || card.images?.small,
@@ -78,6 +79,7 @@ async function lookupMtg(name) {
       id: card.id,
       name: card.name,
       set: card.set_name,
+      setYear: card.released_at ? card.released_at.split("-")[0] : null,
       number: card.collector_number,
       rarity: card.rarity,
       image: card.image_uris?.small,
@@ -103,6 +105,7 @@ async function lookupYugioh(name) {
       id: card.id,
       name: card.name,
       set: card.card_sets?.[0]?.set_name || card.type,
+      setYear: null, // release date isn't consistently available per-printing from this API
       number: card.card_sets?.[0]?.set_code || "",
       rarity: card.card_sets?.[0]?.set_rarity || "",
       image: card.card_images?.[0]?.image_url_small,

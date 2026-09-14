@@ -159,7 +159,7 @@ function UploadForm() {
                   )}
                   <div style={{ flex: 1 }}>
                     <div style={{ color: "var(--white)", fontWeight: 500 }}>{r.name}</div>
-                    <div style={{ color: "var(--grey)" }}>{r.set} · #{r.number}</div>
+                    <div style={{ color: "var(--grey)" }}>{r.set}{r.setYear ? ` (${r.setYear})` : ""} · #{r.number}</div>
                     <div style={{ color: "var(--grey-dim)" }}>{r.rarity}{r.priceVariant ? ` · ${r.priceVariant}` : ""}</div>
                   </div>
                   <div style={{ textAlign: "right", color: "var(--gold-light)", fontWeight: 600, fontSize: 14 }}>
