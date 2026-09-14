@@ -20,21 +20,23 @@ async function lookupPokemon(rawInput) {
 
   const queryParts = [`name:"${name}"`];
   if (number) queryParts.push(`number:${number}`);
+  const url = `https://api.pokemontcg.io/v2/cards?q=${encodeURIComponent(queryParts.join(" "))}&pageSize=20`;
 
+  // The free card database occasionally returns a transient 500 of its own —
+  // retry once before surfacing an error, same pattern as the set-checklist pages.
   let res;
-  try {
-    res = await fetch(
-      `https://api.pokemontcg.io/v2/cards?q=${encodeURIComponent(queryParts.join(" "))}&pageSize=20`,
-      { headers: apiHeaders }
-    );
-  } catch (err) {
-    console.error("Pokemon price lookup fetch error:", err.message, err.cause ? `| cause: ${err.cause}` : "");
-    return { error: "unreachable" };
-  }
-  if (res.status === 429) return { error: "rateLimited" };
-  if (!res.ok) {
-    console.error("Pokemon price lookup failed:", res.status, await res.text().catch(() => ""));
-    return { error: "unreachable" };
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      res = await fetch(url, { headers: apiHeaders });
+    } catch (err) {
+      console.error(`Pokemon price lookup fetch error (attempt ${attempt}):`, err.message, err.cause ? `| cause: ${err.cause}` : "");
+      if (attempt === 2) return { error: "unreachable" };
+      continue;
+    }
+    if (res.status === 429) return { error: "rateLimited" };
+    if (res.ok) break;
+    console.error(`Pokemon price lookup failed (attempt ${attempt}):`, res.status, await res.text().catch(() => ""));
+    if (attempt === 2) return { error: "unreachable" };
   }
 
   const json = await res.json();
