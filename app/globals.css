@@ -45,9 +45,10 @@ button, select, input { font-family: inherit; }
 .nav-mark { display: flex; align-items: center; gap: 10px; }
 .nav-wordmark { font-family: 'Anton', var(--sans); font-size: 20px; letter-spacing: 0.01em; color: var(--gold); line-height: 1; }
 .nav-wordmark span { color: var(--white); }
-.nav-links { display: flex; gap: 32px; font-size: 14.5px; color: var(--grey); }
+.nav-links { display: flex; gap: 32px; font-size: 14.5px; color: var(--gold); }
 .nav-links a { padding-bottom: 3px; border-bottom: 1px solid transparent; transition: border-color .15s ease, color .15s ease; }
-.nav-links a:hover, .nav-links a.active { border-color: var(--gold); color: var(--white); }
+.nav-links a:hover, .nav-links a.active { border-color: var(--gold-light); color: var(--gold-light); }
+.nav-links a.main-site-cta, .nav-links a.main-site-cta:hover { color: #E5484D; border-color: transparent; }
 .nav-actions { display: flex; align-items: center; gap: 18px; font-size: 14.5px; }
 .cart-link { display: flex; align-items: center; gap: 8px; }
 .cart-badge {
