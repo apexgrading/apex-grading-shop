@@ -263,6 +263,7 @@ button, select, input { font-family: inherit; }
   .scale-row { grid-template-columns: 44px 1fr !important; gap: 14px !important; }
   .scale-desc { display: none; }
   .footer-grid { grid-template-columns: 1fr !important; }
+  .scale-cta { display: none; }
 }
 
 details summary::-webkit-details-marker { display: none; }

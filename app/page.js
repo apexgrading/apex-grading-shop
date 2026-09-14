@@ -81,7 +81,7 @@ export default async function HomePage() {
             <HomeSearchBar />
             <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
               <Link href="/shop" className="btn btn-primary">Shop graded cards</Link>
-              <Link href="#scale" className="btn btn-secondary">See the grading scale</Link>
+              <Link href="#scale" className="btn btn-secondary scale-cta">See the grading scale</Link>
             </div>
           </div>
           <div style={{
