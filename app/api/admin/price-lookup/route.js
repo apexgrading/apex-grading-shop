@@ -12,12 +12,21 @@ const apiHeaders = process.env.POKEMONTCG_API_KEY
   : {};
 
 async function lookupPokemon(name) {
-  const res = await fetch(
-    `https://api.pokemontcg.io/v2/cards?q=${encodeURIComponent(`name:"${name}"`)}&pageSize=20`,
-    { headers: apiHeaders }
-  );
+  let res;
+  try {
+    res = await fetch(
+      `https://api.pokemontcg.io/v2/cards?q=${encodeURIComponent(`name:"${name}"`)}&pageSize=20`,
+      { headers: apiHeaders }
+    );
+  } catch (err) {
+    console.error("Pokemon price lookup fetch error:", err.message, err.cause ? `| cause: ${err.cause}` : "");
+    return { error: "unreachable" };
+  }
   if (res.status === 429) return { error: "rateLimited" };
-  if (!res.ok) return { error: "unreachable" };
+  if (!res.ok) {
+    console.error("Pokemon price lookup failed:", res.status, await res.text().catch(() => ""));
+    return { error: "unreachable" };
+  }
 
   const json = await res.json();
   const results = (json.data || []).map((card) => {
