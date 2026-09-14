@@ -6,6 +6,9 @@ import Footer from "../components/Footer";
 export const metadata = {
   title: "Apex Cards",
   description: "Graded trading and sports cards, sold direct — graded in-house by Apex Grading Company.",
+  verification: {
+    google: "UncIGpd0yQlzwfQyNGME1IgMq2vb5JUwvN0RRQ1TiMg",
+  },
 };
 
 export default function RootLayout({ children }) {
