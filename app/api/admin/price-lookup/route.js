@@ -48,9 +48,9 @@ async function lookupPokemon(rawInput) {
     return {
       id: card.id,
       name: card.name,
-      set: card.set?.name,
-      number: card.number,
-      rarity: card.rarity,
+      set: card.set?.name || "Unknown set",
+      number: card.number || "—",
+      rarity: card.rarity || "Rarity not listed",
       image: card.images?.large || card.images?.small,
       marketPriceUsd: best?.market ?? null,
       priceVariant: best?.variant ?? null,

@@ -59,6 +59,7 @@ function UploadForm() {
   const [priceResults, setPriceResults] = useState(null);
   const [priceLoading, setPriceLoading] = useState(false);
   const [priceError, setPriceError] = useState(null);
+  const [zoomedImage, setZoomedImage] = useState(null);
 
   function update(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -148,7 +149,14 @@ function UploadForm() {
             <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 10, maxHeight: 420, overflowY: "auto" }}>
               {priceResults.map((r) => (
                 <div key={r.id} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 12.5, padding: "8px 0", borderBottom: "1px solid var(--line)" }}>
-                  {r.image && <img src={r.image} alt="" style={{ width: 60, height: 84, borderRadius: 4, objectFit: "cover", flexShrink: 0 }} />}
+                  {r.image && (
+                    <img
+                      src={r.image}
+                      alt=""
+                      onClick={() => setZoomedImage(r.image)}
+                      style={{ width: 60, height: 84, borderRadius: 4, objectFit: "cover", flexShrink: 0, cursor: "zoom-in" }}
+                    />
+                  )}
                   <div style={{ flex: 1 }}>
                     <div style={{ color: "var(--white)", fontWeight: 500 }}>{r.name}</div>
                     <div style={{ color: "var(--grey)" }}>{r.set} · #{r.number}</div>
@@ -249,6 +257,18 @@ function UploadForm() {
           {status === "saving" ? "Uploading…" : "Add to catalog"}
         </button>
       </form>
+
+      {zoomedImage && (
+        <div
+          onClick={() => setZoomedImage(null)}
+          style={{
+            position: "fixed", inset: 0, background: "rgba(0,0,0,0.85)", zIndex: 100,
+            display: "flex", alignItems: "center", justifyContent: "center", padding: 24, cursor: "zoom-out",
+          }}
+        >
+          <img src={zoomedImage} alt="" style={{ maxWidth: "90vw", maxHeight: "90vh", borderRadius: 8 }} />
+        </div>
+      )}
     </div>
   );
 }
