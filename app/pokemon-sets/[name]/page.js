@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getCachedPokemonSet, cachePokemonSet } from "../../../lib/data";
 
 export const dynamic = "force-dynamic";
 
@@ -6,33 +7,63 @@ const apiHeaders = process.env.POKEMONTCG_API_KEY
   ? { "X-Api-Key": process.env.POKEMONTCG_API_KEY }
   : {};
 
-async function findSet(name) {
-  const res = await fetch(
+async function fetchFromApiAndCache(name) {
+  const setRes = await fetch(
     `https://api.pokemontcg.io/v2/sets?q=${encodeURIComponent(`name:"${name}"`)}`,
-    { headers: apiHeaders, next: { revalidate: 3600 } }
+    { headers: apiHeaders }
   );
-  if (res.status === 429) return { rateLimited: true };
-  if (!res.ok) return null;
-  const json = await res.json();
-  return json.data?.[0] || null;
-}
+  if (setRes.status === 429) return { rateLimited: true };
+  if (!setRes.ok) return null;
+  const setJson = await setRes.json();
+  const set = setJson.data?.[0];
+  if (!set) return null;
 
-async function getCards(setId) {
-  const res = await fetch(
-    `https://api.pokemontcg.io/v2/cards?q=${encodeURIComponent(`set.id:${setId}`)}&pageSize=250&orderBy=number`,
-    { headers: apiHeaders, next: { revalidate: 3600 } }
+  const cardsRes = await fetch(
+    `https://api.pokemontcg.io/v2/cards?q=${encodeURIComponent(`set.id:${set.id}`)}&pageSize=250&orderBy=number`,
+    { headers: apiHeaders }
   );
-  if (!res.ok) return { cards: [], rateLimited: res.status === 429 };
-  const json = await res.json();
-  return { cards: json.data || [], rateLimited: false };
+  if (cardsRes.status === 429) return { rateLimited: true };
+  if (!cardsRes.ok) return null;
+  const cardsJson = await cardsRes.json();
+  const cards = (cardsJson.data || []).map((c) => ({
+    number: c.number,
+    name: c.name,
+    rarity: c.rarity,
+    imageSmall: c.images?.small,
+  }));
+
+  const meta = {
+    apiSetId: set.id,
+    logoUrl: set.images?.logo,
+    releaseDate: set.releaseDate,
+    total: set.total,
+    standardLegal: set.legalities?.standard === "Legal",
+  };
+
+  // Cache it for every future request — failures here shouldn't block showing
+  // the page to the person who triggered this first fetch.
+  try {
+    await cachePokemonSet(name, meta, cards);
+  } catch (err) {
+    console.error("Failed to cache Pokémon set checklist:", err.message);
+  }
+
+  return { name, ...meta, cards };
 }
 
 export default async function PokemonSetDetailPage({ params }) {
   const name = decodeURIComponent(params.name);
-  const set = await findSet(name);
 
-  if (!set || set.rateLimited) {
-    const rateLimited = set?.rateLimited;
+  let set = await getCachedPokemonSet(name);
+  let rateLimited = false;
+
+  if (!set) {
+    const fetched = await fetchFromApiAndCache(name);
+    if (fetched?.rateLimited) rateLimited = true;
+    else set = fetched;
+  }
+
+  if (!set) {
     return (
       <div>
         <div className="page-head">
@@ -48,7 +79,7 @@ export default async function PokemonSetDetailPage({ params }) {
             <h3>{rateLimited ? "Too many requests — try again in a moment" : "Checklist not available yet"}</h3>
             <p>
               {rateLimited
-                ? "Our card database is briefly rate-limited. Wait a few seconds and refresh this page."
+                ? "Our card database is briefly rate-limited. Wait a few seconds and refresh this page — once it loads once, it's cached permanently and this won't happen again for this set."
                 : <>{name} is a genuine set — our card database just hasn't caught up with it yet.</>}{" "}
               Or search our{" "}
               <Link href={`/shop?search=${encodeURIComponent(name)}`} style={{ color: "var(--gold-light)" }}>
@@ -62,7 +93,7 @@ export default async function PokemonSetDetailPage({ params }) {
     );
   }
 
-  const { cards, rateLimited: cardsRateLimited } = await getCards(set.id);
+  const cards = set.cards;
 
   return (
     <div>
@@ -72,14 +103,14 @@ export default async function PokemonSetDetailPage({ params }) {
             <Link href="/">Home</Link> / <Link href="/pokemon-sets">Pokémon Sets</Link> / {set.name}
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 4 }}>
-            {set.images?.logo && (
-              <img src={set.images.logo} alt="" style={{ height: 44, width: "auto" }} />
+            {set.logoUrl && (
+              <img src={set.logoUrl} alt="" style={{ height: 44, width: "auto" }} />
             )}
             <div>
               <h1 style={{ margin: 0 }}>{set.name}</h1>
               <p style={{ margin: "4px 0 0" }}>
                 {set.releaseDate} · {set.total} cards
-                {set.legalities?.standard === "Legal" && " · Standard-legal"}
+                {set.standardLegal && " · Standard-legal"}
               </p>
             </div>
           </div>
@@ -88,7 +119,7 @@ export default async function PokemonSetDetailPage({ params }) {
 
       <div className="wrap" style={{ padding: "36px 0 100px" }}>
         <p style={{ color: "var(--grey-dim)", fontSize: 13, marginBottom: 24 }}>
-          Full checklist via the Pokémon TCG API — not all of these are necessarily in stock. Search our{" "}
+          Full checklist, cached for fast loading — not all of these are necessarily in stock. Search our{" "}
           <Link href={`/shop?search=${encodeURIComponent(set.name)}`} style={{ color: "var(--gold-light)" }}>
             live catalog
           </Link>{" "}
@@ -97,16 +128,16 @@ export default async function PokemonSetDetailPage({ params }) {
 
         {cards.length === 0 ? (
           <div className="empty-state">
-            <h3>{cardsRateLimited ? "Too many requests — try again in a moment" : "Couldn't load this set's checklist right now"}</h3>
-            <p>{cardsRateLimited ? "Wait a few seconds and refresh this page." : "The card database may be temporarily unavailable — try again shortly."}</p>
+            <h3>No cards found for this set</h3>
+            <p>This set's checklist appears to be empty in the card database.</p>
           </div>
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: 18 }}>
-            {cards.map((card) => (
-              <div key={card.id}>
-                {card.images?.small && (
+            {cards.map((card, i) => (
+              <div key={i}>
+                {card.imageSmall && (
                   <img
-                    src={card.images.small}
+                    src={card.imageSmall}
                     alt={card.name}
                     style={{ width: "100%", borderRadius: 6, marginBottom: 8, border: "1px solid var(--line)" }}
                     loading="lazy"
