@@ -11,35 +11,17 @@ const apiHeaders = process.env.POKEMONTCG_API_KEY
   ? { "X-Api-Key": process.env.POKEMONTCG_API_KEY }
   : {};
 
-export async function GET(request) {
-  if (!(await requireAdmin())) {
-    return NextResponse.json({ error: "Not authorized." }, { status: 401 });
-  }
-
-  const { searchParams } = new URL(request.url);
-  const name = searchParams.get("name")?.trim();
-  if (!name) {
-    return NextResponse.json({ error: "Provide a card name to search." }, { status: 400 });
-  }
-
+async function lookupPokemon(name) {
   const res = await fetch(
     `https://api.pokemontcg.io/v2/cards?q=${encodeURIComponent(`name:"${name}"`)}&pageSize=20`,
     { headers: apiHeaders }
   );
-
-  if (res.status === 429) {
-    return NextResponse.json({ error: "Price database is briefly rate-limited — try again in a moment." }, { status: 429 });
-  }
-  if (!res.ok) {
-    return NextResponse.json({ error: "Couldn't reach the price database." }, { status: 502 });
-  }
+  if (res.status === 429) return { error: "rateLimited" };
+  if (!res.ok) return { error: "unreachable" };
 
   const json = await res.json();
   const results = (json.data || []).map((card) => {
     const prices = card.tcgplayer?.prices || {};
-    // Different printings (normal / holofoil / reverse holofoil / 1st edition, etc.)
-    // carry separate price groups — flatten to the highest "market" price available,
-    // since that's the most representative real transaction price.
     const marketPrices = Object.entries(prices)
       .map(([variant, p]) => ({ variant, market: p.market }))
       .filter((p) => typeof p.market === "number");
@@ -54,9 +36,60 @@ export async function GET(request) {
       image: card.images?.small,
       marketPriceUsd: best?.market ?? null,
       priceVariant: best?.variant ?? null,
-      tcgplayerUrl: card.tcgplayer?.url,
     };
   });
+  return { results };
+}
+
+async function lookupMtg(name) {
+  const res = await fetch(`https://api.scryfall.com/cards/search?q=${encodeURIComponent(name)}`, {
+    headers: { "User-Agent": "ApexCardsAdmin/1.0", Accept: "application/json" },
+  });
+  if (res.status === 429) return { error: "rateLimited" };
+  if (res.status === 404) return { results: [] }; // Scryfall 404s on zero matches, not an error
+  if (!res.ok) return { error: "unreachable" };
+
+  const json = await res.json();
+  const results = (json.data || []).slice(0, 20).map((card) => {
+    const usd = card.prices?.usd ? parseFloat(card.prices.usd) : null;
+    const usdFoil = card.prices?.usd_foil ? parseFloat(card.prices.usd_foil) : null;
+    const best = usdFoil != null && (usd == null || usdFoil > usd) ? usdFoil : usd;
+    const variant = best === usdFoil && usdFoil != null ? "foil" : "nonfoil";
+
+    return {
+      id: card.id,
+      name: card.name,
+      set: card.set_name,
+      number: card.collector_number,
+      rarity: card.rarity,
+      image: card.image_uris?.small,
+      marketPriceUsd: best,
+      priceVariant: best != null ? variant : null,
+    };
+  });
+  return { results };
+}
+
+export async function GET(request) {
+  if (!(await requireAdmin())) {
+    return NextResponse.json({ error: "Not authorized." }, { status: 401 });
+  }
+
+  const { searchParams } = new URL(request.url);
+  const name = searchParams.get("name")?.trim();
+  const game = searchParams.get("game") === "mtg" ? "mtg" : "pokemon";
+  if (!name) {
+    return NextResponse.json({ error: "Provide a card name to search." }, { status: 400 });
+  }
+
+  const { results, error } = game === "mtg" ? await lookupMtg(name) : await lookupPokemon(name);
+
+  if (error === "rateLimited") {
+    return NextResponse.json({ error: "Price database is briefly rate-limited — try again in a moment." }, { status: 429 });
+  }
+  if (error === "unreachable") {
+    return NextResponse.json({ error: "Couldn't reach the price database." }, { status: 502 });
+  }
 
   return NextResponse.json({ results });
 }

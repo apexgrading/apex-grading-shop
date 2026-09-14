@@ -99,8 +99,9 @@ function UploadForm() {
     setPriceLoading(true);
     setPriceError(null);
     setPriceResults(null);
+    const game = form.category === "Magic: The Gathering" ? "mtg" : "pokemon";
     try {
-      const res = await fetch(`/api/admin/price-lookup?name=${encodeURIComponent(priceSearch)}`);
+      const res = await fetch(`/api/admin/price-lookup?name=${encodeURIComponent(priceSearch)}&game=${game}`);
       const json = await res.json();
       if (!res.ok) {
         setPriceError(json.error || "Lookup failed.");
@@ -127,14 +128,14 @@ function UploadForm() {
         <a href="/admin/orders" style={{ color: "var(--gold-light)", fontSize: 13.5 }}>View orders & mark shipped →</a>
       </p>
 
-      {form.category === "Pokémon" && (
+      {(form.category === "Pokémon" || form.category === "Magic: The Gathering") && (
         <div style={{ background: "var(--bg-panel)", border: "1px solid var(--line)", borderRadius: 8, padding: 16, marginBottom: 28 }}>
           <div style={{ fontSize: 13.5, fontWeight: 600, marginBottom: 10 }}>Check live market price</div>
           <div style={{ display: "flex", gap: 8 }}>
             <input
               value={priceSearch}
               onChange={(e) => setPriceSearch(e.target.value)}
-              placeholder="e.g. Charizard ex"
+              placeholder={form.category === "Magic: The Gathering" ? "e.g. Black Lotus" : "e.g. Charizard ex"}
               style={{ ...inputStyle, flex: 1 }}
               onKeyDown={(e) => e.key === "Enter" && handlePriceLookup(e)}
             />
@@ -150,7 +151,7 @@ function UploadForm() {
                   {r.image && <img src={r.image} alt="" style={{ width: 28, height: 39, borderRadius: 3 }} />}
                   <div style={{ flex: 1 }}>
                     <div style={{ color: "var(--white)" }}>{r.name} <span style={{ color: "var(--grey-dim)" }}>· {r.set} #{r.number}</span></div>
-                    <div style={{ color: "var(--grey-dim)" }}>{r.rarity}</div>
+                    <div style={{ color: "var(--grey-dim)" }}>{r.rarity}{r.priceVariant ? ` · ${r.priceVariant}` : ""}</div>
                   </div>
                   <div style={{ textAlign: "right", color: "var(--gold-light)", fontWeight: 600 }}>
                     {r.marketPriceUsd != null ? `$${r.marketPriceUsd.toFixed(2)}` : "no price"}
@@ -160,7 +161,7 @@ function UploadForm() {
             </div>
           )}
           <p style={{ fontSize: 11.5, color: "var(--grey-dim)", marginTop: 10, marginBottom: 0 }}>
-            USD market prices from TCGPlayer, via the Pokémon TCG database. Convert to GBP and set your own price with margin — not auto-filled.
+            USD market prices from {form.category === "Magic: The Gathering" ? "Scryfall/TCGPlayer" : "TCGPlayer, via the Pokémon TCG database"}. Convert to GBP and set your own price with margin — not auto-filled.
           </p>
         </div>
       )}
