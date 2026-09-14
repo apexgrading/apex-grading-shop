@@ -84,6 +84,14 @@ export default function CartPage() {
           <button className="btn btn-primary" onClick={handleCheckout} disabled={checkingOut}>
             {checkingOut ? "Redirecting to checkout…" : "Checkout with Stripe"}
           </button>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 16, color: "var(--grey-dim)", fontSize: 12.5 }}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <rect x="4" y="11" width="16" height="10" rx="2" />
+              <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+            </svg>
+            Payments are processed securely by Stripe — we never see or store your card details.
+          </div>
         </>
       )}
     </div>
