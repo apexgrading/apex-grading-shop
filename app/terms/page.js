@@ -75,14 +75,6 @@ export default function TermsPage() {
             hello@apexgradingcompany.com
           </a>.
         </Section>
-
-        <p style={{
-          marginTop: 32, background: "var(--bg-panel)", border: "1px solid var(--line)",
-          borderRadius: 6, padding: 16, fontSize: 13.5, color: "var(--gold-light)",
-        }}>
-          Placeholder text — have this reviewed by a lawyer before going live, particularly the
-          Returns and Liability sections, which need your actual policy filled in.
-        </p>
       </div>
     </div>
   );
