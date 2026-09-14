@@ -3,6 +3,7 @@ import { CartProvider } from "../lib/cart-context";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import AnnouncementBanner from "../components/AnnouncementBanner";
+import CookieConsent from "../components/CookieConsent";
 
 export const metadata = {
   title: "Apex Cards",
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
           <Nav />
           {children}
           <Footer />
+          <CookieConsent />
         </CartProvider>
       </body>
     </html>
