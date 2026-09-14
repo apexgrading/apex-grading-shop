@@ -116,6 +116,13 @@ button, select, input { font-family: inherit; }
 .search-field input { background: transparent; border: none; color: var(--white); padding: 9px 0; font-size: 13.5px; width: 100%; }
 .search-field input:focus { outline: none; }
 
+.home-search .search-field {
+  padding: 6px 6px 6px 16px;
+  border-radius: 30px;
+  border-color: var(--line-strong);
+}
+.home-search .search-field input { font-size: 15px; }
+
 @media (max-width: 720px) {
   .filter-row { flex-direction: column; align-items: stretch; }
   .filter-spacer { display: none; }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { listCards } from "../lib/data";
 import ProductCard from "../components/ProductCard";
+import HomeSearchBar from "../components/HomeSearchBar";
 
 // Cards can be sold or added at any time (checkout, admin) — force this page to
 // query the database on every request instead of being statically cached at build time.
@@ -77,6 +78,7 @@ export default async function HomePage() {
               Gem Mint 10 down to Poor 1 — then listed for sale the moment the label is set.
               Pokémon, sports, and TCG. No middleman.
             </p>
+            <HomeSearchBar />
             <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
               <Link href="/shop" className="btn btn-primary">Shop graded cards</Link>
               <Link href="#scale" className="btn btn-secondary">See the grading scale</Link>
