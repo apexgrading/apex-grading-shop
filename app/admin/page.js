@@ -97,7 +97,14 @@ function UploadForm() {
           <select value={form.category} onChange={(e) => update("category", e.target.value)} style={inputStyle}>
             <option>Pokémon</option>
             <option>Sports</option>
-            <option>TCG</option>
+            <option>One Piece</option>
+            <option>Magic: The Gathering</option>
+            <option>Yu-Gi-Oh!</option>
+            <option>Gundam</option>
+            <option>Disney</option>
+            <option>Marvel</option>
+            <option>DC</option>
+            <option>Star Wars</option>
           </select>
         </Field>
 

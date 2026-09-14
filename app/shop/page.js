@@ -3,7 +3,19 @@
 import { useEffect, useState, useCallback } from "react";
 import ProductCard from "../../components/ProductCard";
 
-const CATEGORIES = ["all", "Pokémon", "Sports", "TCG"];
+const CATEGORIES = [
+  "all",
+  "Pokémon",
+  "Sports",
+  "One Piece",
+  "Magic: The Gathering",
+  "Yu-Gi-Oh!",
+  "Gundam",
+  "Disney",
+  "Marvel",
+  "DC",
+  "Star Wars",
+];
 
 export default function ShopPage() {
   const [category, setCategory] = useState("all");
