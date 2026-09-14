@@ -38,6 +38,21 @@ const faqs = [
   { q: "Is each card really one of a kind?", a: "Yes. Every listing is a single physical card, not a print run. Once it sells, it's removed from the site for good." },
   { q: "How do I know a card is authentic?", a: "Every card carries a unique cert number printed on the slab. Look it up any time to confirm the grade and details match what you received." },
   { q: "Do you also offer grading services?", a: "Apex Cards is our storefront for cards we've already graded and sell direct. If you'd like your own cards submitted for grading, that's handled by Apex Grading Company." },
+  {
+    q: "How do I know an item isn't counterfeit?",
+    a: (
+      <>
+        Every graded card carries an Apex Grading Company cert number you can verify independently
+        — that's your strongest guarantee. For raw singles, we assess authenticity as part of
+        listing each card, checking print quality, card stock, and known misprint patterns for the
+        set. If you want to sharpen your own eye before buying anywhere, these guides are a good
+        starting point: {" "}
+        <a href="https://infinite.tcgplayer.com/article/How-to-Spot-Counterfeit-Magic-The-Gathering-Cards/60b2b195-6c1c-4364-9f9b-0de3d8ede084/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-light)" }}>Magic: The Gathering</a>,{" "}
+        <a href="https://infinite.tcgplayer.com/article/How-to-Identify-Fake-and-Counterfeit-Yu-Gi-Oh-Cards/94f9602b-12d6-4a97-9085-d283a6921dd3/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-light)" }}>Yu-Gi-Oh!</a>, and{" "}
+        <a href="https://infinite.tcgplayer.com/article/How-to-Spot-Fake-Pok%C3%A9mon-Cards/0b3c551c-39e2-4949-ac46-3cb27e215b04/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-light)" }}>Pokémon</a>. As a general rule: research what a card should look like and typically sell for before buying anywhere, and treat a steep, unexplained discount on a rare or valuable card as a reason to slow down and double-check, not a reason to rush.
+      </>
+    ),
+  },
 ];
 
 export default async function HomePage() {
