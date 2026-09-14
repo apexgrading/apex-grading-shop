@@ -2,10 +2,12 @@ import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { getAvailableCardsByIds, createPendingOrder, setOrderStripeSession } from "../../../lib/data";
 import { stripe } from "../../../lib/stripe";
+import { getRegion } from "../../../lib/shipping";
 
 export async function POST(request) {
   const body = await request.json().catch(() => null);
   const cardIds = body?.cardIds;
+  const region = getRegion(body?.region);
 
   if (!Array.isArray(cardIds) || cardIds.length === 0) {
     return NextResponse.json({ error: "cardIds must be a non-empty array" }, { status: 400 });
@@ -38,28 +40,28 @@ export async function POST(request) {
     // etc.) without any extra parameter. Apple Pay additionally requires verifying
     // your domain: Dashboard → Settings → Payment methods → Apple Pay.
     shipping_address_collection: {
-      allowed_countries: ["GB", "IE", "US", "CA", "AU", "NZ", "FR", "DE", "ES", "IT", "NL"],
+      allowed_countries: region.countries,
     },
     shipping_options: [
       {
         shipping_rate_data: {
           type: "fixed_amount",
-          fixed_amount: { amount: 399, currency: "gbp" },
-          display_name: "Standard tracked (3–5 days)",
+          fixed_amount: { amount: region.standard.amount, currency: "gbp" },
+          display_name: region.standard.label,
           delivery_estimate: {
-            minimum: { unit: "business_day", value: 3 },
-            maximum: { unit: "business_day", value: 5 },
+            minimum: { unit: "business_day", value: region.standard.days[0] },
+            maximum: { unit: "business_day", value: region.standard.days[1] },
           },
         },
       },
       {
         shipping_rate_data: {
           type: "fixed_amount",
-          fixed_amount: { amount: 799, currency: "gbp" },
-          display_name: "Express tracked (1–2 days)",
+          fixed_amount: { amount: region.express.amount, currency: "gbp" },
+          display_name: region.express.label,
           delivery_estimate: {
-            minimum: { unit: "business_day", value: 1 },
-            maximum: { unit: "business_day", value: 2 },
+            minimum: { unit: "business_day", value: region.express.days[0] },
+            maximum: { unit: "business_day", value: region.express.days[1] },
           },
         },
       },

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useCart } from "../../lib/cart-context";
+import { SHIPPING_REGIONS } from "../../lib/shipping";
 
 function formatPrice(cents) {
   return `£${(cents / 100).toLocaleString()}`;
@@ -12,6 +13,7 @@ export default function CartPage() {
   const { items, removeFromCart, total, loaded } = useCart();
   const [checkingOut, setCheckingOut] = useState(false);
   const [error, setError] = useState(null);
+  const [region, setRegion] = useState("uk");
 
   async function handleCheckout() {
     setError(null);
@@ -20,7 +22,7 @@ export default function CartPage() {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cardIds: items.map((i) => i.id) }),
+        body: JSON.stringify({ cardIds: items.map((i) => i.id), region }),
       });
       const json = await res.json();
       if (!res.ok) {
@@ -36,6 +38,8 @@ export default function CartPage() {
   }
 
   if (!loaded) return null;
+
+  const selectedRegion = SHIPPING_REGIONS[region];
 
   return (
     <div className="wrap" style={{ padding: "48px 0 100px" }}>
@@ -75,6 +79,35 @@ export default function CartPage() {
           <div className="cart-summary">
             <span>Total ({items.length} card{items.length === 1 ? "" : "s"})</span>
             <span className="total">{formatPrice(total)}</span>
+          </div>
+
+          <div style={{ margin: "8px 0 20px" }}>
+            <label style={{ display: "block", fontSize: 13.5, color: "var(--grey)", marginBottom: 8 }}>Shipping to</label>
+            <select
+              value={region}
+              onChange={(e) => setRegion(e.target.value)}
+              style={{
+                width: "100%", background: "var(--bg-panel)", border: "1px solid var(--line)",
+                borderRadius: 4, padding: "11px 12px", color: "var(--white)", fontSize: 14.5,
+              }}
+            >
+              {Object.entries(SHIPPING_REGIONS).map(([key, r]) => (
+                <option key={key} value={key}>{r.label}</option>
+              ))}
+            </select>
+            <p style={{ fontSize: 13, color: "var(--grey-dim)", margin: "10px 0 0" }}>
+              {selectedRegion.label}: {selectedRegion.standard.label} from {formatPrice(selectedRegion.standard.amount)}, or {selectedRegion.express.label} from {formatPrice(selectedRegion.express.amount)} — exact option chosen at checkout.
+            </p>
+            {selectedRegion.customsNotice && (
+              <p style={{
+                fontSize: 13, color: "var(--gold-light)", margin: "10px 0 0", padding: 12,
+                background: "var(--bg-panel)", border: "1px solid var(--line)", borderRadius: 6,
+              }}>
+                Shipping outside the UK: your country may charge import duties, taxes, or customs
+                handling fees on arrival. These aren't included in your order total and are your
+                responsibility to pay — they're set by your country, not by us.
+              </p>
+            )}
           </div>
 
           {error && (
