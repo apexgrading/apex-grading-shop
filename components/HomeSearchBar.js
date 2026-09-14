@@ -26,7 +26,7 @@ export default function HomeSearchBar() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <button type="submit" className="btn btn-primary" style={{ padding: "9px 18px", fontSize: 13.5, flexShrink: 0, marginLeft: 8 }}>
+        <button type="submit" className="btn btn-primary" style={{ padding: "8px 14px", fontSize: 13, flexShrink: 0, marginLeft: 8 }}>
           Search
         </button>
       </div>
