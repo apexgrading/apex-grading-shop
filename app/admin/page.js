@@ -55,6 +55,10 @@ function UploadForm() {
   const [file, setFile] = useState(null);
   const [status, setStatus] = useState("idle"); // idle | saving | done | error
   const [error, setError] = useState(null);
+  const [priceSearch, setPriceSearch] = useState("");
+  const [priceResults, setPriceResults] = useState(null);
+  const [priceLoading, setPriceLoading] = useState(false);
+  const [priceError, setPriceError] = useState(null);
 
   function update(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -84,7 +88,31 @@ function UploadForm() {
       condition: "Near Mint", price: "", imageUrl: "",
     });
     setFile(null);
+    setPriceResults(null);
+    setPriceSearch("");
     e.target.reset();
+  }
+
+  async function handlePriceLookup(e) {
+    e.preventDefault();
+    if (!priceSearch.trim()) return;
+    setPriceLoading(true);
+    setPriceError(null);
+    setPriceResults(null);
+    try {
+      const res = await fetch(`/api/admin/price-lookup?name=${encodeURIComponent(priceSearch)}`);
+      const json = await res.json();
+      if (!res.ok) {
+        setPriceError(json.error || "Lookup failed.");
+      } else if (json.results.length === 0) {
+        setPriceError("No matches found — try a shorter or different name.");
+      } else {
+        setPriceResults(json.results);
+      }
+    } catch {
+      setPriceError("Couldn't reach the price database.");
+    }
+    setPriceLoading(false);
   }
 
   const isGraded = form.isGraded === "true";
@@ -98,6 +126,44 @@ function UploadForm() {
       <p style={{ marginBottom: 32 }}>
         <a href="/admin/orders" style={{ color: "var(--gold-light)", fontSize: 13.5 }}>View orders & mark shipped →</a>
       </p>
+
+      {form.category === "Pokémon" && (
+        <div style={{ background: "var(--bg-panel)", border: "1px solid var(--line)", borderRadius: 8, padding: 16, marginBottom: 28 }}>
+          <div style={{ fontSize: 13.5, fontWeight: 600, marginBottom: 10 }}>Check live market price</div>
+          <div style={{ display: "flex", gap: 8 }}>
+            <input
+              value={priceSearch}
+              onChange={(e) => setPriceSearch(e.target.value)}
+              placeholder="e.g. Charizard ex"
+              style={{ ...inputStyle, flex: 1 }}
+              onKeyDown={(e) => e.key === "Enter" && handlePriceLookup(e)}
+            />
+            <button type="button" className="btn btn-secondary" onClick={handlePriceLookup} disabled={priceLoading} style={{ whiteSpace: "nowrap" }}>
+              {priceLoading ? "Looking up…" : "Look up"}
+            </button>
+          </div>
+          {priceError && <p style={{ color: "#E08A7D", fontSize: 12.5, marginTop: 10 }}>{priceError}</p>}
+          {priceResults && (
+            <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 8, maxHeight: 260, overflowY: "auto" }}>
+              {priceResults.map((r) => (
+                <div key={r.id} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 12.5, padding: "6px 0", borderBottom: "1px solid var(--line)" }}>
+                  {r.image && <img src={r.image} alt="" style={{ width: 28, height: 39, borderRadius: 3 }} />}
+                  <div style={{ flex: 1 }}>
+                    <div style={{ color: "var(--white)" }}>{r.name} <span style={{ color: "var(--grey-dim)" }}>· {r.set} #{r.number}</span></div>
+                    <div style={{ color: "var(--grey-dim)" }}>{r.rarity}</div>
+                  </div>
+                  <div style={{ textAlign: "right", color: "var(--gold-light)", fontWeight: 600 }}>
+                    {r.marketPriceUsd != null ? `$${r.marketPriceUsd.toFixed(2)}` : "no price"}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          <p style={{ fontSize: 11.5, color: "var(--grey-dim)", marginTop: 10, marginBottom: 0 }}>
+            USD market prices from TCGPlayer, via the Pokémon TCG database. Convert to GBP and set your own price with margin — not auto-filled.
+          </p>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit}>
         <Field label="Listing type">
