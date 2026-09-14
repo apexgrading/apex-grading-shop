@@ -4,7 +4,7 @@ import { getCardById } from "../../../lib/data";
 import AddToCartButton from "../../../components/AddToCartButton";
 
 function formatPrice(cents) {
-  return `$${(cents / 100).toLocaleString()}`;
+  return `£${(cents / 100).toLocaleString()}`;
 }
 
 export default async function CardDetailPage({ params }) {

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCart } from "../../lib/cart-context";
 
 function formatPrice(cents) {
-  return `$${(cents / 100).toLocaleString()}`;
+  return `£${(cents / 100).toLocaleString()}`;
 }
 
 export default function CartPage() {

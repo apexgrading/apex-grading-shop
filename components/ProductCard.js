@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 function formatPrice(cents) {
-  return `$${(cents / 100).toLocaleString(undefined, { minimumFractionDigits: 0 })}`;
+  return `£${(cents / 100).toLocaleString(undefined, { minimumFractionDigits: 0 })}`;
 }
 
 export default function ProductCard({ card }) {

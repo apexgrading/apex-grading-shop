@@ -24,7 +24,7 @@ export default async function SuccessPage({ searchParams }) {
           {order.items.map((item) => (
             <div key={item.id} className="spec-row">
               <span className="k">{item.card.title}</span>
-              <span className="v">${(item.price / 100).toLocaleString()}</span>
+              <span className="v">£{(item.price / 100).toLocaleString()}</span>
             </div>
           ))}
         </div>

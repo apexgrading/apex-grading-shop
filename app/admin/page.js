@@ -109,7 +109,7 @@ function UploadForm() {
           <input required value={form.cert} onChange={(e) => update("cert", e.target.value)} style={inputStyle} placeholder="AGC000042" />
         </Field>
 
-        <Field label="Price (USD)">
+        <Field label="Price (GBP)">
           <input required type="number" step="0.01" min="0" value={form.price} onChange={(e) => update("price", e.target.value)} style={inputStyle} placeholder="249.00" />
         </Field>
 

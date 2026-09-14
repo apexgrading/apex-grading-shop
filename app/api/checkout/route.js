@@ -40,7 +40,7 @@ export async function POST(request) {
     line_items: cards.map((card) => ({
       quantity: 1,
       price_data: {
-        currency: "usd",
+        currency: "gbp",
         unit_amount: card.price,
         product_data: {
           name: card.title,
