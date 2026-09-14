@@ -29,7 +29,7 @@ export default function Footer() {
   return (
     <footer className="site-footer" style={{ textAlign: "left", padding: "56px 0 32px" }}>
       <div className="wrap">
-        <div style={{
+        <div className="footer-grid" style={{
           display: "grid", gridTemplateColumns: "1.3fr 1fr 1fr 1.2fr", gap: 40,
           paddingBottom: 40, marginBottom: 28, borderBottom: "1px solid var(--line)",
         }}>
