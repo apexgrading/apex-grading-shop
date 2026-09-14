@@ -87,13 +87,22 @@ export default async function HomePage() {
             border: "1px solid var(--line)", borderRadius: 6, minHeight: 500,
             display: "flex", alignItems: "center", justifyContent: "center", padding: 36,
           }}>
-            {featured[0] && (
+            {featured[0] ? (
               <div style={{ width: 260, maxWidth: "100%", borderRadius: 8, overflow: "hidden", boxShadow: "0 30px 70px rgba(0,0,0,0.7)" }}>
                 {featured[0].imageUrl ? (
                   <img src={featured[0].imageUrl} alt={featured[0].title} style={{ width: "100%" }} />
                 ) : (
                   <ProductCard card={featured[0]} />
                 )}
+              </div>
+            ) : (
+              <div style={{ textAlign: "center", maxWidth: 280 }}>
+                <div style={{ fontFamily: "var(--serif)", fontSize: 22, color: "var(--gold-light)", marginBottom: 10 }}>
+                  New stock incoming
+                </div>
+                <p style={{ color: "var(--grey)", fontSize: 14, margin: 0 }}>
+                  Freshly graded cards are on their way — check back soon, or browse what's sold so far.
+                </p>
               </div>
             )}
           </div>
