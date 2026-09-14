@@ -51,7 +51,7 @@ export default function Nav() {
         className="main-site-cta"
       >
         <img src="/assets/apex-icon.jpg" alt="" />
-        Get your cards graded — head over to our main site
+        Get your cards graded — head over to Apex Grading
       </a>
     </>
   );
