@@ -12,9 +12,12 @@ export default function ProductCard({ card }) {
           {card.sold && <div className="sold-ribbon">Sold</div>}
           {card.imageUrl ? (
             <div className="real-photo">
-              <img src={card.imageUrl} alt={`${card.title}, graded ${card.grade} by Apex Grading`} />
+              <img
+                src={card.imageUrl}
+                alt={card.isGraded ? `${card.title}, graded ${card.grade} by Apex Grading` : `${card.title}, raw single`}
+              />
             </div>
-          ) : (
+          ) : card.isGraded ? (
             <div className="slab-shell">
               <div className="slab-label">
                 <div className="slab-grade">{card.grade}</div>
@@ -32,13 +35,18 @@ export default function ProductCard({ card }) {
                 </div>
               </div>
             </div>
+          ) : (
+            <div className={`card-art single-art ${card.pal || "pal-a"}`} style={{ aspectRatio: "5/7", borderRadius: 6 }}>
+              <div className="frame"></div>
+              <div className="bug"><span>RAW</span><span>{card.condition}</span></div>
+            </div>
           )}
         </div>
         <div className="p-cat">{card.category}</div>
         <h4>{card.title}</h4>
         <div className="p-foot">
           <div className="price">{formatPrice(card.price)}</div>
-          <div className="p-grade">Grade {card.grade}</div>
+          <div className="p-grade">{card.isGraded ? `Grade ${card.grade}` : card.condition}</div>
         </div>
       </Link>
     </div>

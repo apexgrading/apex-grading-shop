@@ -35,6 +35,9 @@ export default function Nav() {
       <Link href="/shop" className={pathname.startsWith("/shop") ? "active" : ""}>
         Shop
       </Link>
+      <Link href="/singles" className={pathname.startsWith("/singles") ? "active" : ""}>
+        Singles
+      </Link>
       <Link href="/sold" className={pathname.startsWith("/sold") ? "active" : ""}>
         Sold
       </Link>

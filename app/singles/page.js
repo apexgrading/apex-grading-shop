@@ -18,18 +18,20 @@ const CATEGORIES = [
   "Star Wars",
 ];
 
-export default function ShopPage() {
+const CONDITIONS = ["any", "Near Mint", "Lightly Played", "Moderately Played", "Heavily Played", "Damaged"];
+
+export default function SinglesPage() {
   return (
     <Suspense fallback={null}>
-      <ShopPageInner />
+      <SinglesPageInner />
     </Suspense>
   );
 }
 
-function ShopPageInner() {
+function SinglesPageInner() {
   const urlParams = useSearchParams();
   const [category, setCategory] = useState("all");
-  const [grade, setGrade] = useState("any");
+  const [condition, setCondition] = useState("any");
   const [sort, setSort] = useState("newest");
   const [search, setSearch] = useState(urlParams.get("search") || "");
   const [page, setPage] = useState(1);
@@ -40,18 +42,19 @@ function ShopPageInner() {
   const fetchCards = useCallback(async () => {
     setLoading(true);
     const params = new URLSearchParams();
-    params.set("graded", "true");
+    params.set("graded", "false");
     if (category !== "all") params.set("category", category);
-    if (grade !== "any") params.set("grade", grade);
     params.set("sort", sort);
     if (search) params.set("search", search);
     params.set("page", String(page));
 
     const res = await fetch(`/api/cards?${params.toString()}`);
     const json = await res.json();
-    setData(json);
+    // Condition filtering happens client-side since it's not a grade-based query
+    const cards = condition === "any" ? json.cards : json.cards.filter((c) => c.condition === condition);
+    setData({ ...json, cards, total: condition === "any" ? json.total : cards.length });
     setLoading(false);
-  }, [category, grade, sort, search, page]);
+  }, [category, condition, sort, search, page]);
 
   useEffect(() => {
     fetchCards();
@@ -59,11 +62,11 @@ function ShopPageInner() {
 
   useEffect(() => {
     setPage(1);
-  }, [category, grade, sort, search]);
+  }, [category, condition, sort, search]);
 
   function clearFilters() {
     setCategory("all");
-    setGrade("any");
+    setCondition("any");
     setSort("newest");
     setSearch("");
     setPage(1);
@@ -73,9 +76,9 @@ function ShopPageInner() {
     <div>
       <div className="page-head">
         <div className="wrap">
-          <div className="crumb"><a href="/">Home</a> / Shop</div>
-          <h1>All graded cards</h1>
-          <p>Every card here was graded by Apex — nothing resold from another service.</p>
+          <div className="crumb"><a href="/">Home</a> / Singles</div>
+          <h1>Raw singles</h1>
+          <p>Ungraded, single cards — same authentication standard, no slab.</p>
         </div>
       </div>
 
@@ -94,20 +97,17 @@ function ShopPageInner() {
           </div>
           <div className="filter-spacer" />
           <div className="select-field">
-            <span>Grade</span>
-            <select value={grade} onChange={(e) => setGrade(e.target.value)}>
-              <option value="any">Any</option>
-              <option value="10">10 only</option>
-              <option value="9">9+</option>
-              <option value="7">7+</option>
-              <option value="below7">Below 7</option>
+            <span>Condition</span>
+            <select value={condition} onChange={(e) => setCondition(e.target.value)}>
+              {CONDITIONS.map((c) => (
+                <option key={c} value={c}>{c === "any" ? "Any" : c}</option>
+              ))}
             </select>
           </div>
           <div className="select-field">
             <span>Sort</span>
             <select value={sort} onChange={(e) => setSort(e.target.value)}>
               <option value="newest">Newest</option>
-              <option value="grade-desc">Grade: high to low</option>
               <option value="price-asc">Price: low to high</option>
               <option value="price-desc">Price: high to low</option>
             </select>
@@ -115,7 +115,7 @@ function ShopPageInner() {
           <div className="search-field">
             <input
               type="text"
-              placeholder="Search cards or cert #"
+              placeholder="Search singles"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -130,7 +130,7 @@ function ShopPageInner() {
 
         {!loading && data.cards.length === 0 ? (
           <div className="empty-state">
-            <h3>No cards match those filters</h3>
+            <h3>No singles match those filters</h3>
             <p>Try clearing a filter or searching a different term.</p>
             <button className="btn btn-secondary" onClick={clearFilters}>Clear all filters</button>
           </div>
@@ -142,7 +142,7 @@ function ShopPageInner() {
           </div>
         )}
 
-        {data.totalPages > 1 && (
+        {data.totalPages > 1 && condition === "any" && (
           <div className="pagination">
             <button className="page-btn" disabled={page === 1} onClick={() => setPage((p) => p - 1)}>←</button>
             {Array.from({ length: data.totalPages }, (_, i) => i + 1)

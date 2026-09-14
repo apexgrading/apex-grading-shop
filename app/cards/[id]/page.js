@@ -24,7 +24,7 @@ export default async function CardDetailPage({ params }) {
         <div className="detail-stage">
           {card.imageUrl ? (
             <img src={card.imageUrl} alt={card.title} />
-          ) : (
+          ) : card.isGraded ? (
             <div style={{ width: 280 }}>
               <div className="slab-shell">
                 <div className="slab-label">
@@ -39,6 +39,13 @@ export default async function CardDetailPage({ params }) {
                   <div className="frame"></div>
                   <div className="bug"><span>APEX</span><span>{card.tag || "CRD"}</span></div>
                 </div>
+              </div>
+            </div>
+          ) : (
+            <div style={{ width: 280 }}>
+              <div className={`card-art ${card.pal || "pal-a"}`} style={{ aspectRatio: "5/7", borderRadius: 6 }}>
+                <div className="frame"></div>
+                <div className="bug"><span>RAW</span><span>{card.condition}</span></div>
               </div>
             </div>
           )}
@@ -58,17 +65,27 @@ export default async function CardDetailPage({ params }) {
             imageUrl: card.imageUrl,
             cert: card.cert,
             sold: card.sold,
+            isGraded: card.isGraded,
+            condition: card.condition,
           }} />
 
           <div className="spec-list">
-            <div className="spec-row"><span className="k">Grade</span><span className="v">{card.grade} / 10</span></div>
-            <div className="spec-row"><span className="k">Certification</span><span className="v">{card.cert}</span></div>
+            {card.isGraded ? (
+              <>
+                <div className="spec-row"><span className="k">Grade</span><span className="v">{card.grade} / 10</span></div>
+                <div className="spec-row"><span className="k">Certification</span><span className="v">{card.cert}</span></div>
+              </>
+            ) : (
+              <div className="spec-row"><span className="k">Condition</span><span className="v">{card.condition}</span></div>
+            )}
             <div className="spec-row"><span className="k">Category</span><span className="v">{card.category}</span></div>
             <div className="spec-row"><span className="k">Availability</span><span className="v">{card.sold ? "Sold" : "In stock — 1 available"}</span></div>
           </div>
 
           <p style={{ color: "var(--grey)", fontSize: 14.5, lineHeight: 1.65, maxWidth: "48ch" }}>
-            Graded in-house by Apex on the standard ten-point scale, checked by two independent graders before encapsulation. Each slab carries a scannable certificate and full subgrade breakdown on the reverse.
+            {card.isGraded
+              ? "Graded in-house by Apex on the standard ten-point scale, checked by two independent graders before encapsulation. Each slab carries a scannable certificate and full subgrade breakdown on the reverse."
+              : "A raw, ungraded single — authenticated by Apex and assessed for condition, but not encapsulated. Same standard for spotting alterations or counterfeits, without the slab."}
           </p>
         </div>
       </div>

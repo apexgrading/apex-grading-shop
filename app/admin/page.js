@@ -48,7 +48,10 @@ export default function AdminPage() {
 }
 
 function UploadForm() {
-  const [form, setForm] = useState({ title: "", category: "Pokémon", grade: "10", cert: "", price: "", imageUrl: "" });
+  const [form, setForm] = useState({
+    title: "", category: "Pokémon", isGraded: "true", grade: "10", cert: "",
+    condition: "Near Mint", price: "", imageUrl: "",
+  });
   const [file, setFile] = useState(null);
   const [status, setStatus] = useState("idle"); // idle | saving | done | error
   const [error, setError] = useState(null);
@@ -76,21 +79,47 @@ function UploadForm() {
     }
 
     setStatus("done");
-    setForm({ title: "", category: "Pokémon", grade: "10", cert: "", price: "", imageUrl: "" });
+    setForm({
+      title: "", category: "Pokémon", isGraded: form.isGraded, grade: "10", cert: "",
+      condition: "Near Mint", price: "", imageUrl: "",
+    });
     setFile(null);
     e.target.reset();
   }
 
+  const isGraded = form.isGraded === "true";
+
   return (
     <div className="wrap" style={{ maxWidth: 520, padding: "56px 0 100px" }}>
-      <h1 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: 30, marginBottom: 8 }}>Upload a graded card</h1>
+      <h1 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: 30, marginBottom: 8 }}>Upload a card</h1>
       <p style={{ color: "var(--grey)", fontSize: 14, marginBottom: 32 }}>
         Goes live on the shop the moment you submit — no deploy needed.
       </p>
 
       <form onSubmit={handleSubmit}>
+        <Field label="Listing type">
+          <div style={{ display: "flex", gap: 10 }}>
+            <button
+              type="button"
+              onClick={() => update("isGraded", "true")}
+              className={`btn ${isGraded ? "btn-primary" : "btn-secondary"}`}
+              style={{ flex: 1 }}
+            >
+              Graded slab
+            </button>
+            <button
+              type="button"
+              onClick={() => update("isGraded", "false")}
+              className={`btn ${!isGraded ? "btn-primary" : "btn-secondary"}`}
+              style={{ flex: 1 }}
+            >
+              Raw single
+            </button>
+          </div>
+        </Field>
+
         <Field label="Title">
-          <input required value={form.title} onChange={(e) => update("title", e.target.value)} style={inputStyle} placeholder="Charizard ex — Obsidian Flames #201" />
+          <input required value={form.title} onChange={(e) => update("title", e.target.value)} style={inputStyle} placeholder={isGraded ? "Charizard ex — Obsidian Flames #201" : "Charizard — Obsidian Flames #6"} />
         </Field>
 
         <Field label="Category">
@@ -108,13 +137,27 @@ function UploadForm() {
           </select>
         </Field>
 
-        <Field label="Grade (1–10)">
-          <input required type="number" min="1" max="10" value={form.grade} onChange={(e) => update("grade", e.target.value)} style={inputStyle} />
-        </Field>
+        {isGraded ? (
+          <>
+            <Field label="Grade (1–10)">
+              <input required type="number" min="1" max="10" value={form.grade} onChange={(e) => update("grade", e.target.value)} style={inputStyle} />
+            </Field>
 
-        <Field label="Cert number">
-          <input required value={form.cert} onChange={(e) => update("cert", e.target.value)} style={inputStyle} placeholder="AGC000042" />
-        </Field>
+            <Field label="Cert number">
+              <input required value={form.cert} onChange={(e) => update("cert", e.target.value)} style={inputStyle} placeholder="AGC000042" />
+            </Field>
+          </>
+        ) : (
+          <Field label="Condition">
+            <select value={form.condition} onChange={(e) => update("condition", e.target.value)} style={inputStyle}>
+              <option>Near Mint</option>
+              <option>Lightly Played</option>
+              <option>Moderately Played</option>
+              <option>Heavily Played</option>
+              <option>Damaged</option>
+            </select>
+          </Field>
+        )}
 
         <Field label="Price (GBP)">
           <input required type="number" step="0.01" min="0" value={form.price} onChange={(e) => update("price", e.target.value)} style={inputStyle} placeholder="249.00" />

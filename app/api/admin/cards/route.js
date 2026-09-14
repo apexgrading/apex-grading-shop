@@ -20,20 +20,30 @@ export async function POST(request) {
   const formData = await request.formData();
   const title = formData.get("title")?.toString().trim();
   const category = formData.get("category")?.toString().trim();
+  const isGraded = formData.get("isGraded")?.toString() !== "false"; // default true
   const grade = parseInt(formData.get("grade"), 10);
   const cert = formData.get("cert")?.toString().trim();
+  const condition = formData.get("condition")?.toString().trim();
   const priceDollars = parseFloat(formData.get("price"));
   const file = formData.get("image");
   const pastedImageUrl = formData.get("imageUrl")?.toString().trim();
 
-  if (!title || !category || !cert || Number.isNaN(grade) || Number.isNaN(priceDollars)) {
-    return NextResponse.json({ error: "Fill in title, category, grade, cert, and price." }, { status: 400 });
+  if (!title || !category || Number.isNaN(priceDollars)) {
+    return NextResponse.json({ error: "Fill in title, category, and price." }, { status: 400 });
   }
-  if (grade < 1 || grade > 10) {
-    return NextResponse.json({ error: "Grade must be between 1 and 10." }, { status: 400 });
-  }
-  if (await certExists(cert)) {
-    return NextResponse.json({ error: `Cert ${cert} is already on the site.` }, { status: 409 });
+
+  if (isGraded) {
+    if (!cert || Number.isNaN(grade)) {
+      return NextResponse.json({ error: "Graded listings need a grade and cert number." }, { status: 400 });
+    }
+    if (grade < 1 || grade > 10) {
+      return NextResponse.json({ error: "Grade must be between 1 and 10." }, { status: 400 });
+    }
+    if (await certExists(cert)) {
+      return NextResponse.json({ error: `Cert ${cert} is already on the site.` }, { status: 409 });
+    }
+  } else if (!condition) {
+    return NextResponse.json({ error: "Raw singles need a condition selected." }, { status: 400 });
   }
 
   let imageUrl = null;
@@ -70,6 +80,8 @@ export async function POST(request) {
     cert,
     price: Math.round(priceDollars * 100),
     imageUrl,
+    isGraded,
+    condition,
   });
 
   return NextResponse.json({ card });

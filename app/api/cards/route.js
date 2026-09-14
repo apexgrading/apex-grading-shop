@@ -10,7 +10,9 @@ export async function GET(request) {
   const page = parseInt(searchParams.get("page") || "1", 10);
   const includeSold = searchParams.get("includeSold") === "true";
   const soldOnly = searchParams.get("soldOnly") === "true";
+  const gradedParam = searchParams.get("graded"); // "true" | "false" | absent
+  const isGraded = gradedParam === "true" ? true : gradedParam === "false" ? false : null;
 
-  const result = await listCards({ category, grade, sort, search, page, includeSold, soldOnly });
+  const result = await listCards({ category, grade, sort, search, page, includeSold, soldOnly, isGraded });
   return NextResponse.json(result);
 }
