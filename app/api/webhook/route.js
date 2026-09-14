@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { markOrderPaid, getOrderBySessionId } from "../../../lib/data";
+import { markOrderPaid, getOrderBySessionId, setOrderShippingDetails } from "../../../lib/data";
 import { stripe } from "../../../lib/stripe";
 import { sendEmail, orderConfirmationHtml } from "../../../lib/email";
 
@@ -26,6 +26,12 @@ export async function POST(request) {
 
     if (!Number.isNaN(orderId)) {
       await markOrderPaid(orderId, email);
+
+      await setOrderShippingDetails(orderId, {
+        name: session.shipping_details?.name || null,
+        address: session.shipping_details?.address || null,
+        shippingCost: session.shipping_cost?.amount_total ?? null,
+      });
 
       if (email) {
         const order = await getOrderBySessionId(session.id);

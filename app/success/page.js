@@ -27,6 +27,23 @@ export default async function SuccessPage({ searchParams }) {
               <span className="v">£{(item.price / 100).toLocaleString()}</span>
             </div>
           ))}
+          {order.shippingCost != null && (
+            <div className="spec-row">
+              <span className="k">Shipping</span>
+              <span className="v">£{(order.shippingCost / 100).toLocaleString()}</span>
+            </div>
+          )}
+          {order.shippingAddress && (
+            <div className="spec-row">
+              <span className="k">Shipping to</span>
+              <span className="v">
+                {order.shippingName}<br />
+                {order.shippingAddress.line1}
+                {order.shippingAddress.line2 ? `, ${order.shippingAddress.line2}` : ""}<br />
+                {order.shippingAddress.city} {order.shippingAddress.postal_code}
+              </span>
+            </div>
+          )}
         </div>
       )}
 

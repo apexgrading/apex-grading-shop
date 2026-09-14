@@ -92,8 +92,11 @@ function UploadForm() {
   return (
     <div className="wrap" style={{ maxWidth: 520, padding: "56px 0 100px" }}>
       <h1 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: 30, marginBottom: 8 }}>Upload a card</h1>
-      <p style={{ color: "var(--grey)", fontSize: 14, marginBottom: 32 }}>
+      <p style={{ color: "var(--grey)", fontSize: 14, marginBottom: 12 }}>
         Goes live on the shop the moment you submit — no deploy needed.
+      </p>
+      <p style={{ marginBottom: 32 }}>
+        <a href="/admin/orders" style={{ color: "var(--gold-light)", fontSize: 13.5 }}>View orders & mark shipped →</a>
       </p>
 
       <form onSubmit={handleSubmit}>

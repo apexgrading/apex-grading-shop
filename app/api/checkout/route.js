@@ -37,6 +37,33 @@ export async function POST(request) {
     // offer whatever's enabled in the Stripe Dashboard (card, Apple Pay, Google Pay,
     // etc.) without any extra parameter. Apple Pay additionally requires verifying
     // your domain: Dashboard → Settings → Payment methods → Apple Pay.
+    shipping_address_collection: {
+      allowed_countries: ["GB", "IE", "US", "CA", "AU", "NZ", "FR", "DE", "ES", "IT", "NL"],
+    },
+    shipping_options: [
+      {
+        shipping_rate_data: {
+          type: "fixed_amount",
+          fixed_amount: { amount: 399, currency: "gbp" },
+          display_name: "Standard tracked (3–5 days)",
+          delivery_estimate: {
+            minimum: { unit: "business_day", value: 3 },
+            maximum: { unit: "business_day", value: 5 },
+          },
+        },
+      },
+      {
+        shipping_rate_data: {
+          type: "fixed_amount",
+          fixed_amount: { amount: 799, currency: "gbp" },
+          display_name: "Express tracked (1–2 days)",
+          delivery_estimate: {
+            minimum: { unit: "business_day", value: 1 },
+            maximum: { unit: "business_day", value: 2 },
+          },
+        },
+      },
+    ],
     line_items: cards.map((card) => ({
       quantity: 1,
       price_data: {
@@ -44,7 +71,7 @@ export async function POST(request) {
         unit_amount: card.price,
         product_data: {
           name: card.title,
-          description: `Grade ${card.grade} · Cert ${card.cert}`,
+          description: card.isGraded ? `Grade ${card.grade} · Cert ${card.cert}` : `Raw single · ${card.condition}`,
           images: card.imageUrl ? [`${siteUrl}${card.imageUrl}`] : undefined,
         },
       },
