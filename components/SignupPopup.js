@@ -16,8 +16,8 @@ export default function SignupPopup() {
     } catch {}
     if (seen) return;
 
-    // Delay so it doesn't collide with the cookie banner, which appears immediately.
-    const timer = setTimeout(() => setVisible(true), 7000);
+    // Short delay so it doesn't feel instant/jarring the moment the page loads.
+    const timer = setTimeout(() => setVisible(true), 1500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -84,15 +84,19 @@ export default function SignupPopup() {
         {status === "done" ? (
           <>
             <p style={{ fontFamily: "var(--serif)", fontSize: 22, color: "var(--gold-light)", margin: "10px 0" }}>You're in.</p>
-            <p style={{ color: "var(--grey)", fontSize: 14 }}>We'll email you when new Gem-Mint listings go live.</p>
+            <p style={{ color: "var(--grey)", fontSize: 14 }}>Check your inbox — your 5% off code and free gift details are on the way.</p>
           </>
         ) : (
           <>
-            <p style={{ fontFamily: "var(--serif)", fontSize: 24, fontWeight: 500, margin: "6px 0 10px" }}>
-              Sign up now
+            <img src="/assets/apex-icon.jpg" alt="" style={{ width: 44, height: "auto", margin: "0 auto 16px", display: "block" }} />
+            <p style={{ fontFamily: "var(--serif)", fontSize: 26, fontWeight: 600, margin: "6px 0 4px", color: "var(--gold-light)" }}>
+              GET 5% OFF
+            </p>
+            <p style={{ fontFamily: "var(--serif)", fontSize: 20, fontWeight: 500, margin: "0 0 16px" }}>
+              + A FREE GIFT*
             </p>
             <p style={{ color: "var(--grey)", fontSize: 14, lineHeight: 1.6, margin: "0 0 22px" }}>
-              Get first look at new Gem-Mint listings — straight to your inbox.
+              Sign up for 5% off your first order, plus a free gift with every order.
             </p>
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               <input
@@ -107,13 +111,14 @@ export default function SignupPopup() {
                 }}
               />
               <button type="submit" className="btn btn-primary" disabled={status === "loading"}>
-                {status === "loading" ? "…" : "Sign up with email"}
+                {status === "loading" ? "…" : "CLAIM MY OFFER"}
               </button>
             </form>
             {status === "error" && <p style={{ color: "#E08A7D", fontSize: 12.5, marginTop: 10 }}>Something went wrong — try again.</p>}
             <button onClick={dismiss} style={{ background: "none", border: "none", color: "var(--grey-dim)", fontSize: 12.5, marginTop: 16, cursor: "pointer" }}>
               Maybe later
             </button>
+            <p style={{ color: "var(--grey-dim)", fontSize: 10.5, marginTop: 14 }}>*with every order you place.</p>
           </>
         )}
       </div>

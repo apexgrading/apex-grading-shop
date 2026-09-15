@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import ProductCard from "../../components/ProductCard";
+import SignupPopup from "../../components/SignupPopup";
 
 const CATEGORIES = [
   "all",
@@ -23,6 +24,7 @@ export default function ShopPage() {
   return (
     <Suspense fallback={null}>
       <ShopPageInner />
+      <SignupPopup />
     </Suspense>
   );
 }
