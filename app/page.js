@@ -70,7 +70,7 @@ export default async function HomePage() {
         <div className="wrap hero-flank-grid">
           <img src="/assets/hero-slab-left.jpg" alt="Cynthia's Garchomp ex, Gem Mint 10, Apex Grading" className="hero-flank hero-flank-left" />
 
-          <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
+          <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
             <p style={{
               fontSize: 12.5, color: "var(--gold-light)", marginBottom: 18, display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
               fontFamily: "'Anton', var(--sans)", textTransform: "uppercase", letterSpacing: "0.04em",

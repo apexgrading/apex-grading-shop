@@ -61,9 +61,10 @@ button, select, input { font-family: inherit; }
 
 .hero-flank-grid {
   display: grid; grid-template-columns: 1fr minmax(0, auto) 1fr; align-items: center; gap: 32px;
+  max-width: 1400px; margin: 0 auto; padding: 0 32px;
 }
 .hero-flank {
-  max-width: 260px; width: 100%; border-radius: 10px;
+  max-width: 340px; width: 100%; border-radius: 10px;
   box-shadow: 0 30px 70px rgba(0,0,0,0.6);
 }
 .hero-flank-left { justify-self: end; }
