@@ -50,9 +50,10 @@ export default function AdminPage() {
 function UploadForm() {
   const [form, setForm] = useState({
     title: "", category: "Pokémon", isGraded: "true", grade: "10", cert: "",
-    condition: "Near Mint", price: "", imageUrl: "", isPreorder: "false", expectedDate: "",
+    condition: "Near Mint", price: "", imageUrl: "", imageUrlBack: "", isPreorder: "false", expectedDate: "",
   });
   const [file, setFile] = useState(null);
+  const [fileBack, setFileBack] = useState(null);
   const [status, setStatus] = useState("idle"); // idle | saving | done | error
   const [error, setError] = useState(null);
   const [priceSearch, setPriceSearch] = useState("");
@@ -73,6 +74,7 @@ function UploadForm() {
     const data = new FormData();
     Object.entries(form).forEach(([k, v]) => data.append(k, v));
     if (file) data.append("image", file);
+    if (fileBack) data.append("imageBack", fileBack);
 
     let res;
     try {
@@ -101,9 +103,10 @@ function UploadForm() {
     setStatus("done");
     setForm({
       title: "", category: "Pokémon", isGraded: form.isGraded, grade: "10", cert: "",
-      condition: "Near Mint", price: "", imageUrl: "", isPreorder: "false", expectedDate: "",
+      condition: "Near Mint", price: "", imageUrl: "", imageUrlBack: "", isPreorder: "false", expectedDate: "",
     });
     setFile(null);
+    setFileBack(null);
     setPriceResults(null);
     setPriceSearch("");
     e.target.reset();
@@ -278,12 +281,20 @@ function UploadForm() {
           )}
         </Field>
 
-        <Field label="Photo upload">
+        <Field label="Photo upload (front)">
           <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] || null)} style={{ color: "var(--grey)", fontSize: 13.5 }} />
         </Field>
 
-        <Field label="— or — Image URL (works everywhere, incl. serverless hosts)">
-          <input value={form.imageUrl} onChange={(e) => update("imageUrl", e.target.value)} style={inputStyle} placeholder="https://.../card-photo.jpg" />
+        <Field label="— or — Image URL, front (works everywhere, incl. serverless hosts)">
+          <input value={form.imageUrl} onChange={(e) => update("imageUrl", e.target.value)} style={inputStyle} placeholder="https://.../card-photo-front.jpg" />
+        </Field>
+
+        <Field label="Photo upload (back) — optional">
+          <input type="file" accept="image/*" onChange={(e) => setFileBack(e.target.files?.[0] || null)} style={{ color: "var(--grey)", fontSize: 13.5 }} />
+        </Field>
+
+        <Field label="— or — Image URL, back — optional">
+          <input value={form.imageUrlBack} onChange={(e) => update("imageUrlBack", e.target.value)} style={inputStyle} placeholder="https://.../card-photo-back.jpg" />
         </Field>
 
         {error && <p style={{ color: "#E08A7D", fontSize: 13.5, marginBottom: 12 }}>{error}</p>}

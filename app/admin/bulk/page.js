@@ -2,10 +2,10 @@
 
 import { useState, useCallback, useEffect } from "react";
 
-const TEMPLATE = `title,category,isGraded,grade,cert,condition,price,imageUrl,isPreorder,expectedDate
-Charizard ex - Obsidian Flames #201,Pokémon,true,10,AGC000050,,249.00,https://example.com/charizard.jpg,false,
-Blue-Eyes White Dragon - LOB #1,Yu-Gi-Oh!,false,,,Near Mint,45.00,https://example.com/blueeyes.jpg,false,
-Pitch Black Booster Box,Pokémon,false,,,Sealed,120.00,,true,Late October 2026
+const TEMPLATE = `title,category,isGraded,grade,cert,condition,price,imageUrl,imageUrlBack,isPreorder,expectedDate
+Charizard ex - Obsidian Flames #201,Pokémon,true,10,AGC000050,,249.00,https://example.com/charizard-front.jpg,https://example.com/charizard-back.jpg,false,
+Blue-Eyes White Dragon - LOB #1,Yu-Gi-Oh!,false,,,Near Mint,45.00,https://example.com/blueeyes.jpg,,false,
+Pitch Black Booster Box,Pokémon,false,,,Sealed,120.00,,,true,Late October 2026
 `;
 
 export default function BulkUploadPage() {
@@ -117,12 +117,13 @@ export default function BulkUploadPage() {
       <div style={{ background: "var(--bg-panel)", border: "1px solid var(--line)", borderRadius: 8, padding: 20, marginBottom: 28 }}>
         <div style={{ fontWeight: 600, fontSize: 14.5, marginBottom: 10 }}>CSV format</div>
         <p style={{ fontSize: 13, color: "var(--grey)", lineHeight: 1.6, marginBottom: 14 }}>
-          Columns: <code style={{ color: "var(--gold-light)" }}>title, category, isGraded, grade, cert, condition, price, imageUrl, isPreorder, expectedDate</code>
+          Columns: <code style={{ color: "var(--gold-light)" }}>title, category, isGraded, grade, cert, condition, price, imageUrl, imageUrlBack, isPreorder, expectedDate</code>
         </p>
         <ul style={{ fontSize: 12.5, color: "var(--grey-dim)", lineHeight: 1.8, margin: "0 0 14px", paddingLeft: 18 }}>
           <li><strong>isGraded:</strong> true or false. If true, fill grade + cert; if false, fill condition instead.</li>
           <li><strong>category:</strong> must exactly match one of: Pokémon, Sports, One Piece, Magic: The Gathering, Yu-Gi-Oh!, Gundam, Disney, Marvel, DC, Star Wars</li>
-          <li><strong>imageUrl:</strong> a hosted image link (Imgur etc.) — leave blank for a placeholder card back</li>
+          <li><strong>imageUrl:</strong> a hosted front-photo link (Imgur etc.) — leave blank for a placeholder card back</li>
+          <li><strong>imageUrlBack:</strong> optional — a hosted back-photo link. Customers can click the image to flip and see it.</li>
           <li><strong>isPreorder:</strong> true or false, optional. If true, expectedDate is shown to customers.</li>
           <li>Cert numbers must be unique — duplicates (in the file or already on the site) are skipped with an error, not overwritten.</li>
         </ul>

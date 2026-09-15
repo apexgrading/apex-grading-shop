@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 
 function formatPrice(cents) {
@@ -5,6 +8,16 @@ function formatPrice(cents) {
 }
 
 export default function ProductCard({ card }) {
+  const [showBack, setShowBack] = useState(false);
+  const hasBack = !!card.imageUrlBack;
+
+  function handleImageClick(e) {
+    if (!hasBack) return;
+    e.preventDefault();
+    e.stopPropagation();
+    setShowBack((v) => !v);
+  }
+
   return (
     <div className="product">
       <Link href={`/cards/${card.id}`}>
@@ -12,11 +25,20 @@ export default function ProductCard({ card }) {
           {card.sold && <div className="sold-ribbon">Sold</div>}
           {!card.sold && card.isPreorder && <div className="preorder-ribbon">Pre-order</div>}
           {card.imageUrl ? (
-            <div className="real-photo">
+            <div className="real-photo" onClick={handleImageClick} style={hasBack ? { cursor: "pointer", position: "relative" } : undefined}>
               <img
-                src={card.imageUrl}
-                alt={card.isGraded ? `${card.title}, graded ${card.grade} by Apex Grading` : `${card.title}, raw single`}
+                src={showBack && card.imageUrlBack ? card.imageUrlBack : card.imageUrl}
+                alt={
+                  card.isGraded
+                    ? `${card.title}, graded ${card.grade} by Apex Grading${showBack ? " (back)" : ""}`
+                    : `${card.title}, raw single${showBack ? " (back)" : ""}`
+                }
               />
+              {hasBack && (
+                <div className="flip-indicator">
+                  {showBack ? "← Front" : "Back →"}
+                </div>
+              )}
             </div>
           ) : card.isGraded ? (
             <div className="slab-shell">

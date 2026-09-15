@@ -54,6 +54,7 @@ export async function POST(request) {
     const condition = r.condition?.trim();
     const priceRaw = parseFloat(r.price);
     const imageUrl = r.imageUrl?.trim() || null;
+    const imageUrlBack = r.imageUrlBack?.trim() || null;
     const isPreorder = (r.isPreorder || "false").toLowerCase() === "true";
     const expectedDate = r.expectedDate?.trim() || null;
 
@@ -97,7 +98,7 @@ export async function POST(request) {
       const card = await createCard({
         title, category, grade, cert,
         price: Math.round(priceRaw * 100),
-        imageUrl, isGraded, condition, isPreorder, expectedDate,
+        imageUrl, imageUrlBack, isGraded, condition, isPreorder, expectedDate,
       });
       results.created.push({ line, id: card.id, title: card.title });
     } catch (err) {

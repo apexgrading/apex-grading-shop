@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getCardById } from "../../../lib/data";
 import AddToCartButton from "../../../components/AddToCartButton";
+import CardImageViewer from "../../../components/CardImageViewer";
 
 function formatPrice(cents) {
   return `£${(cents / 100).toLocaleString()}`;
@@ -23,7 +24,7 @@ export default async function CardDetailPage({ params }) {
       <div className="detail-grid">
         <div className="detail-stage">
           {card.imageUrl ? (
-            <img src={card.imageUrl} alt={card.title} />
+            <CardImageViewer imageUrl={card.imageUrl} imageUrlBack={card.imageUrlBack} title={card.title} />
           ) : card.isGraded ? (
             <div style={{ width: 280 }}>
               <div className="slab-shell">
