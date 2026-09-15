@@ -24,7 +24,15 @@ export default async function CardDetailPage({ params }) {
       <div className="detail-grid">
         <div className="detail-stage">
           {card.imageUrl ? (
-            <CardImageViewer imageUrl={card.imageUrl} imageUrlBack={card.imageUrlBack} title={card.title} />
+            <CardImageViewer
+              imageUrl={card.imageUrl}
+              imageUrlBack={card.imageUrlBack}
+              title={card.title}
+              isGraded={card.isGraded}
+              grade={card.grade}
+              cert={card.cert}
+              category={card.category}
+            />
           ) : card.isGraded ? (
             <div style={{ width: 280 }}>
               <div className="slab-shell">
