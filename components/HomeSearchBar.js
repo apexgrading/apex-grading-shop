@@ -22,7 +22,7 @@ export default function HomeSearchBar() {
         </svg>
         <input
           type="text"
-          placeholder="Any card — graded or single"
+          placeholder="Search cards"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
