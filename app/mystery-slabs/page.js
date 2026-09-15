@@ -5,7 +5,10 @@ export const metadata = { title: "Gem Mint 10 Mystery Slabs — Apex Cards" };
 export const dynamic = "force-dynamic";
 
 export default async function MysterySlabsPage() {
+  const MYSTERY_CAP = 500;
   const { cards } = await listCards({ category: "Mystery Slabs", sort: "newest", page: 1 });
+  const { total: soldCount } = await listCards({ category: "Mystery Slabs", soldOnly: true, page: 1 });
+  const remaining = Math.max(MYSTERY_CAP - soldCount, 0);
 
   return (
     <div>
@@ -21,7 +24,7 @@ export default async function MysterySlabsPage() {
             color: "var(--gold-light)", fontSize: 13, fontWeight: 700, letterSpacing: "0.06em",
             padding: "6px 16px", borderRadius: 20, margin: "0 0 18px", textTransform: "uppercase",
           }}>
-            Limited to 500 — once they're gone, they're gone
+            {remaining} of {MYSTERY_CAP} remaining — once they're gone, they're gone
           </div>
           <p style={{ fontSize: 16, lineHeight: 1.6, margin: "0 auto 32px" }}>
             Every slab is a genuine Apex Gem Mint 10 — no exceptions. The card itself, and its era,
