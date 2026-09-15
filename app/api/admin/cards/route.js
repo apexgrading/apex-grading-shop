@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { randomUUID } from "crypto";
 import path from "path";
 import fs from "fs/promises";
+import { put } from "@vercel/blob";
 import { createCard, certExists, isValidAdminSession } from "../../../../lib/data";
 
 const isServerless = !!process.env.VERCEL;
@@ -56,23 +57,29 @@ export async function POST(request) {
     imageUrl = pastedImageUrl;
   } else if (file && typeof file === "object" && file.size > 0) {
     if (isServerless) {
-      return NextResponse.json(
-        {
-          error:
-            "Direct file upload isn't available on this host's read-only filesystem. " +
-            "Use the 'Image URL' field instead (e.g. a Vercel Blob or other hosted image link), " +
-            "or run this admin page on a host with persistent storage.",
-        },
-        { status: 400 }
-      );
+      if (!process.env.BLOB_READ_WRITE_TOKEN) {
+        return NextResponse.json(
+          {
+            error:
+              "Photo upload needs Vercel Blob storage connected first (Vercel dashboard → Storage → Create Database → Blob). " +
+              "Until then, use the Image URL field instead.",
+          },
+          { status: 400 }
+        );
+      }
+      const ext = (file.name?.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
+      const filename = `cards/${randomUUID()}.${ext || "jpg"}`;
+      const blob = await put(filename, file, { access: "public" });
+      imageUrl = blob.url;
+    } else {
+      const ext = (file.name?.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
+      const filename = `${randomUUID()}.${ext || "jpg"}`;
+      const uploadsDir = path.join(process.cwd(), "public", "assets", "uploads");
+      await fs.mkdir(uploadsDir, { recursive: true });
+      const bytes = Buffer.from(await file.arrayBuffer());
+      await fs.writeFile(path.join(uploadsDir, filename), bytes);
+      imageUrl = `/assets/uploads/${filename}`;
     }
-    const ext = (file.name?.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
-    const filename = `${randomUUID()}.${ext || "jpg"}`;
-    const uploadsDir = path.join(process.cwd(), "public", "assets", "uploads");
-    await fs.mkdir(uploadsDir, { recursive: true });
-    const bytes = Buffer.from(await file.arrayBuffer());
-    await fs.writeFile(path.join(uploadsDir, filename), bytes);
-    imageUrl = `/assets/uploads/${filename}`;
   }
 
   const card = await createCard({

@@ -263,7 +263,7 @@ function UploadForm() {
           )}
         </Field>
 
-        <Field label="Photo upload (works when the site runs on persistent storage)">
+        <Field label="Photo upload">
           <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] || null)} style={{ color: "var(--grey)", fontSize: 13.5 }} />
         </Field>
 
