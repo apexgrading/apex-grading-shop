@@ -4,13 +4,24 @@ import { randomUUID } from "crypto";
 import path from "path";
 import fs from "fs/promises";
 import { put } from "@vercel/blob";
-import { createCard, certExists, isValidAdminSession } from "../../../../lib/data";
+import { createCard, certExists, isValidAdminSession, listCards } from "../../../../lib/data";
 
 const isServerless = !!process.env.VERCEL;
 
 function requireAdmin() {
   const token = cookies().get("apex_admin")?.value;
   return isValidAdminSession(token);
+}
+
+export async function GET(request) {
+  if (!(await requireAdmin())) {
+    return NextResponse.json({ error: "Not authorized." }, { status: 401 });
+  }
+  const { searchParams } = new URL(request.url);
+  const page = parseInt(searchParams.get("page") || "1", 10);
+  const search = searchParams.get("search") || "";
+  const result = await listCards({ page, search, includeSold: true, sort: "newest" });
+  return NextResponse.json(result);
 }
 
 // Resolves one photo field (file upload or pasted URL) into a final image URL.

@@ -147,6 +147,8 @@ function UploadForm() {
         <a href="/admin/orders" style={{ color: "var(--gold-light)", fontSize: 13.5 }}>View orders & mark shipped →</a>
         {" · "}
         <a href="/admin/bulk" style={{ color: "var(--gold-light)", fontSize: 13.5 }}>Bulk upload via CSV →</a>
+        {" · "}
+        <a href="/admin/listings" style={{ color: "var(--gold-light)", fontSize: 13.5 }}>Manage / delete listings →</a>
       </p>
 
       {(form.category === "Pokémon" || form.category === "Magic: The Gathering" || form.category === "Yu-Gi-Oh!") && (
