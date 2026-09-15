@@ -313,6 +313,7 @@ button, select, input { font-family: inherit; }
   .scale-desc { font-size: 12.5px !important; }
   .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
   .hero-flank { display: none; }
+  .hero-flank-grid { grid-template-columns: 1fr !important; }
 }
 @media (max-width: 560px) {
   .how-grid, .feature-grid { grid-template-columns: 1fr !important; }
