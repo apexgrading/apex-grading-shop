@@ -48,7 +48,10 @@ export default function BulkUploadPage() {
   }
 
   function downloadTemplate() {
-    const blob = new Blob([TEMPLATE], { type: "text/csv" });
+    // Prefix with a UTF-8 BOM so Excel correctly detects the encoding —
+    // without it, Excel misreads accented characters (e.g. "Pokémon"
+    // becomes "PokÃ©mon") on some platforms.
+    const blob = new Blob(["\uFEFF" + TEMPLATE], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
