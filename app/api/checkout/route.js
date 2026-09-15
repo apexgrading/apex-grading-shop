@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { getAvailableCardsByIds, createPendingOrder, setOrderStripeSession } from "../../../lib/data";
 import { stripe } from "../../../lib/stripe";
-import { getRegion } from "../../../lib/shipping";
+import { getRegion, FREE_SHIPPING_THRESHOLD } from "../../../lib/shipping";
 
 export async function POST(request) {
   const body = await request.json().catch(() => null);
@@ -33,6 +33,13 @@ export async function POST(request) {
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
+  const subtotal = cards.reduce((sum, c) => sum + c.price, 0);
+  const qualifiesForFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
+  const standardAmount = qualifiesForFreeShipping ? 0 : region.standard.amount;
+  const standardLabel = qualifiesForFreeShipping
+    ? `${region.standard.label} — FREE (order over £${(FREE_SHIPPING_THRESHOLD / 100).toFixed(0)})`
+    : region.standard.label;
+
   const session = await stripe.checkout.sessions.create({
     mode: "payment",
     // Deliberately omitting payment_method_types: Checkout Sessions automatically
@@ -46,8 +53,8 @@ export async function POST(request) {
       {
         shipping_rate_data: {
           type: "fixed_amount",
-          fixed_amount: { amount: region.standard.amount, currency: "gbp" },
-          display_name: region.standard.label,
+          fixed_amount: { amount: standardAmount, currency: "gbp" },
+          display_name: standardLabel,
           delivery_estimate: {
             minimum: { unit: "business_day", value: region.standard.days[0] },
             maximum: { unit: "business_day", value: region.standard.days[1] },

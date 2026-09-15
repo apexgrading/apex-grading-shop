@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useCart } from "../../lib/cart-context";
-import { SHIPPING_REGIONS } from "../../lib/shipping";
+import { SHIPPING_REGIONS, FREE_SHIPPING_THRESHOLD } from "../../lib/shipping";
 import PaymentBadges from "../../components/PaymentBadges";
 
 function formatPrice(cents) {
@@ -81,6 +81,16 @@ export default function CartPage() {
             <span>Total ({items.length} card{items.length === 1 ? "" : "s"})</span>
             <span className="total">{formatPrice(total)}</span>
           </div>
+
+          {total >= FREE_SHIPPING_THRESHOLD ? (
+            <p style={{ fontSize: 13, color: "var(--gold-light)", margin: "0 0 20px" }}>
+              ✓ You qualify for free standard shipping (order over {formatPrice(FREE_SHIPPING_THRESHOLD)})
+            </p>
+          ) : (
+            <p style={{ fontSize: 13, color: "var(--grey-dim)", margin: "0 0 20px" }}>
+              Add {formatPrice(FREE_SHIPPING_THRESHOLD - total)} more for free standard shipping
+            </p>
+          )}
 
           <div style={{ margin: "8px 0 20px" }}>
             <label style={{ display: "block", fontSize: 13.5, color: "var(--grey)", marginBottom: 8 }}>Shipping to</label>
