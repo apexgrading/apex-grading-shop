@@ -50,6 +50,14 @@ button, select, input { font-family: inherit; }
 .nav-links a { padding-bottom: 3px; border-bottom: 1px solid transparent; transition: border-color .15s ease, color .15s ease; }
 .nav-links a:hover, .nav-links a.active { border-color: var(--gold-light); color: var(--gold-light); }
 .nav-links a.main-site-cta, .nav-links a.main-site-cta:hover { color: #E5484D; border-color: transparent; }
+
+.section-kicker {
+  font-size: 12px; color: var(--gold-light); margin-bottom: 12px;
+  font-family: 'Anton', var(--sans); text-transform: uppercase; letter-spacing: 0.06em;
+}
+.section-glow {
+  background: radial-gradient(ellipse at 85% 0%, rgba(212,167,60,0.07), transparent 55%), var(--bg-panel);
+}
 .nav-actions { display: flex; align-items: center; gap: 18px; font-size: 14.5px; }
 .cart-link { display: flex; align-items: center; gap: 8px; }
 .cart-badge {

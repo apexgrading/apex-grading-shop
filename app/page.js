@@ -63,14 +63,20 @@ export default async function HomePage() {
   return (
     <main>
       {/* HERO */}
-      <section style={{ padding: "72px 0 0" }}>
+      <section style={{
+        padding: "72px 0 0",
+        background: "radial-gradient(ellipse at 15% 0%, rgba(212,167,60,0.08), transparent 60%)",
+      }}>
         <div className="wrap hero-grid">
           <div>
-            <p style={{ fontSize: 13.5, color: "var(--gold-light)", marginBottom: 18, display: "flex", alignItems: "center", gap: 10 }}>
+            <p style={{
+              fontSize: 12.5, color: "var(--gold-light)", marginBottom: 18, display: "flex", alignItems: "center", gap: 10,
+              fontFamily: "'Anton', var(--sans)", textTransform: "uppercase", letterSpacing: "0.04em",
+            }}>
               <span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--gold)", display: "inline-block" }} />
-              UK-based · Every card authenticated & graded in-house
+              UK-based · Authenticated & graded in-house
             </p>
-            <h1 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(38px, 4.4vw, 58px)", lineHeight: 1.08, margin: "0 0 26px", maxWidth: "15ch" }}>
+            <h1 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(42px, 5vw, 68px)", lineHeight: 1.05, margin: "0 0 26px", maxWidth: "15ch" }}>
               Graded cards, sold direct.
             </h1>
             <p style={{ fontSize: 18, lineHeight: 1.6, color: "var(--grey)", maxWidth: "48ch", margin: "0 0 34px" }}>
@@ -127,10 +133,10 @@ export default async function HomePage() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="section" style={{ background: "var(--bg-panel)", paddingTop: 80, paddingBottom: 80 }}>
+      <section className="section section-glow" style={{ paddingTop: 80, paddingBottom: 80 }}>
         <div className="wrap">
           <div style={{ marginBottom: 44 }}>
-            <p style={{ fontSize: 13, color: "var(--gold-light)", marginBottom: 10 }}>How it works</p>
+            <p className="section-kicker">How it works</p>
             <h2 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(28px,3vw,38px)", margin: 0 }}>
               How buying works.
             </h2>
@@ -151,7 +157,7 @@ export default async function HomePage() {
       <section className="section">
         <div className="wrap">
           <div style={{ marginBottom: 44 }}>
-            <p style={{ fontSize: 13, color: "var(--gold-light)", marginBottom: 10 }}>Why buy here</p>
+            <p className="section-kicker">Why buy here</p>
             <h2 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(28px,3vw,38px)", margin: 0 }}>
               Backed by the Apex standard.
             </h2>
@@ -173,7 +179,7 @@ export default async function HomePage() {
       </section>
 
       {/* GRADE SCALE */}
-      <section id="scale" className="section" style={{ background: "var(--bg-panel)" }}>
+      <section id="scale" className="section section-glow">
         <div className="wrap">
           <div style={{ marginBottom: 44 }}>
             <h2 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(30px,3vw,40px)", margin: "0 0 14px" }}>The Apex scale</h2>
@@ -217,10 +223,10 @@ export default async function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section className="section" style={{ background: "var(--bg-panel)" }}>
+      <section className="section section-glow">
         <div className="wrap" style={{ maxWidth: 820 }}>
           <div style={{ marginBottom: 40 }}>
-            <p style={{ fontSize: 13, color: "var(--gold-light)", marginBottom: 10 }}>FAQs</p>
+            <p className="section-kicker">FAQs</p>
             <h2 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(28px,3vw,38px)", margin: 0 }}>
               Clear answers to common inquiries.
             </h2>
