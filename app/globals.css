@@ -189,6 +189,19 @@ button, select, input { font-family: inherit; }
 }
 .product-media .real-photo, .product-media .slab-shell { margin-bottom: 0; }
 
+.grid-frame {
+  position: relative;
+  background: radial-gradient(circle at 50% 0%, rgba(212,167,60,0.10), transparent 65%), var(--bg-panel);
+  border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  aspect-ratio: 5/7;
+}
+.grid-frame img:not(.grid-frame-badge) { width: 100%; height: 100%; object-fit: contain; padding: 10px; }
+.grid-frame-badge {
+  position: absolute; top: 8px; left: 8px; width: 20px; height: auto;
+  object-fit: contain; opacity: 0.9; z-index: 3;
+}
+
 .flip-indicator {
   position: absolute; bottom: 8px; right: 8px; z-index: 4;
   background: rgba(10,10,10,0.75); color: var(--gold-light);

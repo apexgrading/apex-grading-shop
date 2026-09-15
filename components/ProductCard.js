@@ -25,7 +25,7 @@ export default function ProductCard({ card }) {
           {card.sold && <div className="sold-ribbon">Sold</div>}
           {!card.sold && card.isPreorder && <div className="preorder-ribbon">Pre-order</div>}
           {card.imageUrl ? (
-            <div className="real-photo" onClick={handleImageClick} style={hasBack ? { cursor: "pointer", position: "relative" } : undefined}>
+            <div className="real-photo grid-frame" onClick={handleImageClick} style={hasBack ? { cursor: "pointer" } : undefined}>
               <img
                 src={showBack && card.imageUrlBack ? card.imageUrlBack : card.imageUrl}
                 alt={
@@ -34,6 +34,7 @@ export default function ProductCard({ card }) {
                     : `${card.title}, raw single${showBack ? " (back)" : ""}`
                 }
               />
+              <img src="/assets/apex-icon.jpg" alt="" className="grid-frame-badge" />
               {hasBack && (
                 <div className="flip-indicator">
                   {showBack ? "← Front" : "Back →"}
