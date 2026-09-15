@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { upload } from "@vercel/blob/client";
 
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false);
@@ -67,16 +66,30 @@ function UploadForm() {
     setForm((f) => ({ ...f, [field]: value }));
   }
 
-  async function uploadToBlob(f) {
-    const ext = (f.name?.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
-    const pathname = `cards/${crypto.randomUUID()}.${ext}`;
-    const blob = await upload(pathname, f, {
-      access: "private",
-      handleUploadUrl: "/api/admin/upload-token",
-    });
-    // Same proxy convention the server uses: /api/images/<pathname>, since the
-    // store itself is private and only our own route can serve it publicly.
-    return `/api/images/${blob.pathname}`;
+  // Resizes/recompresses an image in the browser before upload, so large phone
+  // photos (often 3-10MB+) fit under the serverless function's request body
+  // limit. Targets a max dimension and JPEG quality that keeps card photos
+  // sharp while landing well under that limit.
+  async function compressImage(f, maxDimension = 1600, quality = 0.85) {
+    if (!f.type.startsWith("image/")) return f;
+
+    const bitmap = await createImageBitmap(f).catch(() => null);
+    if (!bitmap) return f; // Fall back to the original if decoding fails (e.g. unsupported format).
+
+    const scale = Math.min(1, maxDimension / Math.max(bitmap.width, bitmap.height));
+    const width = Math.round(bitmap.width * scale);
+    const height = Math.round(bitmap.height * scale);
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(bitmap, 0, 0, width, height);
+
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
+    if (!blob) return f;
+
+    return new File([blob], (f.name || "photo").replace(/\.\w+$/, "") + ".jpg", { type: "image/jpeg" });
   }
 
   async function handleSubmit(e) {
@@ -84,14 +97,14 @@ function UploadForm() {
     setStatus("saving");
     setError(null);
 
-    let uploadedImageUrl = null;
-    let uploadedImageUrlBack = null;
+    let compressedFile = null;
+    let compressedFileBack = null;
 
     try {
-      if (file) uploadedImageUrl = await uploadToBlob(file);
-      if (fileBack) uploadedImageUrlBack = await uploadToBlob(fileBack);
+      if (file) compressedFile = await compressImage(file);
+      if (fileBack) compressedFileBack = await compressImage(fileBack);
     } catch (err) {
-      setError(`Photo upload failed: ${err.message}`);
+      setError(`Photo processing failed: ${err.message}`);
       setStatus("error");
       return;
     }
@@ -100,8 +113,8 @@ function UploadForm() {
     Object.entries(form).forEach(([k, v]) => data.append(k, v));
     // Photos already uploaded directly to Blob above (bypassing the serverless
     // function's body-size limit) — send the resulting URLs, not raw files.
-    if (uploadedImageUrl) data.set("imageUrl", uploadedImageUrl);
-    if (uploadedImageUrlBack) data.set("imageUrlBack", uploadedImageUrlBack);
+    if (compressedFile) data.append("image", compressedFile);
+    if (compressedFileBack) data.append("imageBack", compressedFileBack);
 
     let res;
     try {
