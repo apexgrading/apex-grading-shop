@@ -57,11 +57,14 @@ export async function POST(request) {
     imageUrl = pastedImageUrl;
   } else if (file && typeof file === "object" && file.size > 0) {
     if (isServerless) {
-      if (!process.env.BLOB_READ_WRITE_TOKEN) {
+      // This account's Blob store authenticates via BLOB_STORE_ID + Vercel's
+      // automatic OIDC token, not the older static BLOB_READ_WRITE_TOKEN —
+      // the @vercel/blob SDK picks this up on its own once the store is connected.
+      if (!process.env.BLOB_STORE_ID && !process.env.BLOB_READ_WRITE_TOKEN) {
         return NextResponse.json(
           {
             error:
-              "Photo upload needs Vercel Blob storage connected first (Vercel dashboard → Storage → Create Database → Blob). " +
+              "Photo upload needs a Vercel Blob store connected to this project first (Vercel dashboard → Storage → Create Database → Blob, then connect it to apex-shop). " +
               "Until then, use the Image URL field instead.",
           },
           { status: 400 }
