@@ -16,6 +16,7 @@ const CATEGORIES = [
   "Marvel",
   "DC",
   "Star Wars",
+  "Mystery Slabs",
 ];
 
 const CONDITIONS = ["any", "Near Mint", "Lightly Played", "Moderately Played", "Heavily Played", "Damaged"];

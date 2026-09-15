@@ -16,6 +16,7 @@ const CATEGORIES = [
   "Marvel",
   "DC",
   "Star Wars",
+  "Mystery Slabs",
 ];
 
 export default function ShopPage() {

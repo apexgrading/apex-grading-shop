@@ -10,7 +10,7 @@ async function requireAdmin() {
 
 const VALID_CATEGORIES = [
   "Pokémon", "Sports", "One Piece", "Magic: The Gathering", "Yu-Gi-Oh!",
-  "Gundam", "Disney", "Marvel", "DC", "Star Wars",
+  "Gundam", "Disney", "Marvel", "DC", "Star Wars", "Mystery Slabs",
 ];
 
 export async function POST(request) {

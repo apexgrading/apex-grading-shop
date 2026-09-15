@@ -275,6 +275,7 @@ function UploadForm() {
             <option>Marvel</option>
             <option>DC</option>
             <option>Star Wars</option>
+            <option>Mystery Slabs</option>
           </select>
         </Field>
 
