@@ -94,6 +94,8 @@ export async function POST(request) {
   const fileBack = formData.get("imageBack");
   const pastedImageUrlBack = formData.get("imageUrlBack")?.toString().trim();
 
+  console.log("[card upload diag] image field:", file ? `type=${typeof file}, isFile=${file instanceof File}, name=${file.name}, size=${file.size}` : "MISSING/null");
+
   if (!title || !category || Number.isNaN(priceDollars)) {
     return NextResponse.json({ error: "Fill in title, category, and price." }, { status: 400 });
   }
