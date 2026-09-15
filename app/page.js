@@ -64,11 +64,11 @@ export default async function HomePage() {
     <main>
       {/* HERO */}
       <section style={{
-        padding: "72px 0 0",
+        padding: "72px 0 80px",
         background: "radial-gradient(ellipse at 15% 0%, rgba(212,167,60,0.08), transparent 60%)",
       }}>
-        <div className="wrap hero-grid">
-          <div>
+        <div className="wrap">
+          <div style={{ maxWidth: 640 }}>
             <p style={{
               fontSize: 12.5, color: "var(--gold-light)", marginBottom: 18, display: "flex", alignItems: "center", gap: 10,
               fontFamily: "'Anton', var(--sans)", textTransform: "uppercase", letterSpacing: "0.04em",
@@ -89,30 +89,6 @@ export default async function HomePage() {
               <Link href="/shop" className="btn btn-primary">Shop graded cards</Link>
               <Link href="#scale" className="btn btn-secondary scale-cta">See the grading scale</Link>
             </div>
-          </div>
-          <div style={{
-            background: "radial-gradient(circle at 30% 20%, rgba(212,167,60,0.14), transparent 55%), var(--bg-panel)",
-            border: "1px solid var(--line)", borderRadius: 6, minHeight: 500,
-            display: "flex", alignItems: "center", justifyContent: "center", padding: 36,
-          }}>
-            {featured[0] ? (
-              <div style={{ width: 260, maxWidth: "100%", borderRadius: 8, overflow: "hidden", boxShadow: "0 30px 70px rgba(0,0,0,0.7)" }}>
-                {featured[0].imageUrl ? (
-                  <img src={featured[0].imageUrl} alt={featured[0].title} style={{ width: "100%" }} />
-                ) : (
-                  <ProductCard card={featured[0]} />
-                )}
-              </div>
-            ) : (
-              <div style={{ textAlign: "center", maxWidth: 280 }}>
-                <div style={{ fontFamily: "var(--serif)", fontSize: 22, color: "var(--gold-light)", marginBottom: 10 }}>
-                  New stock incoming
-                </div>
-                <p style={{ color: "var(--grey)", fontSize: 14, margin: 0 }}>
-                  Freshly graded cards are on their way — check back soon, or browse what's sold so far.
-                </p>
-              </div>
-            )}
           </div>
         </div>
       </section>
