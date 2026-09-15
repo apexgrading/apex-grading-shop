@@ -31,7 +31,7 @@ export default async function MysterySlabsPage() {
           <img
             src="/assets/mystery-pack.png"
             alt="Apex Cards Gem Mint 10 Mystery Pack"
-            style={{ maxWidth: 340, width: "100%", borderRadius: 12, boxShadow: "0 30px 70px rgba(0,0,0,0.6)" }}
+            style={{ maxWidth: 560, width: "100%", borderRadius: 16, boxShadow: "0 40px 90px rgba(0,0,0,0.65)" }}
           />
         </div>
       </div>
