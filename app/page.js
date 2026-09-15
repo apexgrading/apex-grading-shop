@@ -67,7 +67,9 @@ export default async function HomePage() {
         padding: "72px 0 80px",
         background: "radial-gradient(ellipse at 15% 0%, rgba(212,167,60,0.08), transparent 60%)",
       }}>
-        <div className="wrap">
+        <div className="wrap hero-flank-grid">
+          <img src="/assets/hero-slab-left.jpg" alt="Cynthia's Garchomp ex, Gem Mint 10, Apex Grading" className="hero-flank hero-flank-left" />
+
           <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
             <p style={{
               fontSize: 12.5, color: "var(--gold-light)", marginBottom: 18, display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
@@ -92,6 +94,8 @@ export default async function HomePage() {
               <Link href="#scale" className="btn btn-secondary scale-cta">See the grading scale</Link>
             </div>
           </div>
+
+          <img src="/assets/hero-slab-right.jpg" alt="Mega Greninja ex, Gem Mint 10, Apex Grading" className="hero-flank hero-flank-right" />
         </div>
       </section>
 
