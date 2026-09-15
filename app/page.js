@@ -141,16 +141,16 @@ export default async function HomePage() {
           <div style={{ marginBottom: 44 }}>
             <p className="section-kicker">Why buy here</p>
             <h2 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(28px,3vw,38px)", margin: 0 }}>
-              Backed by the Apex standard.
+              Backed by the <span className="brand-word">Apex</span> standard.
             </h2>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 28 }} className="feature-grid">
             {features.map((f) => (
               <div key={f.title}>
-                <div style={{
+                <div className="brand-word" style={{
                   width: 40, height: 40, borderRadius: 6, background: "var(--bg-panel)",
                   border: "1px solid var(--line-strong)", display: "flex", alignItems: "center",
-                  justifyContent: "center", marginBottom: 16, color: "var(--gold-light)", fontFamily: "var(--serif)", fontSize: 18,
+                  justifyContent: "center", marginBottom: 16, color: "var(--gold-light)", fontSize: 18,
                 }}>A</div>
                 <h3 style={{ fontSize: 15.5, margin: "0 0 8px", fontWeight: 600 }}>{f.title}</h3>
                 <p style={{ fontSize: 13.5, lineHeight: 1.6, color: "var(--grey)", margin: 0 }}>{f.desc}</p>
@@ -164,7 +164,7 @@ export default async function HomePage() {
       <section id="scale" className="section section-glow">
         <div className="wrap">
           <div style={{ marginBottom: 44 }}>
-            <h2 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(30px,3vw,40px)", margin: "0 0 14px" }}>The Apex scale</h2>
+            <h2 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(30px,3vw,40px)", margin: "0 0 14px" }}>The <span className="brand-word">Apex</span> scale</h2>
             <p style={{ color: "var(--grey)", maxWidth: "60ch", fontSize: 15.5, lineHeight: 1.6 }}>
               Every card is graded on the same ten-point scale, checked by two independent graders before it's encapsulated.
             </p>

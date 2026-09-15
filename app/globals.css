@@ -69,6 +69,8 @@ button, select, input { font-family: inherit; }
 }
 .hero-flank-left { justify-self: end; }
 .hero-flank-right { justify-self: start; }
+
+.brand-word { font-family: 'Anton', var(--sans); color: var(--gold); letter-spacing: 0.01em; }
 .nav-actions { display: flex; align-items: center; gap: 18px; font-size: 14.5px; }
 .cart-link { display: flex; align-items: center; gap: 8px; }
 .cart-badge {
