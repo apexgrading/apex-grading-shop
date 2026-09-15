@@ -141,7 +141,7 @@ export default async function HomePage() {
           <div style={{ marginBottom: 44 }}>
             <p className="section-kicker">Why buy here</p>
             <h2 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(28px,3vw,38px)", margin: 0 }}>
-              Backed by the <span className="brand-word">Apex</span> standard.
+              Backed by the <span className="brand-word">APEX</span> standard.
             </h2>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 28 }} className="feature-grid">
@@ -164,7 +164,7 @@ export default async function HomePage() {
       <section id="scale" className="section section-glow">
         <div className="wrap">
           <div style={{ marginBottom: 44 }}>
-            <h2 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(30px,3vw,40px)", margin: "0 0 14px" }}>The <span className="brand-word">Apex</span> scale</h2>
+            <h2 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(30px,3vw,40px)", margin: "0 0 14px" }}>The <span className="brand-word">APEX</span> scale</h2>
             <p style={{ color: "var(--grey)", maxWidth: "60ch", fontSize: 15.5, lineHeight: 1.6 }}>
               Every card is graded on the same ten-point scale, checked by two independent graders before it's encapsulated.
             </p>
