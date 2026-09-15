@@ -341,10 +341,23 @@ details[open] summary::after { content: "–"; }
 .main-site-cta:hover { color: #FF6B60; opacity: 0.9; }
 
 .announcement-banner {
-  background: #C4302B; color: #fff; text-align: center;
-  padding: 12px 16px; font-weight: 800; letter-spacing: 0.03em;
+  background: #C4302B; color: #fff;
+  padding: 12px 0; font-weight: 800; letter-spacing: 0.03em;
   font-size: 15px; text-transform: uppercase;
+  overflow: hidden; white-space: nowrap;
+}
+.announcement-track {
+  display: inline-flex;
+  animation: announcement-scroll 22s linear infinite;
+}
+.announcement-track span { padding: 0 32px; }
+@keyframes announcement-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .announcement-track { animation: none; }
 }
 @media (max-width: 640px) {
-  .announcement-banner { font-size: 12.5px; padding: 10px 12px; }
+  .announcement-banner { font-size: 12.5px; padding: 10px 0; }
 }
