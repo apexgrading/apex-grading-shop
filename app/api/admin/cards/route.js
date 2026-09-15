@@ -74,11 +74,13 @@ export async function POST(request) {
       const filename = `cards/${randomUUID()}.${ext || "jpg"}`;
       let blob;
       try {
-        blob = await put(filename, file, { access: "public" });
+        blob = await put(filename, file, { access: "private" });
       } catch (err) {
         return NextResponse.json({ error: `Photo upload failed: ${err.message}` }, { status: 500 });
       }
-      imageUrl = blob.url;
+      // Store our own proxy URL, not the direct (private) blob URL — the blob
+      // store's access is private, but /api/images serves it publicly.
+      imageUrl = `/api/images/${filename}`;
     } else {
       const ext = (file.name?.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
       const filename = `${randomUUID()}.${ext || "jpg"}`;
