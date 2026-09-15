@@ -72,7 +72,12 @@ export async function POST(request) {
       }
       const ext = (file.name?.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
       const filename = `cards/${randomUUID()}.${ext || "jpg"}`;
-      const blob = await put(filename, file, { access: "public" });
+      let blob;
+      try {
+        blob = await put(filename, file, { access: "public" });
+      } catch (err) {
+        return NextResponse.json({ error: `Photo upload failed: ${err.message}` }, { status: 500 });
+      }
       imageUrl = blob.url;
     } else {
       const ext = (file.name?.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");

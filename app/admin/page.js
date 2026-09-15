@@ -74,8 +74,23 @@ function UploadForm() {
     Object.entries(form).forEach(([k, v]) => data.append(k, v));
     if (file) data.append("image", file);
 
-    const res = await fetch("/api/admin/cards", { method: "POST", body: data });
-    const json = await res.json();
+    let res;
+    try {
+      res = await fetch("/api/admin/cards", { method: "POST", body: data });
+    } catch {
+      setError("Couldn't reach the server — check your connection and try again.");
+      setStatus("error");
+      return;
+    }
+
+    let json;
+    try {
+      json = await res.json();
+    } catch {
+      setError(`Something went wrong on the server (status ${res.status}) and it didn't return a readable response.`);
+      setStatus("error");
+      return;
+    }
 
     if (!res.ok) {
       setError(json.error || "Something went wrong.");
