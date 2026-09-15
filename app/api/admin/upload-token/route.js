@@ -30,6 +30,7 @@ export async function POST(request) {
 
     return NextResponse.json(jsonResponse);
   } catch (error) {
+    console.error("Blob upload token generation failed:", error.message);
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
