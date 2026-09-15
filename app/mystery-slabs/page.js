@@ -23,11 +23,16 @@ export default async function MysterySlabsPage() {
           }}>
             Limited to 500 — once they're gone, they're gone
           </div>
-          <p style={{ fontSize: 16, lineHeight: 1.6, margin: "0 auto" }}>
+          <p style={{ fontSize: 16, lineHeight: 1.6, margin: "0 auto 32px" }}>
             Every slab is a genuine Apex Gem Mint 10 — no exceptions. The card itself, and its era,
             is a surprise. Could be a modern chase card. Could be a piece of vintage history from
             Base Set onward. That's the thrill.
           </p>
+          <img
+            src="/assets/mystery-pack.png"
+            alt="Apex Cards Gem Mint 10 Mystery Pack"
+            style={{ maxWidth: 340, width: "100%", borderRadius: 12, boxShadow: "0 30px 70px rgba(0,0,0,0.6)" }}
+          />
         </div>
       </div>
 
