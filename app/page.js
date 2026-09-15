@@ -68,24 +68,26 @@ export default async function HomePage() {
         background: "radial-gradient(ellipse at 15% 0%, rgba(212,167,60,0.08), transparent 60%)",
       }}>
         <div className="wrap">
-          <div style={{ maxWidth: 640 }}>
+          <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center" }}>
             <p style={{
-              fontSize: 12.5, color: "var(--gold-light)", marginBottom: 18, display: "flex", alignItems: "center", gap: 10,
+              fontSize: 12.5, color: "var(--gold-light)", marginBottom: 18, display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
               fontFamily: "'Anton', var(--sans)", textTransform: "uppercase", letterSpacing: "0.04em",
             }}>
               <span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--gold)", display: "inline-block" }} />
               UK-based · Authenticated & graded in-house
             </p>
-            <h1 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(42px, 5vw, 68px)", lineHeight: 1.05, margin: "0 0 26px", maxWidth: "15ch" }}>
+            <h1 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(42px, 5vw, 68px)", lineHeight: 1.05, margin: "0 auto 26px", maxWidth: "15ch" }}>
               Graded cards, sold direct.
             </h1>
-            <p style={{ fontSize: 18, lineHeight: 1.6, color: "var(--grey)", maxWidth: "48ch", margin: "0 0 34px" }}>
+            <p style={{ fontSize: 18, lineHeight: 1.6, color: "var(--grey)", maxWidth: "48ch", margin: "0 auto 34px" }}>
               Every card here has already been authenticated and graded in-house by Apex —
               Gem Mint 10 down to Poor 1 — then listed for sale the moment the label is set.
               Pokémon, sports, and TCG. No middleman.
             </p>
-            <HomeSearchBar />
-            <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <HomeSearchBar />
+            </div>
+            <div style={{ display: "flex", gap: 14, flexWrap: "wrap", justifyContent: "center" }}>
               <Link href="/shop" className="btn btn-primary">Shop graded cards</Link>
               <Link href="#scale" className="btn btn-secondary scale-cta">See the grading scale</Link>
             </div>
