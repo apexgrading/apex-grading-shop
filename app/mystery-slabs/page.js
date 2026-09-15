@@ -1,5 +1,6 @@
 import { listCards } from "../../lib/data";
 import ProductCard from "../../components/ProductCard";
+import BuyMysterySlabButton from "../../components/BuyMysterySlabButton";
 
 export const metadata = { title: "Gem Mint 10 Mystery Slabs — Apex Cards" };
 export const dynamic = "force-dynamic";
@@ -9,6 +10,7 @@ export default async function MysterySlabsPage() {
   const { cards } = await listCards({ category: "Mystery Slabs", sort: "newest", page: 1 });
   const { total: soldCount } = await listCards({ category: "Mystery Slabs", soldOnly: true, page: 1 });
   const remaining = Math.max(MYSTERY_CAP - soldCount, 0);
+  const nextAvailable = cards[0] || null;
 
   return (
     <div>
@@ -36,6 +38,13 @@ export default async function MysterySlabsPage() {
             alt="Apex Cards Gem Mint 10 Mystery Pack"
             style={{ maxWidth: 560, width: "100%", borderRadius: 16, boxShadow: "0 40px 90px rgba(0,0,0,0.65)" }}
           />
+          <div style={{ marginTop: 32 }}>
+            {nextAvailable ? (
+              <BuyMysterySlabButton cardId={nextAvailable.id} price={nextAvailable.price} />
+            ) : (
+              <p style={{ color: "var(--grey-dim)", fontSize: 14 }}>No mystery slabs available right now — check back soon.</p>
+            )}
+          </div>
         </div>
       </div>
 
