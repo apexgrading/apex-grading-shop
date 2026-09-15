@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { upload } from "@vercel/blob/client";
 
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false);
@@ -66,15 +67,41 @@ function UploadForm() {
     setForm((f) => ({ ...f, [field]: value }));
   }
 
+  async function uploadToBlob(f) {
+    const ext = (f.name?.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+    const pathname = `cards/${crypto.randomUUID()}.${ext}`;
+    const blob = await upload(pathname, f, {
+      access: "private",
+      handleUploadUrl: "/api/admin/upload-token",
+    });
+    // Same proxy convention the server uses: /api/images/<pathname>, since the
+    // store itself is private and only our own route can serve it publicly.
+    return `/api/images/${blob.pathname}`;
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setStatus("saving");
     setError(null);
 
+    let uploadedImageUrl = null;
+    let uploadedImageUrlBack = null;
+
+    try {
+      if (file) uploadedImageUrl = await uploadToBlob(file);
+      if (fileBack) uploadedImageUrlBack = await uploadToBlob(fileBack);
+    } catch (err) {
+      setError(`Photo upload failed: ${err.message}`);
+      setStatus("error");
+      return;
+    }
+
     const data = new FormData();
     Object.entries(form).forEach(([k, v]) => data.append(k, v));
-    if (file) data.append("image", file);
-    if (fileBack) data.append("imageBack", fileBack);
+    // Photos already uploaded directly to Blob above (bypassing the serverless
+    // function's body-size limit) — send the resulting URLs, not raw files.
+    if (uploadedImageUrl) data.set("imageUrl", uploadedImageUrl);
+    if (uploadedImageUrlBack) data.set("imageUrlBack", uploadedImageUrlBack);
 
     let res;
     try {
