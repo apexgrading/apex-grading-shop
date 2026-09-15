@@ -5,6 +5,7 @@ import ProductCard from "../../components/ProductCard";
 
 export default function SoldPage() {
   const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState("all"); // all | graded | singles
   const [data, setData] = useState({ cards: [], total: 0, totalPages: 1 });
   const [loading, setLoading] = useState(true);
 
@@ -14,16 +15,22 @@ export default function SoldPage() {
     params.set("soldOnly", "true");
     params.set("sort", "newest");
     params.set("page", String(page));
+    if (filter === "graded") params.set("graded", "true");
+    if (filter === "singles") params.set("graded", "false");
 
     const res = await fetch(`/api/cards?${params.toString()}`);
     const json = await res.json();
     setData(json);
     setLoading(false);
-  }, [page]);
+  }, [page, filter]);
 
   useEffect(() => {
     fetchSold();
   }, [fetchSold]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [filter]);
 
   return (
     <div>
@@ -32,6 +39,26 @@ export default function SoldPage() {
           <div className="crumb"><a href="/">Home</a> / Sold</div>
           <h1>Sold cards</h1>
           <p>A record of cards Apex has graded and sold — once it's here, it's off the market for good.</p>
+        </div>
+      </div>
+
+      <div className="filter-bar">
+        <div className="wrap filter-row">
+          <div className="chip-group">
+            {[
+              { key: "all", label: "All" },
+              { key: "graded", label: "Graded" },
+              { key: "singles", label: "Singles" },
+            ].map((f) => (
+              <button
+                key={f.key}
+                className={`chip ${filter === f.key ? "active" : ""}`}
+                onClick={() => setFilter(f.key)}
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
