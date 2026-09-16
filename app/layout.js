@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import AnnouncementBanner from "../components/AnnouncementBanner";
 import CookieConsent from "../components/CookieConsent";
 import ServiceWorkerRegister from "../components/ServiceWorkerRegister";
+import AddToHomeScreenPrompt from "../components/AddToHomeScreenPrompt";
 
 export const metadata = {
   title: "Apex Cards",
@@ -38,6 +39,7 @@ export default function RootLayout({ children }) {
           <Footer />
           <CookieConsent />
           <ServiceWorkerRegister />
+          <AddToHomeScreenPrompt />
         </CartProvider>
       </body>
     </html>
