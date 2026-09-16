@@ -57,7 +57,7 @@ const faqs = [
 ];
 
 export default async function HomePage() {
-  const { cards: featured } = await listCards({ sort: "newest", page: 1, isGraded: true });
+  const { cards: featured } = await listCards({ sort: "newest", page: 1, isGraded: true, excludeCategory: "Mystery Slabs" });
   featured.length = Math.min(featured.length, 6);
 
   return (

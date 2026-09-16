@@ -17,7 +17,6 @@ const CATEGORIES = [
   "Marvel",
   "DC",
   "Star Wars",
-  "Mystery Slabs",
 ];
 
 export default function ShopPage() {
@@ -45,6 +44,7 @@ function ShopPageInner() {
     const params = new URLSearchParams();
     params.set("graded", "true");
     if (category !== "all") params.set("category", category);
+    else params.set("excludeCategory", "Mystery Slabs");
     if (grade !== "any") params.set("grade", grade);
     params.set("sort", sort);
     if (search) params.set("search", search);

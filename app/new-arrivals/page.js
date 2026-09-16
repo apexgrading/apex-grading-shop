@@ -16,7 +16,6 @@ const CATEGORIES = [
   "Marvel",
   "DC",
   "Star Wars",
-  "Mystery Slabs",
 ];
 
 export default function NewArrivalsPage() {
@@ -30,6 +29,7 @@ export default function NewArrivalsPage() {
     params.set("sinceDays", String(SINCE_DAYS));
     params.set("sort", "newest");
     if (category !== "all") params.set("category", category);
+    else params.set("excludeCategory", "Mystery Slabs");
 
     const res = await fetch(`/api/cards?${params.toString()}`);
     const json = await res.json();

@@ -28,7 +28,7 @@ function SearchPageInner() {
     setLoading(true);
     // No `graded` param — this deliberately searches across both graded cards
     // and raw singles at once, unlike /shop and /singles which are scoped.
-    const res = await fetch(`/api/cards?search=${encodeURIComponent(q)}&sort=newest`);
+    const res = await fetch(`/api/cards?search=${encodeURIComponent(q)}&sort=newest&excludeCategory=Mystery+Slabs`);
     const json = await res.json();
     setData(json);
     setLoading(false);

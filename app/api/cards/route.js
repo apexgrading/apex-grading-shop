@@ -16,7 +16,8 @@ export async function GET(request) {
   const isPreorder = preorderParam === "true" ? true : preorderParam === "false" ? false : null;
   const sinceDaysParam = searchParams.get("sinceDays");
   const sinceDays = sinceDaysParam ? parseInt(sinceDaysParam, 10) : null;
+  const excludeCategory = searchParams.get("excludeCategory") || null;
 
-  const result = await listCards({ category, grade, sort, search, page, includeSold, soldOnly, isGraded, isPreorder, sinceDays });
+  const result = await listCards({ category, grade, sort, search, page, includeSold, soldOnly, isGraded, isPreorder, sinceDays, excludeCategory });
   return NextResponse.json(result);
 }
