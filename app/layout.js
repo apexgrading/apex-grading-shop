@@ -4,6 +4,7 @@ import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import AnnouncementBanner from "../components/AnnouncementBanner";
 import CookieConsent from "../components/CookieConsent";
+import ServiceWorkerRegister from "../components/ServiceWorkerRegister";
 
 export const metadata = {
   title: "Apex Cards",
@@ -11,6 +12,19 @@ export const metadata = {
   verification: {
     google: "UncIGpd0yQlzwfQyNGME1IgMq2vb5JUwvN0RRQ1TiMg",
   },
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Apex Cards",
+  },
+  icons: {
+    apple: "/apple-touch-icon.png",
+  },
+};
+
+export const viewport = {
+  themeColor: "#0A0A0A",
 };
 
 export default function RootLayout({ children }) {
@@ -23,6 +37,7 @@ export default function RootLayout({ children }) {
           {children}
           <Footer />
           <CookieConsent />
+          <ServiceWorkerRegister />
         </CartProvider>
       </body>
     </html>
