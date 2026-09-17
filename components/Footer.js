@@ -44,11 +44,37 @@ export default function Footer() {
               A UK-based marketplace for cards graded in-house by Apex Grading Company. Every
               listing is a unique, authenticated card, sold direct.
             </p>
-            <p style={{ color: "var(--grey-dim)", fontSize: 13, lineHeight: 1.7 }}>
+            <p style={{ color: "var(--grey-dim)", fontSize: 13, lineHeight: 1.7, marginBottom: 16 }}>
               <a href="mailto:hello@apexgradingcompany.com" style={{ color: "var(--grey-dim)" }}>hello@apexgradingcompany.com</a>
               <br />
               18 Glen St, Barrhead, Glasgow G78 1QA
             </p>
+            <div style={{ display: "flex", gap: 14 }}>
+              <a
+                href="https://www.instagram.com/shopapexcards/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Apex Cards on Instagram"
+                style={{ color: "var(--grey)", display: "inline-flex" }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none" />
+                </svg>
+              </a>
+              <a
+                href="https://www.facebook.com/share/19iVD8fCuP/?mibextid=wwXIfr"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Apex Cards on Facebook"
+                style={{ color: "var(--grey)", display: "inline-flex" }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M13.5 21v-7.5h2.5l.4-3H13.5V8.5c0-.9.25-1.5 1.55-1.5H16.5V4.35C16.2 4.3 15.2 4.2 14 4.2c-2.4 0-4 1.45-4 4.1V10.5H7.5v3H10V21h3.5z" />
+                </svg>
+              </a>
+            </div>
           </div>
 
           <div>
