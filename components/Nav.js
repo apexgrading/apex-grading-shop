@@ -2,8 +2,18 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useCart } from "../lib/cart-context";
+
+const SHOP_LINKS = [
+  { href: "/shop", label: "All Cards" },
+  { href: "/singles", label: "Singles" },
+  { href: "/new-arrivals", label: "New Arrivals" },
+  { href: "/preorders", label: "Pre-orders" },
+  { href: "/mystery-slabs", label: "Mystery Slabs" },
+  { href: "/sold", label: "Sold" },
+  { href: "/merch", label: "Merch" },
+];
 
 export default function Nav() {
   const pathname = usePathname();
@@ -11,6 +21,8 @@ export default function Nav() {
   const { items } = useCart();
   const [user, setUser] = useState(undefined); // undefined = loading, null = signed out
   const [menuOpen, setMenuOpen] = useState(false);
+  const [shopOpen, setShopOpen] = useState(false);
+  const shopMenuRef = useRef(null);
 
   useEffect(() => {
     fetch("/api/auth/me")
@@ -19,10 +31,22 @@ export default function Nav() {
       .catch(() => setUser(null));
   }, [pathname]);
 
-  // Close the mobile menu whenever the route changes
+  // Close the mobile menu and Shop dropdown whenever the route changes
   useEffect(() => {
     setMenuOpen(false);
+    setShopOpen(false);
   }, [pathname]);
+
+  // Close the Shop dropdown on outside click
+  useEffect(() => {
+    function handleClick(e) {
+      if (shopMenuRef.current && !shopMenuRef.current.contains(e.target)) {
+        setShopOpen(false);
+      }
+    }
+    if (shopOpen) document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [shopOpen]);
 
   async function signOut() {
     await fetch("/api/auth/signout", { method: "POST" });
@@ -30,41 +54,54 @@ export default function Nav() {
     router.refresh();
   }
 
+  const isShopSectionActive = SHOP_LINKS.some((l) => pathname.startsWith(l.href));
+
   const categoryLinks = (
     <>
-      <Link href="/shop" className={pathname.startsWith("/shop") ? "active" : ""}>
-        Shop
-      </Link>
-      <Link href="/singles" className={pathname.startsWith("/singles") ? "active" : ""}>
-        Singles
-      </Link>
-      <Link href="/new-arrivals" className={pathname.startsWith("/new-arrivals") ? "active" : ""}>
-        New Arrivals
-      </Link>
-      <Link href="/preorders" className={pathname.startsWith("/preorders") ? "active" : ""}>
-        Pre-orders
-      </Link>
-      <Link href="/mystery-slabs" className={pathname.startsWith("/mystery-slabs") ? "active" : ""}>
-        Mystery Slabs
-      </Link>
-      <Link href="/sold" className={pathname.startsWith("/sold") ? "active" : ""}>
-        Sold
-      </Link>
+      <div className="nav-shop-dropdown" ref={shopMenuRef}>
+        <button
+          type="button"
+          className={`nav-shop-trigger ${isShopSectionActive ? "active" : ""}`}
+          onClick={() => setShopOpen((o) => !o)}
+          aria-expanded={shopOpen}
+        >
+          Shop
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ marginLeft: 4, transform: shopOpen ? "rotate(180deg)" : "none", transition: "transform .15s" }}>
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+        {shopOpen && (
+          <div className="nav-shop-panel">
+            {SHOP_LINKS.map((l) => (
+              <Link key={l.href} href={l.href} className={pathname.startsWith(l.href) ? "active" : ""}>
+                {l.label}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
       <Link href="/pokemon-sets" className={pathname.startsWith("/pokemon-sets") ? "active" : ""}>
         Pokémon Sets
       </Link>
       <Link href="/track" className={pathname.startsWith("/track") ? "active" : ""}>
         Track Order
       </Link>
-      <Link href="/merch" className={pathname.startsWith("/merch") ? "active" : ""}>
-        Merch
-      </Link>
     </>
   );
 
-  const links = (
+  const mobileLinks = (
     <>
-      {categoryLinks}
+      {SHOP_LINKS.map((l) => (
+        <Link key={l.href} href={l.href} className={pathname.startsWith(l.href) ? "active" : ""}>
+          {l.label}
+        </Link>
+      ))}
+      <Link href="/pokemon-sets" className={pathname.startsWith("/pokemon-sets") ? "active" : ""}>
+        Pokémon Sets
+      </Link>
+      <Link href="/track" className={pathname.startsWith("/track") ? "active" : ""}>
+        Track Order
+      </Link>
       <a
         href="https://www.apexgradingcompany.com"
         target="_blank"
@@ -128,7 +165,7 @@ export default function Nav() {
 
       {menuOpen && (
         <div className="mobile-menu">
-          <nav className="mobile-menu-links">{links}</nav>
+          <nav className="mobile-menu-links">{mobileLinks}</nav>
           <div className="mobile-menu-divider" />
           {user === undefined ? null : user ? (
             <>
