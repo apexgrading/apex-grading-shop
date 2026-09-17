@@ -79,6 +79,21 @@ export default function Footer() {
                   <path d="M14.5 21v-7.5h2.5l.4-3H14.5V8.5c0-.9.25-1.5 1.55-1.5H17.5V4.35C17.2 4.3 16.2 4.2 15 4.2c-2.4 0-4 1.45-4 4.1V10.5H8.5v3H11V21h3.5z" fill="#fff" />
                 </svg>
               </span>
+              <a
+                href="https://www.tiktok.com/@shopapexcards"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Apex Cards on TikTok"
+                style={{ display: "inline-flex" }}
+              >
+                <svg width="30" height="30" viewBox="0 0 24 24">
+                  <rect x="2" y="2" width="20" height="20" rx="5.5" fill="#000" />
+                  {/* Simplified note glyph, built from basic shapes for reliable rendering */}
+                  <circle cx="10" cy="16" r="2.6" fill="none" stroke="#fff" strokeWidth="1.6" />
+                  <rect x="11.3" y="5.5" width="1.6" height="10.5" fill="#fff" />
+                  <path d="M12.9 5.5c.3 1.7 1.5 3 3.1 3.5v1.9c-1.2-.15-2.3-.6-3.1-1.3" fill="#fff" />
+                </svg>
+              </a>
             </div>
           </div>
 
