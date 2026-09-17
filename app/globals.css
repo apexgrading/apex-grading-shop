@@ -127,7 +127,7 @@ button, select, input { font-family: inherit; }
   .nav-subbar { display: none; }
   .nav-cta-top { display: none; }
   .nav-toggle { display: flex; }
-  .nav-user-email, .nav-signout, .nav-signin, .nav-signup { display: none; }
+  .nav-user-email, .nav-signout, .nav-signin, .nav-signup { display: none !important; }
   .mobile-menu {
     display: block;
     border-top: 1px solid var(--line);
