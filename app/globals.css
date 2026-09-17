@@ -54,9 +54,8 @@ button, select, input { font-family: inherit; }
 .nav-links {
   display: flex; gap: 26px; font-size: 13px; color: var(--gold-light);
   font-family: 'Anton', var(--sans); letter-spacing: 0.03em; text-transform: uppercase;
-  padding: 11px 32px; overflow-x: auto; scrollbar-width: none;
+  padding: 11px 32px;
 }
-.nav-links::-webkit-scrollbar { display: none; }
 .nav-links a { padding-bottom: 3px; border-bottom: 1px solid transparent; white-space: nowrap; transition: border-color .15s ease, color .15s ease; }
 .nav-links a:hover, .nav-links a.active { border-color: #fff; color: #fff; }
 
