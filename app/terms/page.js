@@ -54,7 +54,7 @@ export default function TermsPage() {
             If you're a UK or EU consumer, you have a legal right to cancel your order within 14
             days of receiving it, without giving a reason, under the Consumer Contracts
             Regulations 2013. To cancel, email us at{" "}
-            <a href="mailto:hello@apexgradingcompany.com" style={{ color: "var(--gold-light)" }}>hello@apexgradingcompany.com</a>{" "}
+            <a href="mailto:hello@shopapexcards.com" style={{ color: "var(--gold-light)" }}>hello@shopapexcards.com</a>{" "}
             within 14 days of delivery, then return the item to us within a further 14 days.
           </p>
           <p style={{ margin: "0 0 12px" }}>
@@ -105,8 +105,8 @@ export default function TermsPage() {
 
         <Section title="10. Contact">
           Questions about these terms can be sent to{" "}
-          <a href="mailto:hello@apexgradingcompany.com" style={{ color: "var(--gold-light)" }}>
-            hello@apexgradingcompany.com
+          <a href="mailto:hello@shopapexcards.com" style={{ color: "var(--gold-light)" }}>
+            hello@shopapexcards.com
           </a>.
         </Section>
       </div>

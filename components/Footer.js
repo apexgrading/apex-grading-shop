@@ -45,7 +45,7 @@ export default function Footer() {
               listing is a unique, authenticated card, sold direct.
             </p>
             <p style={{ color: "var(--grey-dim)", fontSize: 13, lineHeight: 1.7, marginBottom: 16 }}>
-              <a href="mailto:hello@apexgradingcompany.com" style={{ color: "var(--grey-dim)" }}>hello@apexgradingcompany.com</a>
+              <a href="mailto:hello@shopapexcards.com" style={{ color: "var(--grey-dim)" }}>hello@shopapexcards.com</a>
               <br />
               18 Glen St, Barrhead, Glasgow G78 1QA
             </p>

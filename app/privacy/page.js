@@ -50,8 +50,8 @@ export default function PrivacyPage() {
           You have the right to access, correct, erase, restrict or object to our processing of your
           personal information, and to request a copy of it. To exercise any of these rights,
           contact us at{" "}
-          <a href="mailto:hello@apexgradingcompany.com" style={{ color: "var(--gold-light)" }}>
-            hello@apexgradingcompany.com
+          <a href="mailto:hello@shopapexcards.com" style={{ color: "var(--gold-light)" }}>
+            hello@shopapexcards.com
           </a>. If you are in the UK, you also have the right to complain to the Information
           Commissioner's Office (ICO).
         </Section>
