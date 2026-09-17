@@ -30,7 +30,7 @@ export default function Nav() {
     router.refresh();
   }
 
-  const links = (
+  const categoryLinks = (
     <>
       <Link href="/shop" className={pathname.startsWith("/shop") ? "active" : ""}>
         Shop
@@ -59,6 +59,12 @@ export default function Nav() {
       <Link href="/merch" className={pathname.startsWith("/merch") ? "active" : ""}>
         Merch
       </Link>
+    </>
+  );
+
+  const links = (
+    <>
+      {categoryLinks}
       <a
         href="https://www.apexgradingcompany.com"
         target="_blank"
@@ -78,7 +84,15 @@ export default function Nav() {
           <img src="/assets/apex-icon.jpg" alt="" />
           <span className="nav-wordmark">APEX <span>CARDS</span></span>
         </Link>
-        <nav className="nav-links">{links}</nav>
+        <a
+          href="https://www.apexgradingcompany.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="main-site-cta nav-cta-top"
+        >
+          <img src="/assets/apex-icon.jpg" alt="" />
+          Get your cards graded
+        </a>
         <div className="nav-actions">
           <button
             className="nav-toggle"
@@ -106,6 +120,10 @@ export default function Nav() {
             </>
           )}
         </div>
+      </div>
+
+      <div className="nav-subbar">
+        <div className="wrap nav-links">{categoryLinks}</div>
       </div>
 
       {menuOpen && (
