@@ -49,31 +49,36 @@ export default function Footer() {
               <br />
               18 Glen St, Barrhead, Glasgow G78 1QA
             </p>
-            <div style={{ display: "flex", gap: 14 }}>
+            <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
               <a
                 href="https://www.instagram.com/shopapexcards/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Apex Cards on Instagram"
-                style={{ color: "var(--grey)", display: "inline-flex" }}
+                style={{ display: "inline-flex" }}
               >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <rect x="3" y="3" width="18" height="18" rx="5" />
-                  <circle cx="12" cy="12" r="4" />
-                  <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none" />
+                <svg width="30" height="30" viewBox="0 0 24 24">
+                  <defs>
+                    <linearGradient id="ig-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#FEDA75" />
+                      <stop offset="25%" stopColor="#FA7E1E" />
+                      <stop offset="50%" stopColor="#D62976" />
+                      <stop offset="75%" stopColor="#962FBF" />
+                      <stop offset="100%" stopColor="#4F5BD5" />
+                    </linearGradient>
+                  </defs>
+                  <rect x="2" y="2" width="20" height="20" rx="5.5" fill="url(#ig-gradient)" />
+                  <circle cx="12" cy="12" r="4.6" fill="none" stroke="#fff" strokeWidth="1.6" />
+                  <circle cx="17.4" cy="6.6" r="1.15" fill="#fff" />
                 </svg>
               </a>
-              <a
-                href="https://www.facebook.com/share/19iVD8fCuP/?mibextid=wwXIfr"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Apex Cards on Facebook"
-                style={{ color: "var(--grey)", display: "inline-flex" }}
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M13.5 21v-7.5h2.5l.4-3H13.5V8.5c0-.9.25-1.5 1.55-1.5H16.5V4.35C16.2 4.3 15.2 4.2 14 4.2c-2.4 0-4 1.45-4 4.1V10.5H7.5v3H10V21h3.5z" />
+              {/* Facebook link removed for now — was pointing to the wrong page. Icon stays visible as a placeholder until the correct URL is confirmed. */}
+              <span aria-hidden="true" style={{ display: "inline-flex", opacity: 0.9 }}>
+                <svg width="30" height="30" viewBox="0 0 24 24">
+                  <rect x="2" y="2" width="20" height="20" rx="5.5" fill="#1877F2" />
+                  <path d="M14.5 21v-7.5h2.5l.4-3H14.5V8.5c0-.9.25-1.5 1.55-1.5H17.5V4.35C17.2 4.3 16.2 4.2 15 4.2c-2.4 0-4 1.45-4 4.1V10.5H8.5v3H11V21h3.5z" fill="#fff" />
                 </svg>
-              </a>
+              </span>
             </div>
           </div>
 
