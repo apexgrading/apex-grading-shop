@@ -6,6 +6,7 @@ import AnnouncementBanner from "../components/AnnouncementBanner";
 import CookieConsent from "../components/CookieConsent";
 import ServiceWorkerRegister from "../components/ServiceWorkerRegister";
 import AddToHomeScreenPrompt from "../components/AddToHomeScreenPrompt";
+import TawkChat from "../components/TawkChat";
 
 export const metadata = {
   title: "Apex Cards",
@@ -40,6 +41,7 @@ export default function RootLayout({ children }) {
           <CookieConsent />
           <ServiceWorkerRegister />
           <AddToHomeScreenPrompt />
+          <TawkChat />
         </CartProvider>
       </body>
     </html>
