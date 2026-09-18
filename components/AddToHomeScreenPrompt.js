@@ -47,7 +47,7 @@ export default function AddToHomeScreenPrompt() {
   return (
     <div
       style={{
-        position: "fixed", left: 12, right: 12, bottom: 12, zIndex: 85,
+        position: "fixed", left: 12, right: 78, bottom: 12, zIndex: 85,
         maxWidth: 420, margin: "0 auto",
         background: "var(--bg-panel)", border: "1px solid var(--gold)", borderRadius: 12,
         padding: "16px 18px", boxShadow: "0 20px 50px rgba(0,0,0,0.5)",
