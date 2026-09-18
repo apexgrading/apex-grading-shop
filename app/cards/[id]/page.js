@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getCardById } from "../../../lib/data";
 import AddToCartButton from "../../../components/AddToCartButton";
 import CardImageViewer from "../../../components/CardImageViewer";
+import NotifyMeForm from "../../../components/NotifyMeForm";
 
 function formatPrice(cents) {
   return `£${(cents / 100).toLocaleString()}`;
@@ -103,6 +104,15 @@ export default async function CardDetailPage({ params }) {
             }}>
               This is a pre-order — you're reserving this card ahead of arrival. Payment is taken now; it ships once it's in hand.
             </p>
+          )}
+
+          {card.sold && (
+            <div style={{
+              background: "var(--bg-panel)", border: "1px solid var(--line)", borderRadius: 6,
+              padding: "14px 16px", margin: "0 0 20px",
+            }}>
+              <NotifyMeForm category={card.category} cardTitle={card.title} />
+            </div>
           )}
 
           <p style={{ color: "var(--grey)", fontSize: 14.5, lineHeight: 1.65, maxWidth: "48ch" }}>

@@ -103,6 +103,7 @@ export default function Nav() {
           {user === undefined ? null : user ? (
             <>
               <span className="nav-user-email" style={{ color: "var(--grey)", fontSize: 13.5 }}>{user.email}</span>
+              <Link href="/account/orders" className="btn-ghost-nav nav-signin">My Orders</Link>
               <button onClick={signOut} className="btn-ghost-nav nav-signout" style={{ background: "none", cursor: "pointer" }}>
                 Sign out
               </button>
@@ -127,6 +128,9 @@ export default function Nav() {
           {user === undefined ? null : user ? (
             <>
               <span style={{ color: "var(--grey)", fontSize: 13.5, padding: "4px 0" }}>{user.email}</span>
+              <Link href="/account/orders" className="btn btn-secondary" style={{ width: "100%", textAlign: "center", marginBottom: 8, display: "block" }}>
+                My Orders
+              </Link>
               <button onClick={signOut} className="btn btn-secondary" style={{ width: "100%" }}>
                 Sign out
               </button>
