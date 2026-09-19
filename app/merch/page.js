@@ -51,8 +51,19 @@ export default function MerchPage() {
           { img: "/assets/merch-penny-sleeves.jpg", name: "Penny Sleeves (100)", price: "£2" },
           { img: "/assets/merch-top-loaders.jpg", name: "Top Loaders (25)", price: "£4" },
           { img: "/assets/merch-keyring.jpg", name: "Logo Keyring", price: "£1" },
+          { img: "/assets/merch-etb-case.jpg", name: "ETB Acrylic Display Case", price: "£20", soldOut: true },
+          { img: "/assets/merch-booster-box-case.jpg", name: "Booster Box Acrylic Display Case", price: "£15", soldOut: true },
         ].map((p) => (
-          <div key={p.name} style={{ background: "var(--bg-panel)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }}>
+          <div key={p.name} style={{ background: "var(--bg-panel)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden", position: "relative" }}>
+            {p.soldOut && (
+              <div style={{
+                position: "absolute", top: 8, left: 8, zIndex: 2,
+                background: "#3A3A38", color: "var(--white)", fontSize: 10, fontWeight: 700,
+                letterSpacing: "0.04em", textTransform: "uppercase", padding: "3px 8px", borderRadius: 4,
+              }}>
+                Sold Out
+              </div>
+            )}
             <img src={p.img} alt={p.name} style={{ width: "100%", aspectRatio: "1", objectFit: "cover", display: "block" }} />
             <div style={{ padding: "10px 10px 12px", textAlign: "left" }}>
               <div style={{ fontSize: 12.5, fontWeight: 600, color: "var(--white)" }}>{p.name}</div>
