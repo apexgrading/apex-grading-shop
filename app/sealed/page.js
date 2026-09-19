@@ -130,7 +130,7 @@ export default function SealedProductPage() {
                     <Link href={`/cards/${card.id}`} style={{ position: "relative" }}>
                       {oos && (
                         <div style={{
-                          position: "absolute", top: 10, left: 10, zIndex: 3,
+                          position: "absolute", top: 10, right: 10, zIndex: 3,
                           background: "#3A3A38", color: "var(--white)", fontSize: 11, fontWeight: 700,
                           letterSpacing: "0.04em", textTransform: "uppercase", padding: "4px 10px", borderRadius: 4,
                         }}>
