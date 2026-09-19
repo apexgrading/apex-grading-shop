@@ -263,6 +263,7 @@ button, select, input { font-family: inherit; }
 }
 .grid-frame img:not(.grid-frame-badge) { width: 100%; height: 100%; object-fit: contain; padding: 10px; }
 .grid-frame-landscape { aspect-ratio: 1 / 1 !important; }
+.grid-frame-landscape img:not(.grid-frame-badge) { object-fit: cover !important; padding: 0 !important; }
 .grid-frame-landscape img:not(.grid-frame-badge) { object-fit: cover; padding: 0; }
 .grid-frame img.grid-frame-badge {
   position: absolute; top: 8px; left: 8px; width: 20px !important; height: auto;
