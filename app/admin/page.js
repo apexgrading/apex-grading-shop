@@ -1,11 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function AdminPage() {
-  const [authed, setAuthed] = useState(false);
+  const [authed, setAuthed] = useState(null); // null = checking, then true/false
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(null);
+
+  useEffect(() => {
+    // Detect an existing valid session cookie so returning to /admin doesn't
+    // force a fresh login every time, as long as the session hasn't expired.
+    fetch("/api/admin/cards?page=1")
+      .then((res) => setAuthed(res.status !== 401))
+      .catch(() => setAuthed(false));
+  }, []);
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -21,6 +29,8 @@ export default function AdminPage() {
       setLoginError(json.error || "Incorrect password.");
     }
   }
+
+  if (authed === null) return null;
 
   if (!authed) {
     return (
