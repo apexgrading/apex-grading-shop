@@ -2,6 +2,7 @@ import Link from "next/link";
 import { listCards } from "../lib/data";
 import ProductCard from "../components/ProductCard";
 import HomeSearchBar from "../components/HomeSearchBar";
+import SignupPopup from "../components/SignupPopup";
 
 // Cards can be sold or added at any time (checkout, admin) — force this page to
 // query the database on every request instead of being statically cached at build time.
@@ -62,6 +63,7 @@ export default async function HomePage() {
 
   return (
     <main>
+      <SignupPopup />
       {/* HERO */}
       <section style={{
         padding: "72px 0 80px",
