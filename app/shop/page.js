@@ -113,6 +113,7 @@ function ShopPageInner() {
               <option value="grade-desc">Grade: high to low</option>
               <option value="price-asc">Price: low to high</option>
               <option value="price-desc">Price: high to low</option>
+              <option value="a-z">Name: A to Z</option>
             </select>
           </div>
           <div className="search-field">
