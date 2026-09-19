@@ -23,9 +23,22 @@ export default function SealedProductPage() {
     if (minPrice) params.set("minPrice", String(Math.round(parseFloat(minPrice) * 100)));
     if (maxPrice) params.set("maxPrice", String(Math.round(parseFloat(maxPrice) * 100)));
 
-    const res = await fetch(`/api/cards?${params.toString()}`);
-    const json = await res.json();
-    setAllCards(json.cards || []);
+    // This page needs the FULL dataset (not just one page) since Stock Status
+    // and Price filtering both happen client-side — otherwise items past the
+    // site's standard 24-per-page limit silently disappear.
+    let page = 1;
+    let all = [];
+    let totalPages = 1;
+    do {
+      params.set("page", String(page));
+      const res = await fetch(`/api/cards?${params.toString()}`);
+      const json = await res.json();
+      all = all.concat(json.cards || []);
+      totalPages = json.totalPages || 1;
+      page += 1;
+    } while (page <= totalPages && page <= 20); // hard safety cap
+
+    setAllCards(all);
     setLoading(false);
   }, [minPrice, maxPrice]);
 
