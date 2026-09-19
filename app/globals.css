@@ -265,7 +265,7 @@ button, select, input { font-family: inherit; }
 .grid-frame-landscape { position: relative; aspect-ratio: unset !important; height: 0 !important; padding-bottom: 100% !important; }
 .grid-frame-landscape img:not(.grid-frame-badge) {
   position: absolute !important; top: 0; left: 0; width: 100% !important; height: 100% !important;
-  object-fit: cover !important; padding: 0 !important;
+  object-fit: contain !important; padding: 12px !important; box-sizing: border-box !important;
 }
 .grid-frame img.grid-frame-badge {
   position: absolute; top: 8px; left: 8px; width: 20px !important; height: auto;
