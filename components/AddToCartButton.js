@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "../lib/cart-context";
 
@@ -12,8 +13,25 @@ export default function AddToCartButton({ card }) {
   const outOfStock = isStockItem && card.quantity <= 0;
   const atLimit = cartItem && cartItem.qty >= maxQty;
 
+  // Graded cards (not Mystery Slabs, which has its own separate Buy Now flow)
+  // can be put on hold pre-launch — still visible in the catalog, just not
+  // yet purchasable.
+  const checkHold = card.isGraded && card.category !== "Mystery Slabs";
+  const [onHold, setOnHold] = useState(false);
+  useEffect(() => {
+    if (!checkHold) return;
+    fetch("/api/settings/graded-hold")
+      .then((r) => r.json())
+      .then((d) => setOnHold(!!d.onHold))
+      .catch(() => {});
+  }, [checkHold]);
+
   if (card.sold) {
     return <button className="btn btn-secondary" disabled>Sold out</button>;
+  }
+
+  if (checkHold && onHold) {
+    return <button className="btn btn-secondary" disabled>Launching soon</button>;
   }
 
   if (outOfStock) {

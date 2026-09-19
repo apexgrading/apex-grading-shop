@@ -71,6 +71,27 @@ function UploadForm() {
   const [priceLoading, setPriceLoading] = useState(false);
   const [priceError, setPriceError] = useState(null);
   const [zoomedImage, setZoomedImage] = useState(null);
+  const [gradedHold, setGradedHold] = useState(null); // null = loading
+  const [holdSaving, setHoldSaving] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/admin/settings/graded-hold")
+      .then((r) => r.json())
+      .then((d) => setGradedHold(!!d.onHold))
+      .catch(() => setGradedHold(false));
+  }, []);
+
+  async function toggleGradedHold() {
+    setHoldSaving(true);
+    const next = !gradedHold;
+    const res = await fetch("/api/admin/settings/graded-hold", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ onHold: next }),
+    });
+    if (res.ok) setGradedHold(next);
+    setHoldSaving(false);
+  }
 
   function update(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -202,6 +223,34 @@ function UploadForm() {
         {" · "}
         <a href="/admin/subscribers" style={{ color: "var(--gold-light)", fontSize: 13.5 }}>Subscribers →</a>
       </p>
+
+      {gradedHold !== null && (
+        <div style={{
+          display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,
+          background: gradedHold ? "rgba(224,138,125,0.1)" : "var(--bg-panel)",
+          border: `1px solid ${gradedHold ? "rgba(224,138,125,0.35)" : "var(--line)"}`,
+          borderRadius: 8, padding: "12px 16px", marginBottom: 28,
+        }}>
+          <div>
+            <div style={{ fontSize: 13.5, fontWeight: 600, color: gradedHold ? "#E08A7D" : "var(--white)" }}>
+              {gradedHold ? "Graded cards are ON HOLD" : "Graded cards are live for purchase"}
+            </div>
+            <div style={{ fontSize: 12, color: "var(--grey-dim)", marginTop: 2 }}>
+              {gradedHold
+                ? "Cards show in the catalog but can't be bought yet. Mystery Slabs are unaffected."
+                : "Customers can buy graded cards normally."}
+            </div>
+          </div>
+          <button
+            onClick={toggleGradedHold}
+            disabled={holdSaving}
+            className={`btn ${gradedHold ? "btn-primary" : "btn-secondary"}`}
+            style={{ fontSize: 12.5, padding: "8px 14px", flexShrink: 0 }}
+          >
+            {holdSaving ? "…" : gradedHold ? "Launch now" : "Put on hold"}
+          </button>
+        </div>
+      )}
 
       {(form.category === "Pokémon" || form.category === "Magic: The Gathering" || form.category === "Yu-Gi-Oh!") && (
         <div style={{ background: "var(--bg-panel)", border: "1px solid var(--line)", borderRadius: 8, padding: 16, marginBottom: 28 }}>
