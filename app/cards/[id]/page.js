@@ -92,7 +92,15 @@ export default async function CardDetailPage({ params }) {
             <div className="spec-row">
               <span className="k">Availability</span>
               <span className="v">
-                {card.sold ? "Sold" : card.isPreorder ? `Pre-order${card.expectedDate ? ` — expected ${card.expectedDate}` : ""}` : "In stock — 1 available"}
+                {card.sold
+                  ? "Sold"
+                  : card.isStockItem && card.quantity <= 0
+                  ? "Out of Stock"
+                  : card.isPreorder
+                  ? `Pre-order${card.expectedDate ? ` — expected ${card.expectedDate}` : ""}`
+                  : card.isStockItem
+                  ? `In stock — ${card.quantity} available`
+                  : "In stock — 1 available"}
               </span>
             </div>
           </div>
@@ -106,7 +114,7 @@ export default async function CardDetailPage({ params }) {
             </p>
           )}
 
-          {card.sold && (
+          {(card.sold || (card.isStockItem && card.quantity <= 0)) && (
             <div style={{
               background: "var(--bg-panel)", border: "1px solid var(--line)", borderRadius: 6,
               padding: "14px 16px", margin: "0 0 20px",

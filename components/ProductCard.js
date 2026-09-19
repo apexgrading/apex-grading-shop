@@ -10,6 +10,7 @@ function formatPrice(cents) {
 export default function ProductCard({ card }) {
   const [showBack, setShowBack] = useState(false);
   const hasBack = !!card.imageUrlBack;
+  const outOfStock = card.isStockItem && !card.sold && card.quantity <= 0;
 
   function handleImageClick(e) {
     if (!hasBack) return;
@@ -23,7 +24,8 @@ export default function ProductCard({ card }) {
       <Link href={`/cards/${card.id}`}>
         <div className="product-media">
           {card.sold && <div className="sold-ribbon">Sold</div>}
-          {!card.sold && card.isPreorder && <div className="preorder-ribbon">Pre-order</div>}
+          {!card.sold && outOfStock && <div className="out-of-stock-ribbon">Out of Stock</div>}
+          {!card.sold && !outOfStock && card.isPreorder && <div className="preorder-ribbon">Pre-order</div>}
           {card.imageUrl ? (
             <div className="real-photo grid-frame" onClick={handleImageClick} style={hasBack ? { cursor: "pointer" } : undefined}>
               <img

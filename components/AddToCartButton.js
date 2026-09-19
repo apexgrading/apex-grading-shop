@@ -8,11 +8,16 @@ export default function AddToCartButton({ card }) {
   const router = useRouter();
   const cartItem = items.find((i) => i.id === card.id);
   const maxQty = card.quantity || 1;
-  const isStockItem = maxQty > 1;
+  const isStockItem = card.isStockItem;
+  const outOfStock = isStockItem && card.quantity <= 0;
   const atLimit = cartItem && cartItem.qty >= maxQty;
 
   if (card.sold) {
     return <button className="btn btn-secondary" disabled>Sold out</button>;
+  }
+
+  if (outOfStock) {
+    return <button className="btn btn-secondary" disabled>Out of Stock</button>;
   }
 
   // Unique one-of-a-kind items keep the original simple behavior — one unit,
