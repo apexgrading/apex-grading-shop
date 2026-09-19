@@ -50,7 +50,7 @@ export default function AdminPage() {
 function UploadForm() {
   const [form, setForm] = useState({
     title: "", category: "Pokémon", isGraded: "true", grade: "10", cert: "",
-    condition: "Near Mint", price: "", imageUrl: "", imageUrlBack: "", isPreorder: "false", expectedDate: "",
+    condition: "Near Mint", price: "", quantity: "1", imageUrl: "", imageUrlBack: "", isPreorder: "false", expectedDate: "",
   });
   const [file, setFile] = useState(null);
   const [fileBack, setFileBack] = useState(null);
@@ -143,7 +143,7 @@ function UploadForm() {
     setStatus("done");
     setForm({
       title: "", category: "Pokémon", isGraded: form.isGraded, grade: "10", cert: "",
-      condition: "Near Mint", price: "", imageUrl: "", imageUrlBack: "", isPreorder: "false", expectedDate: "",
+      condition: "Near Mint", price: "", quantity: "1", imageUrl: "", imageUrlBack: "", isPreorder: "false", expectedDate: "",
     });
     setFile(null);
     setFileBack(null);
@@ -305,6 +305,13 @@ function UploadForm() {
 
         <Field label="Price (GBP)">
           <input required type="number" step="0.01" min="0" value={form.price} onChange={(e) => update("price", e.target.value)} style={inputStyle} placeholder="249.00" />
+        </Field>
+
+        <Field label="Quantity in stock">
+          <input type="number" step="1" min="1" value={form.quantity} onChange={(e) => update("quantity", e.target.value)} style={inputStyle} placeholder="1" />
+          <p style={{ fontSize: 12, color: "var(--grey-dim)", marginTop: 6 }}>
+            Leave at 1 for a unique item (a single graded card). For sealed product or merch with multiple identical units, enter how many you have — the listing stays live with a lower count as they sell, instead of disappearing after one sale.
+          </p>
         </Field>
 
         <Field label="Availability">

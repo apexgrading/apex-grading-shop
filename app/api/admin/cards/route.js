@@ -89,6 +89,8 @@ export async function POST(request) {
   const isPreorder = formData.get("isPreorder")?.toString() === "true";
   const expectedDate = formData.get("expectedDate")?.toString().trim();
   const priceDollars = parseFloat(formData.get("price"));
+  const quantityRaw = formData.get("quantity")?.toString().trim();
+  const quantity = quantityRaw ? parseInt(quantityRaw, 10) : 1;
   const file = formData.get("image");
   const pastedImageUrl = formData.get("imageUrl")?.toString().trim();
   const fileBack = formData.get("imageBack");
@@ -96,6 +98,9 @@ export async function POST(request) {
 
   if (!title || !category || Number.isNaN(priceDollars)) {
     return NextResponse.json({ error: "Fill in title, category, and price." }, { status: 400 });
+  }
+  if (Number.isNaN(quantity) || quantity < 1) {
+    return NextResponse.json({ error: "Quantity must be at least 1." }, { status: 400 });
   }
 
   if (isGraded) {
@@ -130,6 +135,7 @@ export async function POST(request) {
     condition,
     isPreorder,
     expectedDate,
+    quantity,
   });
 
   return NextResponse.json({ card });

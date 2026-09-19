@@ -18,7 +18,7 @@ const SHOP_LINKS = [
 export default function Nav() {
   const pathname = usePathname();
   const router = useRouter();
-  const { items } = useCart();
+  const { itemCount } = useCart();
   const [user, setUser] = useState(undefined); // undefined = loading, null = signed out
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -98,7 +98,7 @@ export default function Nav() {
           </button>
           <Link href="/cart" className="cart-link">
             Cart
-            {items.length > 0 && <span className="cart-badge">{items.length}</span>}
+            {itemCount > 0 && <span className="cart-badge">{itemCount}</span>}
           </Link>
           {user === undefined ? null : user ? (
             <>

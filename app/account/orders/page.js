@@ -86,8 +86,8 @@ export default function MyOrdersPage() {
               <div style={{ fontSize: 13.5, color: "var(--grey)", marginBottom: 14 }}>
                 {order.items.map((i) => (
                   <div key={i.id} style={{ display: "flex", justifyContent: "space-between", padding: "3px 0" }}>
-                    <span>{i.card.title}</span>
-                    <span>{formatPrice(i.price)}</span>
+                    <span>{i.card.title}{i.quantity > 1 ? ` × ${i.quantity}` : ""}</span>
+                    <span>{formatPrice(i.price * (i.quantity || 1))}</span>
                   </div>
                 ))}
               </div>

@@ -1,39 +1,51 @@
 import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
-import { getAvailableCardsByIds, createPendingOrder, setOrderStripeSession } from "../../../lib/data";
+import { createPendingOrder, setOrderStripeSession, getAvailableCardsWithQuantityCheck } from "../../../lib/data";
 import { stripe } from "../../../lib/stripe";
 import { getRegion, FREE_SHIPPING_THRESHOLD } from "../../../lib/shipping";
 
 export async function POST(request) {
   const body = await request.json().catch(() => null);
-  const cardIds = body?.cardIds;
   const region = getRegion(body?.region);
 
-  if (!Array.isArray(cardIds) || cardIds.length === 0) {
-    return NextResponse.json({ error: "cardIds must be a non-empty array" }, { status: 400 });
+  // Accepts either the newer { items: [{id, qty}] } shape (cart page, supports
+  // buying multiple of the same stock item) or the older flat cardIds array
+  // (Buy Now buttons, always qty 1 each) for backward compatibility.
+  const idCounts = {};
+  if (Array.isArray(body?.items)) {
+    for (const it of body.items) {
+      const id = parseInt(it.id, 10);
+      const qty = Math.max(1, parseInt(it.qty, 10) || 1);
+      if (!Number.isNaN(id)) idCounts[id] = (idCounts[id] || 0) + qty;
+    }
+  } else if (Array.isArray(body?.cardIds)) {
+    for (const rawId of body.cardIds) {
+      const id = parseInt(rawId, 10);
+      if (!Number.isNaN(id)) idCounts[id] = (idCounts[id] || 0) + 1;
+    }
   }
 
-  const ids = cardIds.map((id) => parseInt(id, 10));
+  if (Object.keys(idCounts).length === 0) {
+    return NextResponse.json({ error: "Your cart is empty." }, { status: 400 });
+  }
 
-  // Every card is a single unique unit — re-check availability against the DB,
-  // never trust prices or availability sent from the client.
-  const cards = await getAvailableCardsByIds(ids);
-  const foundIds = new Set(cards.map((c) => c.id));
-  const unavailable = ids.filter((id) => !foundIds.has(id));
-
-  if (unavailable.length > 0) {
+  // Every quantity is re-checked against real stock server-side — never trust
+  // prices or availability sent from the client.
+  const check = await getAvailableCardsWithQuantityCheck(idCounts);
+  if (!check.ok) {
     return NextResponse.json(
-      { error: "Some cards in your cart are no longer available.", unavailableIds: unavailable },
+      { error: "Some items in your cart are no longer available in the quantity requested.", unavailableIds: check.unavailableIds },
       { status: 409 }
     );
   }
+  const cards = check.cards; // each has .requestedQty attached
 
   const placeholder = `pending_${randomUUID()}`;
   const orderId = await createPendingOrder(placeholder, cards);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
-  const subtotal = cards.reduce((sum, c) => sum + c.price, 0);
+  const subtotal = cards.reduce((sum, c) => sum + c.price * c.requestedQty, 0);
   const qualifiesForFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
   const standardAmount = qualifiesForFreeShipping ? 0 : region.standard.amount;
   const standardLabel = qualifiesForFreeShipping
@@ -74,7 +86,7 @@ export async function POST(request) {
       },
     ],
     line_items: cards.map((card) => ({
-      quantity: 1,
+      quantity: card.requestedQty,
       price_data: {
         currency: "gbp",
         unit_amount: card.price,

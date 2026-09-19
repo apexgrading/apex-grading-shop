@@ -11,7 +11,7 @@ function formatPrice(cents) {
 }
 
 export default function CartPage() {
-  const { items, removeFromCart, total, loaded } = useCart();
+  const { items, removeFromCart, updateQty, total, itemCount, loaded } = useCart();
   const [checkingOut, setCheckingOut] = useState(false);
   const [error, setError] = useState(null);
   const [region, setRegion] = useState("uk");
@@ -23,7 +23,7 @@ export default function CartPage() {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cardIds: items.map((i) => i.id), region }),
+        body: JSON.stringify({ items: items.map((i) => ({ id: i.id, qty: i.qty })), region }),
       });
       const json = await res.json();
       if (!res.ok) {
@@ -48,7 +48,7 @@ export default function CartPage() {
         Your cart
       </h1>
       <p style={{ color: "var(--grey)", fontSize: 14.5, margin: "0 0 8px" }}>
-        Each graded card is a single unique unit — once it's sold, it's off the site.
+        Graded cards are single unique units — once sold, they're off the site. Sealed product and merch may have more than one in stock.
       </p>
 
       {items.length === 0 ? (
@@ -69,16 +69,41 @@ export default function CartPage() {
                 )}
                 <div>
                   <h4>{item.title}</h4>
-                  <div className="meta">{item.category} · Grade {item.grade} · Cert {item.cert}</div>
+                  <div className="meta">
+                    {item.category}
+                    {item.grade ? ` · Grade ${item.grade}` : ""}
+                    {item.cert ? ` · Cert ${item.cert}` : ""}
+                  </div>
+                  {item.maxQty > 1 && (
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 8 }}>
+                      <button
+                        type="button"
+                        onClick={() => updateQty(item.id, item.qty - 1)}
+                        style={{ background: "var(--bg-panel)", border: "1px solid var(--line)", borderRadius: 4, color: "var(--white)", width: 26, height: 26, cursor: "pointer" }}
+                      >
+                        −
+                      </button>
+                      <span style={{ fontSize: 14, minWidth: 18, textAlign: "center" }}>{item.qty}</span>
+                      <button
+                        type="button"
+                        disabled={item.qty >= item.maxQty}
+                        onClick={() => updateQty(item.id, item.qty + 1)}
+                        style={{ background: "var(--bg-panel)", border: "1px solid var(--line)", borderRadius: 4, color: item.qty >= item.maxQty ? "var(--grey-dim)" : "var(--white)", width: 26, height: 26, cursor: item.qty >= item.maxQty ? "not-allowed" : "pointer" }}
+                      >
+                        +
+                      </button>
+                      <span style={{ fontSize: 12, color: "var(--grey-dim)" }}>({item.maxQty} in stock)</span>
+                    </div>
+                  )}
                 </div>
-                <div className="price">{formatPrice(item.price)}</div>
+                <div className="price">{formatPrice(item.price * item.qty)}</div>
                 <button className="remove" onClick={() => removeFromCart(item.id)}>Remove</button>
               </div>
             ))}
           </div>
 
           <div className="cart-summary">
-            <span>Total ({items.length} card{items.length === 1 ? "" : "s"})</span>
+            <span>Total ({itemCount} item{itemCount === 1 ? "" : "s"})</span>
             <span className="total">{formatPrice(total)}</span>
           </div>
 
