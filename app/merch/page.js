@@ -41,19 +41,27 @@ export default function MerchPage() {
       </p>
 
       <div style={{
-        display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, maxWidth: 460, margin: "0 auto 48px", textAlign: "left",
-      }} className="merch-teaser-grid">
+        display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20, maxWidth: 640, margin: "0 auto 48px",
+      }} className="merch-preview-grid">
         {[
-          { label: "Apparel", desc: "Hoodies, tees, caps, bucket hats" },
-          { label: "Card sleeves", desc: "Penny sleeves & top loaders" },
-          { label: "Accessories", desc: "Logo keyrings" },
-        ].map((c) => (
-          <div key={c.label} style={{ background: "var(--bg-panel)", border: "1px solid var(--line)", borderRadius: 8, padding: "16px 14px" }}>
-            <div style={{ fontSize: 13.5, fontWeight: 600, color: "var(--gold-light)", marginBottom: 4 }}>{c.label}</div>
-            <div style={{ fontSize: 12, color: "var(--grey)", lineHeight: 1.5 }}>{c.desc}</div>
+          { img: "/assets/merch-hoodie.jpg", name: "Hoodie", price: "£10" },
+          { img: "/assets/merch-cap.jpg", name: "Mesh Cap", price: "£5" },
+          { img: "/assets/merch-bucket-hat.jpg", name: "Bucket Hat", price: "£5" },
+          { img: "/assets/merch-tshirt.jpg", name: "T-Shirt", price: "£4" },
+        ].map((p) => (
+          <div key={p.name} style={{ background: "var(--bg-panel)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }}>
+            <img src={p.img} alt={p.name} style={{ width: "100%", aspectRatio: "1", objectFit: "cover", display: "block" }} />
+            <div style={{ padding: "10px 10px 12px", textAlign: "left" }}>
+              <div style={{ fontSize: 12.5, fontWeight: 600, color: "var(--white)" }}>{p.name}</div>
+              <div style={{ fontSize: 12.5, color: "var(--gold-light)" }}>{p.price}</div>
+            </div>
           </div>
         ))}
       </div>
+
+      <p style={{ color: "var(--grey-dim)", fontSize: 12.5, margin: "-30px auto 40px", maxWidth: "40ch" }}>
+        Prices confirmed — not yet available to purchase. Sign up below and we'll email you the moment they go live.
+      </p>
 
       {status === "done" ? (
         <p style={{ color: "var(--gold-light)", fontSize: 15 }}>You're on the list — we'll email you when it's live.</p>
