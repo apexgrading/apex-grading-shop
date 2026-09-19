@@ -49,6 +49,7 @@ export default function MerchPage() {
           { img: "/assets/merch-bucket-hat.jpg", name: "Bucket Hat", price: "£5" },
           { img: "/assets/merch-tshirt.jpg", name: "T-Shirt", price: "£4" },
           { img: "/assets/merch-penny-sleeves.jpg", name: "Penny Sleeves (100)", price: "£2" },
+          { img: "/assets/merch-top-loaders.jpg", name: "Top Loaders (25)", price: "£4" },
         ].map((p) => (
           <div key={p.name} style={{ background: "var(--bg-panel)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }}>
             <img src={p.img} alt={p.name} style={{ width: "100%", aspectRatio: "1", objectFit: "cover", display: "block" }} />
