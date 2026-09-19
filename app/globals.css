@@ -403,4 +403,5 @@ details[open] summary::after { content: "–"; }
 }
 @media (max-width: 640px) {
   .announcement-banner { font-size: 12.5px; padding: 10px 0; }
+  .merch-teaser-grid { grid-template-columns: 1fr !important; }
 }

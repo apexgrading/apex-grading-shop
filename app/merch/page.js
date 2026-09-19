@@ -36,9 +36,24 @@ export default function MerchPage() {
         Apex Cards merchandise
       </h1>
       <p style={{ color: "var(--grey)", fontSize: 15.5, lineHeight: 1.65, maxWidth: "44ch", margin: "0 auto 40px" }}>
-        Hoodies, t-shirts, and more — official Apex Cards gear is on the way. Drop your email
+        Official Apex Cards gear and card-care supplies are on the way. Drop your email
         and we'll let you know the moment it launches.
       </p>
+
+      <div style={{
+        display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, maxWidth: 460, margin: "0 auto 48px", textAlign: "left",
+      }} className="merch-teaser-grid">
+        {[
+          { label: "Apparel", desc: "Hoodies, tees, caps, bucket hats" },
+          { label: "Card sleeves", desc: "Penny sleeves & top loaders" },
+          { label: "Accessories", desc: "Logo keyrings" },
+        ].map((c) => (
+          <div key={c.label} style={{ background: "var(--bg-panel)", border: "1px solid var(--line)", borderRadius: 8, padding: "16px 14px" }}>
+            <div style={{ fontSize: 13.5, fontWeight: 600, color: "var(--gold-light)", marginBottom: 4 }}>{c.label}</div>
+            <div style={{ fontSize: 12, color: "var(--grey)", lineHeight: 1.5 }}>{c.desc}</div>
+          </div>
+        ))}
+      </div>
 
       {status === "done" ? (
         <p style={{ color: "var(--gold-light)", fontSize: 15 }}>You're on the list — we'll email you when it's live.</p>
