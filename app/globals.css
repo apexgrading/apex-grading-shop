@@ -372,6 +372,14 @@ button, select, input { font-family: inherit; }
   .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
   .hero-flank { display: none; }
   .hero-flank-grid { grid-template-columns: 1fr !important; }
+  .hero-mobile-badges { display: flex !important; }
+}
+.hero-mobile-badges {
+  display: none; align-items: center; justify-content: center; gap: 10px;
+  margin: 0 0 20px;
+}
+.hero-mobile-badges img {
+  height: 40px; width: auto; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 @media (max-width: 560px) {
   .how-grid, .feature-grid { grid-template-columns: 1fr !important; }

@@ -73,6 +73,12 @@ export default async function HomePage() {
           <img src="/assets/hero-slab-left.jpg" alt="Cynthia's Garchomp ex, Gem Mint 10, Apex Grading" className="hero-flank hero-flank-left" />
 
           <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
+            <div className="hero-mobile-badges">
+              <img src="/assets/badge-apex.jpg" alt="Apex Cards" />
+              <img src="/assets/badge-mystery-pack.jpg" alt="Mystery Pack" />
+              <img src="/assets/badge-pokemon30.jpg" alt="Pokémon 30th Anniversary" />
+              <img src="/assets/badge-topps.jpg" alt="Topps" />
+            </div>
             <p style={{
               fontSize: 12.5, color: "var(--gold-light)", marginBottom: 18, display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
               fontFamily: "'Anton', var(--sans)", textTransform: "uppercase", letterSpacing: "0.04em",
