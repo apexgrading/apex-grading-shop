@@ -15,6 +15,9 @@ export default function AdminListingsPage() {
   const [search, setSearch] = useState("");
   const [deletingId, setDeletingId] = useState(null);
   const [confirmId, setConfirmId] = useState(null);
+  const [qtyDrafts, setQtyDrafts] = useState({}); // { [cardId]: "3" } while editing
+  const [savingQtyId, setSavingQtyId] = useState(null);
+  const [qtyError, setQtyError] = useState({});
 
   const loadCards = useCallback(async (page = 1, searchTerm = search) => {
     setLoading(true);
@@ -60,6 +63,33 @@ export default function AdminListingsPage() {
     setConfirmId(null);
   }
 
+  async function handleSaveQty(id) {
+    const raw = qtyDrafts[id];
+    const qty = parseInt(raw, 10);
+    if (Number.isNaN(qty) || qty < 0) {
+      setQtyError((e) => ({ ...e, [id]: "Enter 0 or more." }));
+      return;
+    }
+    setSavingQtyId(id);
+    setQtyError((e) => ({ ...e, [id]: null }));
+    const res = await fetch(`/api/admin/cards/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ quantity: qty }),
+    });
+    if (res.ok) {
+      setData((d) => ({
+        ...d,
+        cards: d.cards.map((c) => (c.id === id ? { ...c, quantity: qty, sold: qty > 0 ? false : c.isStockItem ? false : true } : c)),
+      }));
+      setQtyDrafts((q) => { const n = { ...q }; delete n[id]; return n; });
+    } else {
+      const json = await res.json().catch(() => ({}));
+      setQtyError((e) => ({ ...e, [id]: json.error || "Couldn't save." }));
+    }
+    setSavingQtyId(null);
+  }
+
   function handleSearch(e) {
     e.preventDefault();
     loadCards(1, search);
@@ -94,6 +124,7 @@ export default function AdminListingsPage() {
       <h1 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: 30, marginBottom: 8 }}>Manage listings</h1>
       <p style={{ color: "var(--grey)", fontSize: 14, marginBottom: 8 }}>
         {data.total} card{data.total === 1 ? "" : "s"} total. Deleting removes it permanently — order history stays intact.
+        Stock items (sealed product, merch) show a quantity field — update it any time, including to restock after Out of Stock.
       </p>
       <p style={{ marginBottom: 28 }}>
         <a href="/admin" style={{ color: "var(--gold-light)", fontSize: 13.5 }}>← Back to upload</a>
@@ -123,7 +154,7 @@ export default function AdminListingsPage() {
               key={card.id}
               style={{
                 display: "flex", alignItems: "center", gap: 14, padding: "12px 14px",
-                border: "1px solid var(--line)", borderRadius: 8, background: "var(--bg-panel)",
+                border: "1px solid var(--line)", borderRadius: 8, background: "var(--bg-panel)", flexWrap: "wrap",
               }}
             >
               {card.imageUrl ? (
@@ -132,15 +163,46 @@ export default function AdminListingsPage() {
                 <div style={{ width: 40, height: 56, borderRadius: 4, background: "var(--bg)", flexShrink: 0 }} />
               )}
 
-              <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ flex: 1, minWidth: 160 }}>
                 <div style={{ fontSize: 14, color: "var(--white)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {card.title}
                 </div>
                 <div style={{ fontSize: 12.5, color: "var(--grey-dim)" }}>
                   {card.category} · {card.isGraded ? `Grade ${card.grade}` : card.condition} · {formatPrice(card.price)}
                   {card.sold && <span style={{ color: "var(--gold-light)" }}> · Sold</span>}
+                  {!card.sold && card.isStockItem && card.quantity <= 0 && <span style={{ color: "var(--grey)" }}> · Out of Stock</span>}
                 </div>
               </div>
+
+              {card.isStockItem && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, flexShrink: 0 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <label style={{ fontSize: 11.5, color: "var(--grey-dim)" }}>Qty</label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={qtyDrafts[card.id] ?? card.quantity}
+                      onChange={(e) => setQtyDrafts((q) => ({ ...q, [card.id]: e.target.value }))}
+                      style={{
+                        width: 56, background: "var(--bg)", border: "1px solid var(--line)", borderRadius: 4,
+                        padding: "5px 6px", color: "var(--white)", fontSize: 13,
+                      }}
+                    />
+                    <button
+                      onClick={() => handleSaveQty(card.id)}
+                      disabled={savingQtyId === card.id || qtyDrafts[card.id] === undefined}
+                      style={{
+                        background: "var(--gold)", color: "#141200", border: "none", borderRadius: 4,
+                        padding: "6px 10px", fontSize: 12, fontWeight: 600, cursor: "pointer",
+                        opacity: qtyDrafts[card.id] === undefined ? 0.4 : 1,
+                      }}
+                    >
+                      {savingQtyId === card.id ? "…" : "Save"}
+                    </button>
+                  </div>
+                  {qtyError[card.id] && <span style={{ fontSize: 11, color: "#E08A7D" }}>{qtyError[card.id]}</span>}
+                </div>
+              )}
 
               {confirmId === card.id ? (
                 <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
