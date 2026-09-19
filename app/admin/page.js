@@ -299,7 +299,11 @@ function UploadForm() {
               <option>Moderately Played</option>
               <option>Heavily Played</option>
               <option>Damaged</option>
+              <option>Sealed</option>
             </select>
+            <p style={{ fontSize: 12, color: "var(--grey-dim)", marginTop: 6 }}>
+              Choose "Sealed" for ETBs, booster packs, booster boxes, and other sealed product — this is what makes them show up on the dedicated Sealed Product page.
+            </p>
           </Field>
         )}
 

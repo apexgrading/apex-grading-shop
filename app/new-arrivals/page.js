@@ -28,6 +28,7 @@ export default function NewArrivalsPage() {
     const params = new URLSearchParams();
     params.set("sinceDays", String(SINCE_DAYS));
     params.set("sort", "newest");
+    params.set("excludeCondition", "Sealed");
     if (category !== "all") params.set("category", category);
     else params.set("excludeCategory", "Mystery Slabs");
 

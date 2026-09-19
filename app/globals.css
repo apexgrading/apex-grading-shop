@@ -411,4 +411,5 @@ details[open] summary::after { content: "–"; }
 }
 @media (max-width: 640px) {
   .announcement-banner { font-size: 12.5px; padding: 10px 0; }
+  .sealed-layout { grid-template-columns: 1fr !important; padding: 20px 20px 80px !important; }
 }

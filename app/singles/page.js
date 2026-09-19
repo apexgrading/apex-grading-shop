@@ -44,6 +44,7 @@ function SinglesPageInner() {
     setLoading(true);
     const params = new URLSearchParams();
     params.set("graded", "false");
+    params.set("excludeCondition", "Sealed");
     if (category !== "all") params.set("category", category);
     params.set("sort", sort);
     if (search) params.set("search", search);
