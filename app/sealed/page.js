@@ -48,12 +48,19 @@ export default function SealedProductPage() {
     return card.isStockItem ? card.quantity <= 0 : false;
   }
 
-  const filtered = allCards.filter((card) => {
-    const oos = isOutOfStock(card);
-    if (oos && !stockFilter.outOfStock) return false;
-    if (!oos && !stockFilter.inStock) return false;
-    return true;
-  });
+  const filtered = allCards
+    .filter((card) => {
+      const oos = isOutOfStock(card);
+      if (oos && !stockFilter.outOfStock) return false;
+      if (!oos && !stockFilter.inStock) return false;
+      return true;
+    })
+    .sort((a, b) => {
+      // Real photos first, generic fallback items pushed to the bottom.
+      const aHas = a.imageUrl ? 0 : 1;
+      const bHas = b.imageUrl ? 0 : 1;
+      return aHas - bHas;
+    });
 
   return (
     <div>
@@ -151,7 +158,7 @@ export default function SealedProductPage() {
                         </div>
                       )}
                       {card.imageUrl ? (
-                        <div className="real-photo grid-frame">
+                        <div className="real-photo grid-frame grid-frame-landscape">
                           <img src={card.imageUrl} alt={card.title} />
                           <img src="/assets/apex-icon.jpg" alt="" className="grid-frame-badge" />
                         </div>
