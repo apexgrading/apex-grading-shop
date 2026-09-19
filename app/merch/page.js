@@ -41,13 +41,14 @@ export default function MerchPage() {
       </p>
 
       <div style={{
-        display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20, maxWidth: 640, margin: "0 auto 48px",
+        display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 20, maxWidth: 640, margin: "0 auto 48px",
       }} className="merch-preview-grid">
         {[
           { img: "/assets/merch-hoodie.jpg", name: "Hoodie", price: "£10" },
           { img: "/assets/merch-cap.jpg", name: "Mesh Cap", price: "£5" },
           { img: "/assets/merch-bucket-hat.jpg", name: "Bucket Hat", price: "£5" },
           { img: "/assets/merch-tshirt.jpg", name: "T-Shirt", price: "£4" },
+          { img: "/assets/merch-penny-sleeves.jpg", name: "Penny Sleeves (100)", price: "£2" },
         ].map((p) => (
           <div key={p.name} style={{ background: "var(--bg-panel)", border: "1px solid var(--line)", borderRadius: 10, overflow: "hidden" }}>
             <img src={p.img} alt={p.name} style={{ width: "100%", aspectRatio: "1", objectFit: "cover", display: "block" }} />
