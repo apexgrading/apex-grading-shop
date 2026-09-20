@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createAdminSession } from "../../../../lib/data";
-import { newSessionToken, sessionExpiry } from "../../../../lib/auth";
+import { newSessionToken, sessionExpiry, safeCompare } from "../../../../lib/auth";
 
 export async function POST(request) {
   const body = await request.json().catch(() => null);
@@ -14,7 +14,7 @@ export async function POST(request) {
     );
   }
 
-  if (password !== process.env.ADMIN_PASSWORD) {
+  if (!password || !safeCompare(password, process.env.ADMIN_PASSWORD)) {
     return NextResponse.json({ error: "Incorrect password." }, { status: 401 });
   }
 
