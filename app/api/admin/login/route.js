@@ -2,8 +2,15 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createAdminSession } from "../../../../lib/data";
 import { newSessionToken, sessionExpiry, safeCompare } from "../../../../lib/auth";
+import { checkRateLimit, recordFailedAttempt, clearAttempts, getClientIp } from "../../../../lib/rate-limit";
 
 export async function POST(request) {
+  const ip = getClientIp(request);
+  const allowed = await checkRateLimit(ip, "admin_login", { maxAttempts: 5, windowMinutes: 15 });
+  if (!allowed) {
+    return NextResponse.json({ error: "Too many attempts. Try again in 15 minutes." }, { status: 429 });
+  }
+
   const body = await request.json().catch(() => null);
   const password = body?.password;
 
@@ -15,8 +22,11 @@ export async function POST(request) {
   }
 
   if (!password || !safeCompare(password, process.env.ADMIN_PASSWORD)) {
+    await recordFailedAttempt(ip, "admin_login");
     return NextResponse.json({ error: "Incorrect password." }, { status: 401 });
   }
+
+  await clearAttempts(ip, "admin_login");
 
   const token = newSessionToken();
   await createAdminSession(token, sessionExpiry());

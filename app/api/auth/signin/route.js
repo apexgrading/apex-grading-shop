@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { getUserByEmail, createSession } from "../../../../lib/data";
 import { verifyPassword, newSessionToken, sessionExpiry, SESSION_COOKIE } from "../../../../lib/auth";
+import { checkRateLimit, recordFailedAttempt, clearAttempts } from "../../../../lib/rate-limit";
 
 export async function POST(request) {
   const body = await request.json().catch(() => null);
@@ -12,10 +13,20 @@ export async function POST(request) {
     return NextResponse.json({ error: "Enter your email and password." }, { status: 400 });
   }
 
+  // Rate-limited per account (not just per IP) so a specific customer's
+  // account can't be brute-forced from many different IPs either.
+  const allowed = await checkRateLimit(email, "customer_login", { maxAttempts: 8, windowMinutes: 15 });
+  if (!allowed) {
+    return NextResponse.json({ error: "Too many attempts. Try again in 15 minutes." }, { status: 429 });
+  }
+
   const user = await getUserByEmail(email);
   if (!user || !verifyPassword(password, user.salt, user.passwordHash)) {
+    await recordFailedAttempt(email, "customer_login");
     return NextResponse.json({ error: "Incorrect email or password." }, { status: 401 });
   }
+
+  await clearAttempts(email, "customer_login");
 
   const token = newSessionToken();
   await createSession(user.id, token, sessionExpiry());

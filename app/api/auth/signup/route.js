@@ -3,8 +3,18 @@ import { cookies } from "next/headers";
 import { createUser, getUserByEmail, createSession, addSubscriber } from "../../../../lib/data";
 import { hashPassword, newSessionToken, sessionExpiry, SESSION_COOKIE } from "../../../../lib/auth";
 import { sendEmail, accountConfirmationHtml, adminNotificationHtml } from "../../../../lib/email";
+import { checkRateLimit, recordFailedAttempt, getClientIp } from "../../../../lib/rate-limit";
 
 export async function POST(request) {
+  const ip = getClientIp(request);
+  const allowed = await checkRateLimit(ip, "signup", { maxAttempts: 5, windowMinutes: 30 });
+  if (!allowed) {
+    return NextResponse.json({ error: "Too many signup attempts. Try again later." }, { status: 429 });
+  }
+  // Every attempt counts here (not just failures) - the goal is capping total
+  // account creation per IP within the window, not just blocking brute force.
+  await recordFailedAttempt(ip, "signup");
+
   const body = await request.json().catch(() => null);
   const email = body?.email?.trim().toLowerCase();
   const password = body?.password;
