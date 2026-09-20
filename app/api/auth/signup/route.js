@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { createUser, getUserByEmail, createSession, addSubscriber } from "../../../../lib/data";
 import { hashPassword, newSessionToken, sessionExpiry, SESSION_COOKIE } from "../../../../lib/auth";
-import { sendEmail, accountConfirmationHtml } from "../../../../lib/email";
+import { sendEmail, accountConfirmationHtml, adminNotificationHtml } from "../../../../lib/email";
 
 export async function POST(request) {
   const body = await request.json().catch(() => null);
@@ -35,6 +35,13 @@ export async function POST(request) {
     subject: "You're signed up — Apex Cards",
     html: accountConfirmationHtml(email, subscribeToNewsletter),
     type: "account_confirmation",
+  });
+
+  await sendEmail({
+    to: "hello@apexgradingcompany.com",
+    subject: "New account created",
+    html: adminNotificationHtml("New account created", `${email} just created an account on Apex Cards.${subscribeToNewsletter ? " They also subscribed to the newsletter." : ""}`),
+    type: "admin_notification",
   });
 
   const token = newSessionToken();
