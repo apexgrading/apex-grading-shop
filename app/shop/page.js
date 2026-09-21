@@ -37,6 +37,7 @@ function ShopPageInner() {
   const [page, setPage] = useState(1);
   const [setFilter, setSetFilter] = useState("all");
   const [availableSets, setAvailableSets] = useState([]);
+  const [languageFilter, setLanguageFilter] = useState("all");
 
   const [data, setData] = useState({ cards: [], total: 0, totalPages: 1 });
   const [loading, setLoading] = useState(true);
@@ -56,6 +57,7 @@ function ShopPageInner() {
     else params.set("excludeCategory", "Mystery Slabs");
     if (grade !== "any") params.set("grade", grade);
     if (setFilter !== "all") params.set("set", setFilter);
+    if (languageFilter !== "all") params.set("language", languageFilter);
     params.set("sort", sort);
     if (search) params.set("search", search);
     params.set("page", String(page));
@@ -64,7 +66,7 @@ function ShopPageInner() {
     const json = await res.json();
     setData(json);
     setLoading(false);
-  }, [category, grade, sort, search, page, setFilter]);
+  }, [category, grade, sort, search, page, setFilter, languageFilter]);
 
   useEffect(() => {
     fetchCards();
@@ -72,13 +74,14 @@ function ShopPageInner() {
 
   useEffect(() => {
     setPage(1);
-  }, [category, grade, sort, search, setFilter]);
+  }, [category, grade, sort, search, setFilter, languageFilter]);
 
   function clearFilters() {
     setCategory("all");
     setGrade("any");
     setSort("newest");
     setSetFilter("all");
+    setLanguageFilter("all");
     setSearch("");
     setPage(1);
   }
@@ -128,6 +131,16 @@ function ShopPageInner() {
               </select>
             </div>
           )}
+          <div className="select-field">
+            <span>Language</span>
+            <select value={languageFilter} onChange={(e) => setLanguageFilter(e.target.value)}>
+              <option value="all">All languages</option>
+              <option value="English">English</option>
+              <option value="Japanese">Japanese</option>
+              <option value="Chinese">Chinese</option>
+              <option value="Korean">Korean</option>
+            </select>
+          </div>
           <div className="select-field">
             <span>Sort</span>
             <select value={sort} onChange={(e) => setSort(e.target.value)}>

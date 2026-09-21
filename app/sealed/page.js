@@ -14,6 +14,7 @@ export default function SealedProductPage() {
   const [stockFilter, setStockFilter] = useState({ inStock: true, outOfStock: true });
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+  const [languageFilter, setLanguageFilter] = useState("all");
 
   const fetchCards = useCallback(async () => {
     setLoading(true);
@@ -22,6 +23,7 @@ export default function SealedProductPage() {
     params.set("sort", "newest");
     if (minPrice) params.set("minPrice", String(Math.round(parseFloat(minPrice) * 100)));
     if (maxPrice) params.set("maxPrice", String(Math.round(parseFloat(maxPrice) * 100)));
+    if (languageFilter !== "all") params.set("language", languageFilter);
 
     // This page needs the FULL dataset (not just one page) since Stock Status
     // and Price filtering both happen client-side — otherwise items past the
@@ -40,7 +42,7 @@ export default function SealedProductPage() {
 
     setAllCards(all);
     setLoading(false);
-  }, [minPrice, maxPrice]);
+  }, [minPrice, maxPrice, languageFilter]);
 
   useEffect(() => { fetchCards(); }, [fetchCards]);
 
@@ -126,6 +128,24 @@ export default function SealedProductPage() {
                 }}
               />
             </div>
+          </div>
+
+          <div style={{ marginBottom: 24 }}>
+            <h4 style={{ fontSize: 13.5, fontWeight: 600, color: "var(--gold-light)", marginBottom: 10 }}>Language</h4>
+            <select
+              value={languageFilter}
+              onChange={(e) => setLanguageFilter(e.target.value)}
+              style={{
+                width: "100%", background: "var(--bg-panel)", border: "1px solid var(--line)",
+                borderRadius: 4, padding: "8px 10px", color: "var(--white)", fontSize: 13,
+              }}
+            >
+              <option value="all">All languages</option>
+              <option value="English">English</option>
+              <option value="Japanese">Japanese</option>
+              <option value="Chinese">Chinese</option>
+              <option value="Korean">Korean</option>
+            </select>
           </div>
         </aside>
 

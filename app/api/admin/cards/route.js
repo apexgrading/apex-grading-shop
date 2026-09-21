@@ -92,6 +92,7 @@ export async function POST(request) {
   const quantityRaw = formData.get("quantity")?.toString().trim();
   const quantity = quantityRaw ? parseInt(quantityRaw, 10) : 1;
   const setName = formData.get("setName")?.toString().trim() || null;
+  const language = formData.get("language")?.toString().trim() || "English";
   const file = formData.get("image");
   const pastedImageUrl = formData.get("imageUrl")?.toString().trim();
   const fileBack = formData.get("imageBack");
@@ -138,6 +139,7 @@ export async function POST(request) {
     expectedDate,
     quantity,
     setName,
+    language,
   });
 
   return NextResponse.json({ card });
