@@ -18,12 +18,13 @@ export async function GET(request) {
   const sinceDays = sinceDaysParam ? parseInt(sinceDaysParam, 10) : null;
   const excludeCategory = searchParams.get("excludeCategory") || null;
   const condition = searchParams.get("condition") || null;
+  const setName = searchParams.get("set") || null;
   const excludeCondition = searchParams.get("excludeCondition") || null;
   const minPriceParam = searchParams.get("minPrice");
   const minPrice = minPriceParam ? parseInt(minPriceParam, 10) : null;
   const maxPriceParam = searchParams.get("maxPrice");
   const maxPrice = maxPriceParam ? parseInt(maxPriceParam, 10) : null;
 
-  const result = await listCards({ category, grade, sort, search, page, includeSold, soldOnly, isGraded, isPreorder, sinceDays, excludeCategory, condition, excludeCondition, minPrice, maxPrice });
+  const result = await listCards({ category, grade, sort, search, page, includeSold, soldOnly, isGraded, isPreorder, sinceDays, excludeCategory, condition, excludeCondition, minPrice, maxPrice, setName });
   return NextResponse.json(result);
 }

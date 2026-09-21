@@ -36,9 +36,18 @@ function SinglesPageInner() {
   const [sort, setSort] = useState("newest");
   const [search, setSearch] = useState(urlParams.get("search") || "");
   const [page, setPage] = useState(1);
+  const [setFilter, setSetFilter] = useState("all");
+  const [availableSets, setAvailableSets] = useState([]);
 
   const [data, setData] = useState({ cards: [], total: 0, totalPages: 1 });
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/sets")
+      .then((r) => r.json())
+      .then((d) => setAvailableSets(d.sets || []))
+      .catch(() => {});
+  }, []);
 
   const fetchCards = useCallback(async () => {
     setLoading(true);
@@ -46,6 +55,7 @@ function SinglesPageInner() {
     params.set("graded", "false");
     params.set("excludeCondition", "Sealed");
     if (category !== "all") params.set("category", category);
+    if (setFilter !== "all") params.set("set", setFilter);
     params.set("sort", sort);
     if (search) params.set("search", search);
     params.set("page", String(page));
@@ -56,7 +66,7 @@ function SinglesPageInner() {
     const cards = condition === "any" ? json.cards : json.cards.filter((c) => c.condition === condition);
     setData({ ...json, cards, total: condition === "any" ? json.total : cards.length });
     setLoading(false);
-  }, [category, condition, sort, search, page]);
+  }, [category, condition, sort, search, page, setFilter]);
 
   useEffect(() => {
     fetchCards();
@@ -64,7 +74,7 @@ function SinglesPageInner() {
 
   useEffect(() => {
     setPage(1);
-  }, [category, condition, sort, search]);
+  }, [category, condition, sort, search, setFilter]);
 
   function clearFilters() {
     setCategory("all");
@@ -106,6 +116,17 @@ function SinglesPageInner() {
               ))}
             </select>
           </div>
+          {availableSets.length > 0 && (
+            <div className="select-field">
+              <span>Set</span>
+              <select value={setFilter} onChange={(e) => setSetFilter(e.target.value)}>
+                <option value="all">All sets</option>
+                {availableSets.map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+            </div>
+          )}
           <div className="select-field">
             <span>Sort</span>
             <select value={sort} onChange={(e) => setSort(e.target.value)}>

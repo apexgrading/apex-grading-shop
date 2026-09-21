@@ -91,6 +91,7 @@ export async function POST(request) {
   const priceDollars = parseFloat(formData.get("price"));
   const quantityRaw = formData.get("quantity")?.toString().trim();
   const quantity = quantityRaw ? parseInt(quantityRaw, 10) : 1;
+  const setName = formData.get("setName")?.toString().trim() || null;
   const file = formData.get("image");
   const pastedImageUrl = formData.get("imageUrl")?.toString().trim();
   const fileBack = formData.get("imageBack");
@@ -136,6 +137,7 @@ export async function POST(request) {
     isPreorder,
     expectedDate,
     quantity,
+    setName,
   });
 
   return NextResponse.json({ card });

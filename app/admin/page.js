@@ -60,7 +60,7 @@ export default function AdminPage() {
 function UploadForm() {
   const [form, setForm] = useState({
     title: "", category: "Pokémon", isGraded: "true", grade: "10", cert: "",
-    condition: "Near Mint", price: "", quantity: "1", imageUrl: "", imageUrlBack: "", isPreorder: "false", expectedDate: "",
+    condition: "Near Mint", price: "", quantity: "1", setName: "", imageUrl: "", imageUrlBack: "", isPreorder: "false", expectedDate: "",
   });
   const [file, setFile] = useState(null);
   const [fileBack, setFileBack] = useState(null);
@@ -174,7 +174,7 @@ function UploadForm() {
     setStatus("done");
     setForm({
       title: "", category: "Pokémon", isGraded: form.isGraded, grade: "10", cert: "",
-      condition: "Near Mint", price: "", quantity: "1", imageUrl: "", imageUrlBack: "", isPreorder: "false", expectedDate: "",
+      condition: "Near Mint", price: "", quantity: "1", setName: "", imageUrl: "", imageUrlBack: "", isPreorder: "false", expectedDate: "",
     });
     setFile(null);
     setFileBack(null);
@@ -338,6 +338,19 @@ function UploadForm() {
             <option>Star Wars</option>
             <option>Mystery Slabs</option>
           </select>
+        </Field>
+
+        <Field label="Set (optional, but recommended)">
+          <input
+            type="text"
+            value={form.setName}
+            onChange={(e) => update("setName", e.target.value)}
+            style={inputStyle}
+            placeholder="e.g. Destined Rivals, XY Evolutions, 2016 Evolutions"
+          />
+          <p style={{ fontSize: 12, color: "var(--grey-dim)", marginTop: 6 }}>
+            Lets customers filter the shop down to exactly this set. Use the exact same spelling each time (e.g. always "Destined Rivals", not "destined rivals" or "Destined Rivals TCG") so cards from the same set group together correctly.
+          </p>
         </Field>
 
         {isGraded ? (
