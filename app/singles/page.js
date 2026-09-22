@@ -43,11 +43,13 @@ function SinglesPageInner() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/sets")
+    const params = category !== "all" ? `?category=${encodeURIComponent(category)}` : "";
+    fetch(`/api/sets${params}`)
       .then((r) => r.json())
       .then((d) => setAvailableSets(d.sets || []))
       .catch(() => {});
-  }, []);
+    setSetFilter("all");
+  }, [category]);
 
   const fetchCards = useCallback(async () => {
     setLoading(true);

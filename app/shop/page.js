@@ -43,11 +43,15 @@ function ShopPageInner() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/sets")
+    const params = category !== "all" ? `?category=${encodeURIComponent(category)}` : "";
+    fetch(`/api/sets${params}`)
       .then((r) => r.json())
       .then((d) => setAvailableSets(d.sets || []))
       .catch(() => {});
-  }, []);
+    // Reset the set filter whenever category changes - a set selected under
+    // a different category wouldn't make sense anymore.
+    setSetFilter("all");
+  }, [category]);
 
   const fetchCards = useCallback(async () => {
     setLoading(true);
