@@ -1,3 +1,4 @@
+
 export const metadata = { title: "Privacy Policy — Apex Cards" };
 
 export default function PrivacyPage() {
@@ -37,8 +38,10 @@ export default function PrivacyPage() {
 
         <Section title="Cookies">
           Our website uses cookies that are strictly necessary for the site to function, such as
-          keeping you logged in and remembering your cart. Any non-essential cookies are used only
-          where permitted.
+          keeping you logged in and remembering your cart. With your consent, we also use Google
+          Analytics to understand how visitors use the site; this only runs if you accept
+          analytics cookies in the cookie banner, and you can decline or change your choice at any
+          time. We do not use advertising or ad-tracking cookies.
         </Section>
 
         <Section title="Retention">
