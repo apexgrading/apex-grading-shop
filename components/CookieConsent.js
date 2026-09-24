@@ -1,54 +1,72 @@
-"use client";
+export const metadata = { title: "Privacy Policy — Apex Cards" };
 
-import { useEffect, useState } from "react";
-
-const STORAGE_KEY = "apex-cookie-consent";
-
-export default function CookieConsent() {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    try {
-      if (!localStorage.getItem(STORAGE_KEY)) setVisible(true);
-    } catch {
-      // localStorage unavailable (e.g. private browsing edge cases) — just skip the banner.
-    }
-  }, []);
-
-  function respond(choice) {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ choice, at: new Date().toISOString() }));
-    } catch {}
-    setVisible(false);
-  }
-
-  if (!visible) return null;
-
+export default function PrivacyPage() {
   return (
-    <div
-      role="dialog"
-      aria-label="Cookie notice"
-      style={{
-        position: "fixed", left: 16, right: 16, bottom: 16, zIndex: 90,
-        maxWidth: 640, margin: "0 auto",
-        background: "var(--bg-panel)", border: "1px solid var(--line-strong)", borderRadius: 10,
-        padding: "20px 22px", boxShadow: "0 20px 50px rgba(0,0,0,0.5)",
-      }}
-    >
-      <h2 style={{ fontSize: 15, fontWeight: 600, margin: "0 0 8px" }}>This site uses cookies</h2>
-      <p style={{ fontSize: 13.5, color: "var(--grey)", lineHeight: 1.6, margin: "0 0 16px" }}>
-        We only use strictly necessary cookies — to keep you signed in and remember your cart.
-        We don't currently use analytics, advertising, or tracking cookies. See our{" "}
-        <a href="/privacy" style={{ color: "var(--gold-light)" }}>Privacy Policy</a> for details.
-      </p>
-      <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-        <button onClick={() => respond("accepted")} className="btn btn-primary" style={{ flex: 1 }}>
-          Accept
-        </button>
-        <button onClick={() => respond("declined")} className="btn btn-secondary" style={{ flex: 1 }}>
-          Decline non-essential
-        </button>
+    <div className="wrap" style={{ maxWidth: 760, padding: "56px 0 100px" }}>
+      <p style={{ color: "var(--gold-light)", fontSize: 13.5, marginBottom: 10 }}>Legal</p>
+      <h1 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(28px,3vw,38px)", margin: "0 0 40px" }}>
+        Privacy Policy
+      </h1>
+
+      <div style={{ color: "var(--grey)", fontSize: 15, lineHeight: 1.75 }}>
+        <p style={{ marginBottom: 28 }}>
+          Apex Cards ("we", "us", "our") is committed to protecting your privacy. This policy
+          explains what personal information we collect when you shop with us, how we use it, and
+          the rights you have over it.
+        </p>
+
+        <Section title="Information we collect">
+          We collect information you provide when you create an account or place an order — your
+          name, email address, postal address and telephone number. When you pay, your card details
+          are entered directly with our payment processor; we do not see or store your full card
+          number.
+        </Section>
+
+        <Section title="How we use your information">
+          We use your information to process and ship your orders, communicate with you about the
+          status of your order, take payment, and meet our legal and accounting obligations. Our
+          lawful bases for processing are the performance of our contract with you, our legitimate
+          business interests, compliance with legal obligations, and, where required, your consent.
+        </Section>
+
+        <Section title="Who we share it with">
+          We share information only as needed to provide the service: with our payment processor to
+          take payment, with delivery couriers to ship your order, and with the email provider that
+          sends your order updates. We do not sell your personal information.
+        </Section>
+
+        <Section title="Cookies">
+          Our website uses cookies that are strictly necessary for the site to function, such as
+          keeping you logged in and remembering your cart. With your consent, we also use Google
+          Analytics to understand how visitors use the site; this only runs if you accept
+          analytics cookies in the cookie banner, and you can decline or change your choice at any
+          time. We do not use advertising or ad-tracking cookies.
+        </Section>
+
+        <Section title="Retention">
+          We keep your personal information for as long as your account is active and for as long
+          afterwards as we are required to for legal, tax and record-keeping purposes.
+        </Section>
+
+        <Section title="Your rights">
+          You have the right to access, correct, erase, restrict or object to our processing of your
+          personal information, and to request a copy of it. To exercise any of these rights,
+          contact us at{" "}
+          <a href="mailto:hello@shopapexcards.com" style={{ color: "var(--gold-light)" }}>
+            hello@shopapexcards.com
+          </a>. If you are in the UK, you also have the right to complain to the Information
+          Commissioner's Office (ICO).
+        </Section>
       </div>
+    </div>
+  );
+}
+
+function Section({ title, children }) {
+  return (
+    <div style={{ marginBottom: 28 }}>
+      <h2 style={{ fontSize: 17, fontWeight: 600, color: "var(--white)", marginBottom: 8 }}>{title}</h2>
+      <p style={{ margin: 0 }}>{children}</p>
     </div>
   );
 }
