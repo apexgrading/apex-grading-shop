@@ -1,3 +1,4 @@
+
 import "./globals.css";
 import { CartProvider } from "../lib/cart-context";
 import Nav from "../components/Nav";
@@ -7,6 +8,7 @@ import CookieConsent from "../components/CookieConsent";
 import ServiceWorkerRegister from "../components/ServiceWorkerRegister";
 import AddToHomeScreenPrompt from "../components/AddToHomeScreenPrompt";
 import TawkChat from "../components/TawkChat";
+import GoogleAnalytics from "../components/GoogleAnalytics";
 
 export const metadata = {
   title: "Apex Cards",
@@ -42,6 +44,7 @@ export default function RootLayout({ children }) {
           <ServiceWorkerRegister />
           <AddToHomeScreenPrompt />
           <TawkChat />
+          <GoogleAnalytics />
         </CartProvider>
       </body>
     </html>
