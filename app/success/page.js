@@ -1,14 +1,32 @@
 import Link from "next/link";
 import { getOrderBySessionId } from "../../lib/data";
 import ClearCartOnMount from "../../components/ClearCartOnMount";
+import PurchaseTracking from "../../components/PurchaseTracking";
 
 export default async function SuccessPage({ searchParams }) {
   const sessionId = searchParams?.session_id;
   const order = sessionId ? await getOrderBySessionId(sessionId) : null;
+  const isPaid = order && order.status === "paid";
+  const purchaseValue = isPaid
+    ? (order.items.reduce((sum, item) => sum + item.price * (item.quantity || 1), 0) + (order.shippingCost || 0)) / 100
+    : null;
 
   return (
     <div className="wrap" style={{ padding: "80px 0 100px", textAlign: "center" }}>
       <ClearCartOnMount />
+      {isPaid && (
+        <PurchaseTracking
+          orderId={order.id}
+          value={purchaseValue}
+          currency="GBP"
+          items={order.items.map((item) => ({
+            item_id: String(item.card.id),
+            item_name: item.card.title,
+            price: item.price / 100,
+            quantity: item.quantity || 1,
+          }))}
+        />
+      )}
       <p style={{ color: "var(--gold-light)", fontSize: 13.5, marginBottom: 14 }}>Order confirmed</p>
       <h1 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(30px,3.4vw,44px)", margin: "0 0 18px" }}>
         Thanks — your cards are on their way.
