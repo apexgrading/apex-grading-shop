@@ -35,14 +35,11 @@ export default function Footer() {
         }}>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-              <img src="/assets/apex-icon.jpg" alt="" style={{ height: 28, width: "auto" }} />
-              <span style={{ fontFamily: "'Anton', var(--sans)", fontSize: 19, color: "var(--gold)" }}>
-                APEX <span style={{ color: "var(--white)" }}>CARDS</span>
-              </span>
+              <img src="/assets/shop-apex-cards-wordmark.jpg" alt="Shop APEX Cards" style={{ height: 40, width: "auto", mixBlendMode: "lighten" }} />
             </div>
             <p style={{ color: "var(--grey)", fontSize: 13.5, maxWidth: "32ch", lineHeight: 1.6, marginBottom: 14 }}>
-              A UK-based marketplace for cards graded in-house by Apex Grading Company. Every
-              listing is a unique, authenticated card, sold direct.
+              A UK shop for Apex-graded slabs, Gem Mint 10 Mystery Slabs, raw cards, ETBs,
+              booster boxes and merch — slabs graded in-house by Apex Grading Company.
             </p>
             <p style={{ color: "var(--grey-dim)", fontSize: 13, lineHeight: 1.7, marginBottom: 16 }}>
               <a href="mailto:hello@shopapexcards.com" style={{ color: "var(--grey-dim)" }}>hello@shopapexcards.com</a>
@@ -54,7 +51,7 @@ export default function Footer() {
                 href="https://www.instagram.com/shopapexcards/"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Apex Cards on Instagram"
+                aria-label="Shop APEX Cards on Instagram"
                 style={{ display: "inline-flex" }}
               >
                 <svg width="30" height="30" viewBox="0 0 24 24">
@@ -77,7 +74,7 @@ export default function Footer() {
                 href="https://www.facebook.com/profile.php?id=61594206641360"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Apex Cards on Facebook"
+                aria-label="Shop APEX Cards on Facebook"
                 style={{ display: "inline-flex" }}
               >
                 <svg width="30" height="30" viewBox="0 0 24 24">
@@ -89,7 +86,7 @@ export default function Footer() {
                 href="https://www.tiktok.com/@shopapexcards"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Apex Cards on TikTok"
+                aria-label="Shop APEX Cards on TikTok"
                 style={{ display: "inline-flex" }}
               >
                 <svg width="30" height="30" viewBox="0 0 24 24">
@@ -148,7 +145,7 @@ export default function Footer() {
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 14 }}>
           <p style={{ color: "var(--grey-dim)", fontSize: 13, margin: 0 }}>
-            © {new Date().getFullYear()} Apex Cards. Cards graded in-house by Apex Grading Company.
+            © {new Date().getFullYear()} Shop APEX Cards. Cards graded in-house by Apex Grading Company.
           </p>
           <PaymentBadges compact />
         </div>

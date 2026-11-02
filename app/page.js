@@ -39,7 +39,7 @@ const faqs = [
   { q: "What cards do you sell?", a: "Every listing here is a physical card we've already graded in-house — Pokémon, sports, and other TCGs, Gem Mint 10 down to Poor 1." },
   { q: "Is each card really one of a kind?", a: "Yes. Every listing is a single physical card, not a print run. Once it sells, it's removed from the site for good." },
   { q: "How do I know a card is authentic?", a: "Every card carries a unique cert number printed on the slab. Look it up any time to confirm the grade and details match what you received." },
-  { q: "Do you also offer grading services?", a: "Apex Cards is our storefront for cards we've already graded and sell direct. If you'd like your own cards submitted for grading, that's handled by Apex Grading Company." },
+  { q: "Do you also offer grading services?", a: "Shop APEX Cards is our shop for slabs we've graded in-house, plus raw cards, sealed product and merch. If you'd like your own cards submitted for grading, that's handled by Apex Grading Company." },
   {
     q: "How do I know an item isn't counterfeit?",
     a: (
@@ -74,7 +74,7 @@ export default async function HomePage() {
 
           <div style={{ maxWidth: 560, margin: "0 auto", textAlign: "center" }}>
             <div className="hero-mobile-badges">
-              <img src="/assets/badge-apex.jpg" alt="Apex Cards" />
+              <img src="/assets/badge-apex.jpg" alt="Shop APEX Cards" />
               <img src="/assets/badge-mystery-pack.jpg" alt="Mystery Pack" />
               <img src="/assets/badge-pokemon30.jpg" alt="Pokémon 30th Anniversary" />
               <img src="/assets/badge-topps.jpg" alt="Topps" />

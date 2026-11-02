@@ -1,4 +1,4 @@
-export const metadata = { title: "Terms & Conditions — Apex Cards" };
+export const metadata = { title: "Terms & Conditions — Shop APEX Cards" };
 
 export default function TermsPage() {
   return (
@@ -10,13 +10,13 @@ export default function TermsPage() {
 
       <div style={{ color: "var(--grey)", fontSize: 15, lineHeight: 1.75 }}>
         <p style={{ marginBottom: 28 }}>
-          These Terms &amp; Conditions govern purchases made on shopapexcards.com ("Apex Cards",
+          These Terms &amp; Conditions govern purchases made on shopapexcards.com ("Shop APEX Cards",
           "we", "us"). By placing an order, you ("the customer") confirm that you have read,
           understood and agree to these terms.
         </p>
 
         <Section title="1. Who we are">
-          Apex Cards is a storefront selling trading and sports cards that have already been
+          Shop APEX Cards is a storefront selling trading and sports cards that have already been
           authenticated and graded, in-house, by Apex Grading Company. We are a sales channel for
           graded inventory — we don't accept cards from customers for grading here; that's handled
           separately by Apex Grading Company.

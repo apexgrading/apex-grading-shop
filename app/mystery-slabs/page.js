@@ -2,7 +2,7 @@ import { listCards } from "../../lib/data";
 import ProductCard from "../../components/ProductCard";
 import BuyMysterySlabButton from "../../components/BuyMysterySlabButton";
 
-export const metadata = { title: "Gem Mint 10 Mystery Slabs — Apex Cards" };
+export const metadata = { title: "Gem Mint 10 Mystery Slabs — Shop APEX Cards" };
 export const dynamic = "force-dynamic";
 
 export default async function MysterySlabsPage() {
@@ -35,7 +35,7 @@ export default async function MysterySlabsPage() {
           </p>
           <img
             src="/assets/mystery-pack.png"
-            alt="Apex Cards Gem Mint 10 Mystery Pack"
+            alt="Shop APEX Cards Gem Mint 10 Mystery Pack"
             style={{ maxWidth: 560, width: "100%", borderRadius: 16, boxShadow: "0 40px 90px rgba(0,0,0,0.65)" }}
           />
           <div style={{ marginTop: 32 }}>
@@ -55,7 +55,7 @@ export default async function MysterySlabsPage() {
             { title: "Always Gem Mint 10", desc: "Every card in the mystery pool has already been graded a genuine 10 by Apex — nothing lower ever goes in." },
             { title: "Any era, genuinely random", desc: "Pulled from our full graded history — 1999 Base Set through the newest releases. We don't cherry-pick which one you get." },
             { title: "Real value varies, always", desc: "That's what makes it a mystery — some pulls are modest, some are genuinely valuable. We won't pretend otherwise." },
-            { title: "Shipped like any order", desc: "Tracked, protected packaging, same as every other Apex Cards purchase — no different treatment for mystery slabs." },
+            { title: "Shipped like any order", desc: "Tracked, protected packaging, same as every other Shop APEX Cards purchase — no different treatment for mystery slabs." },
           ].map((f) => (
             <div key={f.title}>
               <div style={{

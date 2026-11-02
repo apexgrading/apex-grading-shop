@@ -50,7 +50,7 @@ export async function POST(request) {
   await sendEmail({
     to: "hello@apexgradingcompany.com",
     subject: "New account created",
-    html: adminNotificationHtml("New account created", `${email} just created an account on Apex Cards.${subscribeToNewsletter ? " They also subscribed to the newsletter." : ""}`),
+    html: adminNotificationHtml("New account created", `${email} just created an account on Shop APEX Cards.${subscribeToNewsletter ? " They also subscribed to the newsletter." : ""}`),
     type: "admin_notification",
   });
 

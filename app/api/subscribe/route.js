@@ -16,7 +16,7 @@ export async function POST(request) {
     await sendEmail({
       to: "hello@apexgradingcompany.com",
       subject: "New newsletter signup",
-      html: adminNotificationHtml("New newsletter signup", `${email} just signed up to the Apex Cards newsletter.`),
+      html: adminNotificationHtml("New newsletter signup", `${email} just signed up to the Shop APEX Cards newsletter.`),
       type: "admin_notification",
     });
   }

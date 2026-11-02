@@ -1,7 +1,7 @@
 export default function manifest() {
   return {
-    name: "Apex Cards",
-    short_name: "Apex Cards",
+    name: "Shop APEX Cards",
+    short_name: "Shop APEX",
     description: "Graded trading and sports cards, sold direct — graded in-house by Apex Grading Company.",
     start_url: "/",
     display: "standalone",

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { POKEMON_ERAS } from "../../lib/pokemon-sets";
 
-export const metadata = { title: "Pokémon TCG Sets — Apex Cards" };
+export const metadata = { title: "Pokémon TCG Sets — Shop APEX Cards" };
 
 export default function PokemonSetsPage() {
   const totalSets = POKEMON_ERAS.reduce((sum, e) => sum + e.sets.length, 0);

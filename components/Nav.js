@@ -76,8 +76,7 @@ export default function Nav() {
     <header className="site-header">
       <div className="wrap nav">
         <Link href="/" className="nav-mark">
-          <img src="/assets/apex-icon.jpg" alt="" />
-          <span className="nav-wordmark">APEX <span>CARDS</span></span>
+          <img src="/assets/shop-apex-cards-wordmark.jpg" alt="Shop APEX Cards" className="nav-logo" />
         </Link>
         <a
           href="https://www.apexgradingcompany.com"

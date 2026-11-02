@@ -1,5 +1,5 @@
 
-export const metadata = { title: "Privacy Policy — Apex Cards" };
+export const metadata = { title: "Privacy Policy — Shop APEX Cards" };
 
 export default function PrivacyPage() {
   return (
@@ -11,7 +11,7 @@ export default function PrivacyPage() {
 
       <div style={{ color: "var(--grey)", fontSize: 15, lineHeight: 1.75 }}>
         <p style={{ marginBottom: 28 }}>
-          Apex Cards ("we", "us", "our") is committed to protecting your privacy. This policy
+          Shop APEX Cards ("we", "us", "our") is committed to protecting your privacy. This policy
           explains what personal information we collect when you shop with us, how we use it, and
           the rights you have over it.
         </p>

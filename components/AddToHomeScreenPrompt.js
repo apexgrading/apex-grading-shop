@@ -57,7 +57,7 @@ export default function AddToHomeScreenPrompt() {
       <img src="/assets/apex-icon.jpg" alt="" style={{ width: 34, height: "auto", flexShrink: 0, marginTop: 2 }} />
       <div style={{ flex: 1 }}>
         <p style={{ fontSize: 13.5, fontWeight: 600, color: "var(--white)", margin: "0 0 4px" }}>
-          Add Apex Cards to your Home Screen
+          Add Shop APEX Cards to your Home Screen
         </p>
         {platform === "ios" ? (
           <p style={{ fontSize: 12.5, color: "var(--grey)", margin: 0, lineHeight: 1.5 }}>
