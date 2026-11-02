@@ -35,7 +35,7 @@ export default function Footer() {
         }}>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-              <img src="/assets/shop-apex-cards-wordmark.jpg" alt="Shop APEX Cards" style={{ height: 40, width: "auto", mixBlendMode: "lighten" }} />
+              <img src="/assets/shop-apex-cards-logo-full.jpg" alt="Shop APEX Cards" style={{ height: 76, width: "auto", mixBlendMode: "lighten" }} />
             </div>
             <p style={{ color: "var(--grey)", fontSize: 13.5, maxWidth: "32ch", lineHeight: 1.6, marginBottom: 14 }}>
               A UK shop for Apex-graded slabs, Gem Mint 10 Mystery Slabs, raw cards, ETBs,

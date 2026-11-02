@@ -43,8 +43,8 @@ button, select, input { font-family: inherit; }
 #scale { scroll-margin-top: 84px; }
 .nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; gap: 20px; }
 .nav-mark img { height: 32px; width: auto; }
-.nav-mark img.nav-logo { height: 38px; mix-blend-mode: lighten; }
-@media (max-width: 640px) { .nav-mark img.nav-logo { height: 26px; } }
+.nav-mark img.nav-logo { height: 54px; mix-blend-mode: lighten; }
+@media (max-width: 640px) { .nav-mark img.nav-logo { height: 44px; } }
 .nav-mark { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .nav-wordmark { font-family: 'Anton', var(--sans); font-size: 19px; letter-spacing: 0.01em; color: var(--gold); line-height: 1; }
 .nav-wordmark span { color: var(--white); }
