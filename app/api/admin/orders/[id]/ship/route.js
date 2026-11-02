@@ -32,7 +32,7 @@ export async function POST(request, { params }) {
   if (order?.email) {
     await sendEmail({
       to: order.email,
-      subject: `Your Apex Cards order #${order.id} has shipped`,
+      subject: `Your order #${order.id} is on its way — Shop APEX Cards`,
       html: orderShippedHtml(order),
       type: "order_shipped",
       orderId: order.id,

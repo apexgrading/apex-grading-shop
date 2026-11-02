@@ -42,7 +42,7 @@ export async function POST(request) {
   // of, the newsletter opt-in.
   await sendEmail({
     to: email,
-    subject: "You're signed up — Apex Cards",
+    subject: "Your Shop APEX Cards account is ready",
     html: accountConfirmationHtml(email, subscribeToNewsletter),
     type: "account_confirmation",
   });

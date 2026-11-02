@@ -12,7 +12,7 @@ export async function POST(request) {
 
   const isNew = await addSubscriber(email);
   if (isNew) {
-    await sendEmail({ to: email, subject: "Welcome to Apex Cards", html: welcomeEmailHtml(email), type: "welcome" });
+    await sendEmail({ to: email, subject: "Welcome to Shop APEX Cards", html: welcomeEmailHtml(email), type: "welcome" });
     await sendEmail({
       to: "hello@apexgradingcompany.com",
       subject: "New newsletter signup",
