@@ -449,3 +449,11 @@ details[open] summary::after { content: "–"; }
 .detail-price { font-family: var(--mono); font-weight: 700; color: var(--gold); }
 .page-head h1, .detail-copy h1 { letter-spacing: -0.01em; }
 input, select, textarea { border-radius: 8px; }
+
+/* Apex social logos, each in its platform's own colours */
+.soc { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; color: #fff !important; transition: transform .15s; }
+.soc:hover { transform: scale(1.1); }
+.soc svg { width: 17px; height: 17px; fill: currentColor; }
+.soc-youtube { background: #FF0000; } .soc-tiktok { background: #000; border: 1px solid #333; } .soc-facebook { background: #1877F2; }
+.soc-x { background: #000; border: 1px solid #333; } .soc-threads { background: #000; border: 1px solid #333; }
+.soc-instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
