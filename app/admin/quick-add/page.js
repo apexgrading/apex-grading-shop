@@ -111,7 +111,7 @@ export default function QuickAddPage() {
       if (!res.ok) throw new Error(j.error || "Lookup failed");
       setRows((old) => [...j.rows.map((r) => toRow(r)), ...old]);
       setNumbers("");
-      setNote(`Added ${j.rows.length} card${j.rows.length === 1 ? "" : "s"} from ${chosenSet.name} to the list below.${j.missing.length ? ` Not found in this set: ${j.missing.join(", ")}.` : ""}`);
+      setNote(`Added ${j.rows.length} card${j.rows.length === 1 ? "" : "s"} from ${chosenSet.name} to the list below.${j.missing.length ? ` Not found in this set: ${j.missing.join(", ")}.` : ""}${j.backup ? " The price service is down right now, so these came through without a £ price — type your own or try again later." : ""}`);
     } catch (err) { setError(err.message); }
     setBusy(null);
   }
@@ -121,7 +121,7 @@ export default function QuickAddPage() {
     e.target.value = "";
     if (!files.length) return;
     setError(null); setNote(null);
-    let ok = 0; const fails = [];
+    let ok = 0, backup = false; const fails = [];
     for (let i = 0; i < files.length; i += 5) {
       setBusy(`Reading photos ${i + 1}–${Math.min(i + 5, files.length)} of ${files.length}…`);
       try {
@@ -130,6 +130,7 @@ export default function QuickAddPage() {
         const j = await res.json();
         if (!res.ok) throw new Error(j.error || "Photo reading failed");
         const add = [];
+        if (j.backup) backup = true;
         j.results.forEach((r, k) => {
           if (r.row) { add.push(toRow(r.row, { alternatives: r.alternatives || [], language: LANGS.includes(r.language) ? r.language : settings.language, fromPhoto: files[i + k].name })); ok++; }
           else fails.push(`${files[i + k].name}: ${r.error}`);
@@ -138,7 +139,7 @@ export default function QuickAddPage() {
       } catch (err) { setError(err.message); break; }
     }
     setBusy(null);
-    setNote(`Identified ${ok} of ${files.length} photo${files.length === 1 ? "" : "s"} — check each match below.${fails.length ? ` Couldn't read: ${fails.join("; ")}` : ""}`);
+    setNote(`Identified ${ok} of ${files.length} photo${files.length === 1 ? "" : "s"} — check each match below.${fails.length ? ` Couldn't read: ${fails.join("; ")}` : ""}${backup ? " The price service is down right now, so these came through without a £ price — type your own or try again later." : ""}`);
   }
 
   const update = (key, patch) => setRows((rs) => rs.map((r) => (r.key === key ? { ...r, ...patch } : r)));

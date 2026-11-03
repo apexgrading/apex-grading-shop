@@ -21,17 +21,27 @@ async function requireAdmin() {
   return isValidAdminSession(cookies().get("apex_admin")?.value);
 }
 
-async function getJson(url, tries = 2) {
+async function getJson(url, tries = 4) {
+  let last;
   for (let i = 1; i <= tries; i++) {
     try {
-      const r = await fetch(url, { headers: apiHeaders, cache: "no-store" });
-      if (r.status === 429) throw Object.assign(new Error("The card database is busy — try again in a minute."), { busy: true });
+      const r = await fetch(url, { headers: apiHeaders, cache: "no-store", signal: AbortSignal.timeout(15000) });
       if (r.ok) return await r.json();
-      if (i === tries) throw new Error(`Card database error ${r.status}`);
+      last = new Error(r.status === 429 ? "The card database is busy — try again in a minute." : `Card database error ${r.status}`);
     } catch (e) {
-      if (e.busy || i === tries) throw e;
+      last = e.name === "TimeoutError" ? new Error("The card database didn't answer") : e;
     }
+    if (i < tries) await new Promise((res) => setTimeout(res, 600 * i));
   }
+  throw last;
+}
+
+// Backup copy of the same card data (official pictures, no prices), used when pokemontcg.io is down
+const BACKUP = "https://raw.githubusercontent.com/PokemonTCG/pokemon-tcg-data/master";
+async function backupJson(path) {
+  const r = await fetch(`${BACKUP}/${path}`, { cache: "no-store", signal: AbortSignal.timeout(20000) });
+  if (!r.ok) throw new Error(`Backup card list error ${r.status}`);
+  return r.json();
 }
 
 // ---------- caches (per server instance) ----------
@@ -40,26 +50,43 @@ const setCardsCache = new Map(); // setId → { at, cards }
 let fxCache = null; // { at, rate }
 const HOUR = 3600e3;
 
+const mapSet = (s) => ({ id: s.id, name: s.name, series: s.series, printedTotal: s.printedTotal, total: s.total, releaseDate: s.releaseDate, code: s.ptcgoCode || null });
+
 async function allSets() {
   if (setsCache && Date.now() - setsCache.at < 12 * HOUR) return setsCache.sets;
-  const j = await getJson(`${API}/sets?orderBy=-releaseDate&pageSize=250&select=id,name,series,printedTotal,total,releaseDate,ptcgoCode`);
-  const sets = (j.data || []).map((s) => ({ id: s.id, name: s.name, series: s.series, printedTotal: s.printedTotal, total: s.total, releaseDate: s.releaseDate, code: s.ptcgoCode || null }));
-  setsCache = { at: Date.now(), sets };
+  let sets;
+  try {
+    const j = await getJson(`${API}/sets?orderBy=-releaseDate&pageSize=250&select=id,name,series,printedTotal,total,releaseDate,ptcgoCode`, 3);
+    sets = (j.data || []).map(mapSet);
+    setsCache = { at: Date.now(), sets };
+  } catch (e) {
+    if (setsCache) return setsCache.sets;
+    const list = await backupJson("sets/en.json");
+    sets = list.map(mapSet).sort((a, b) => String(b.releaseDate).localeCompare(String(a.releaseDate)));
+    setsCache = { at: Date.now() - 11 * HOUR, sets }; // try the main database again within the hour
+  }
   return sets;
 }
 
+// Returns { cards, backup } — backup = true when prices aren't available
 async function setCards(setId) {
   const hit = setCardsCache.get(setId);
-  if (hit && Date.now() - hit.at < 6 * HOUR) return hit.cards;
-  let page = 1, cards = [];
-  for (;;) {
-    const j = await getJson(`${API}/cards?q=${encodeURIComponent(`set.id:${setId}`)}&pageSize=250&page=${page}&select=id,name,number,rarity,images,tcgplayer,set`);
-    cards = cards.concat(j.data || []);
-    if (!j.totalCount || cards.length >= j.totalCount || !(j.data || []).length) break;
-    page++;
+  if (hit && Date.now() - hit.at < 6 * HOUR) return { cards: hit.cards, backup: false };
+  try {
+    let page = 1, cards = [];
+    for (;;) {
+      const j = await getJson(`${API}/cards?q=${encodeURIComponent(`set.id:${setId}`)}&pageSize=250&page=${page}&select=id,name,number,rarity,images,tcgplayer,set`);
+      cards = cards.concat(j.data || []);
+      if (!j.totalCount || cards.length >= j.totalCount || !(j.data || []).length) break;
+      page++;
+    }
+    setCardsCache.set(setId, { at: Date.now(), cards });
+    return { cards, backup: false };
+  } catch (e) {
+    const set = (await allSets()).find((s) => s.id === setId);
+    const list = await backupJson(`cards/en/${encodeURIComponent(setId)}.json`);
+    return { cards: list.map((c) => ({ ...c, set })), backup: true };
   }
-  setCardsCache.set(setId, { at: Date.now(), cards });
-  return cards;
 }
 
 async function usdToGbp() {
@@ -157,8 +184,14 @@ async function identifyPhoto(dataUrl) {
   const num = normNum(String(info.number || "").split("/")[0]);
   const q = [`name:"${String(info.name).replace(/"/g, "")}"`];
   if (num) q.push(`number:${num}`);
-  const found = await getJson(`${API}/cards?q=${encodeURIComponent(q.join(" "))}&pageSize=20&select=id,name,number,rarity,images,tcgplayer,set`);
-  let cands = found.data || [];
+  let cands, backup = false;
+  try {
+    const found = await getJson(`${API}/cards?q=${encodeURIComponent(q.join(" "))}&pageSize=20&select=id,name,number,rarity,images,tcgplayer,set`, 3);
+    cands = found.data || [];
+  } catch (e) {
+    cands = await backupSearch(info, num);
+    backup = true;
+  }
   if (info.total) {
     const t = parseInt(info.total, 10);
     const byTotal = cands.filter((c) => c.set?.printedTotal === t || c.set?.total === t);
@@ -169,7 +202,26 @@ async function identifyPhoto(dataUrl) {
     const bySet = cands.filter((c) => (c.set?.name || "").toLowerCase().includes(s) || s.includes((c.set?.name || "").toLowerCase()));
     if (bySet.length) cands = bySet;
   }
-  return { info, cands };
+  return { info, cands, backup };
+}
+
+// Find a card in the backup copy using the set name / printed total the AI read
+async function backupSearch(info, num) {
+  const sets = await allSets();
+  const sn = String(info.set || "").toLowerCase().trim();
+  const t = parseInt(info.total, 10);
+  let pool = sn ? sets.filter((s) => s.name.toLowerCase() === sn) : [];
+  if (!pool.length && sn) pool = sets.filter((s) => s.name.toLowerCase().includes(sn) || sn.includes(s.name.toLowerCase()));
+  if (t) { const byT = (pool.length ? pool : sets).filter((s) => s.printedTotal === t || s.total === t); if (byT.length) pool = byT; }
+  const name = String(info.name || "").toLowerCase();
+  const out = [];
+  for (const s of pool.slice(0, 6)) {
+    try {
+      const { cards } = await setCards(s.id);
+      for (const c of cards) if ((!num || normNum(c.number) === num) && (c.name || "").toLowerCase().includes(name.split(" ")[0])) out.push(c);
+    } catch {}
+  }
+  return out;
 }
 
 // ---------- adding to the shop ----------
@@ -178,11 +230,12 @@ const titleFor = (it) => `${it.name}-${it.setName} ${it.number}${it.printedTotal
 export async function GET(request) {
   if (!(await requireAdmin())) return NextResponse.json({ error: "Not authorized." }, { status: 401 });
   const action = new URL(request.url).searchParams.get("action");
+  const photoReady = !!process.env.ANTHROPIC_API_KEY;
   try {
-    if (action === "sets") return NextResponse.json({ sets: await allSets(), photoReady: !!process.env.ANTHROPIC_API_KEY });
+    if (action === "sets") return NextResponse.json({ sets: await allSets(), photoReady });
     return NextResponse.json({ error: "Unknown action" }, { status: 400 });
   } catch (e) {
-    return NextResponse.json({ error: e.message || "Card database unavailable." }, { status: 502 });
+    return NextResponse.json({ sets: [], photoReady, error: `${e.message || "Card database unavailable"} — refresh the page in a minute.` }, { status: 502 });
   }
 }
 
@@ -194,7 +247,7 @@ export async function POST(request) {
       const sets = await allSets();
       const set = sets.find((s) => s.id === body.setId);
       if (!set) return NextResponse.json({ error: "Pick a set first." }, { status: 400 });
-      const [cards, rate] = await Promise.all([setCards(set.id), usdToGbp()]);
+      const [{ cards, backup }, rate] = await Promise.all([setCards(set.id), usdToGbp()]);
       const byNum = new Map(cards.map((c) => [normNum(c.number), c]));
       const rows = [], missing = [];
       for (const e of parseEntries(body.entries)) {
@@ -202,7 +255,7 @@ export async function POST(request) {
         if (c) rows.push(rowFor(c, rate, e.qty));
         else missing.push(e.number);
       }
-      return NextResponse.json({ rows, missing, rate });
+      return NextResponse.json({ rows, missing, rate, backup });
     }
 
     if (body.action === "identify") {
@@ -210,17 +263,19 @@ export async function POST(request) {
       const images = (body.images || []).slice(0, 10);
       const rate = await usdToGbp();
       const results = [];
+      let usedBackup = false;
       for (const img of images) {
         try {
           const r = await identifyPhoto(img);
           if (r.error) { results.push({ error: r.error }); continue; }
           if (!r.cands.length) { results.push({ error: `Read “${r.info.name} ${r.info.number || ""}” but couldn't find it` }); continue; }
+          if (r.backup) usedBackup = true;
           results.push({ row: rowFor(r.cands[0], rate, 1), alternatives: r.cands.slice(1, 6).map((c) => rowFor(c, rate, 1)), language: r.info.language || "English" });
         } catch (e) {
           results.push({ error: e.message || "Couldn't identify" });
         }
       }
-      return NextResponse.json({ results, rate });
+      return NextResponse.json({ results, rate, backup: usedBackup });
     }
 
     if (body.action === "add") {
