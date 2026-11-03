@@ -165,21 +165,44 @@ async function identifyPhoto(dataUrl) {
     headers: { "x-api-key": process.env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01", "content-type": "application/json" },
     body: JSON.stringify({
       model: process.env.IDENTIFY_MODEL || "claude-haiku-5-5",
-      max_tokens: 300,
+      max_tokens: 1024,
+      tools: [{
+        name: "card_details",
+        description: "Record what is printed on the trading card in the photo.",
+        input_schema: {
+          type: "object",
+          properties: {
+            is_pokemon_card: { type: "boolean", description: "true if the photo shows a Pokémon trading card (raw or in a slab)" },
+            name: { type: ["string", "null"], description: "Card name exactly as printed, e.g. \"Charizard ex\"" },
+            number: { type: ["string", "null"], description: "Collector number before the slash, e.g. \"125\" or \"TG05\"" },
+            total: { type: ["string", "null"], description: "Number after the slash, or null" },
+            set: { type: ["string", "null"], description: "Set name if you can tell, or null" },
+            language: { type: "string", description: "\"English\" or the language printed" },
+          },
+          required: ["is_pokemon_card", "name", "number", "total", "set", "language"],
+        },
+      }],
+      tool_choice: { type: "tool", name: "card_details" },
       messages: [{
         role: "user",
         content: [
           { type: "image", source: { type: "base64", media_type: m[1], data: m[2] } },
-          { type: "text", text: "This is a photo of one Pokémon trading card. Read it and reply with JSON only: {\"name\": card name as printed, \"number\": the collector number before the slash (e.g. \"125\" or \"TG05\"), \"total\": the number after the slash or null, \"set\": the set name if you can tell or null, \"language\": \"English\" or the language printed}. If it is not a Pokémon card, reply {\"name\": null}." },
+          { type: "text", text: "Read this trading card and record its details. The collector number is usually at the bottom left or bottom right, like 125/198." },
         ],
       }],
     }),
   });
-  if (!r.ok) return { error: `AI error ${r.status}` };
+  if (!r.ok) {
+    console.error("quick-add identify: AI error", r.status, (await r.text().catch(() => "")).slice(0, 300));
+    return { error: `AI error ${r.status}` };
+  }
   const j = await r.json();
-  const text = (j.content || []).map((c) => c.text || "").join("");
-  let info;
-  try { info = JSON.parse(text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1)); } catch { return { error: "Couldn't read the card" }; }
+  const info = (j.content || []).find((c) => c.type === "tool_use")?.input;
+  if (!info) {
+    console.error("quick-add identify: no card details", JSON.stringify(j).slice(0, 500));
+    return { error: "Couldn't read the card — try a sharper, straight-on photo" };
+  }
+  if (info.is_pokemon_card === false) return { error: "Doesn't look like a Pokémon card" };
   if (!info?.name) return { error: "Not a Pokémon card" };
   const num = normNum(String(info.number || "").split("/")[0]);
   const q = [`name:"${String(info.name).replace(/"/g, "")}"`];
