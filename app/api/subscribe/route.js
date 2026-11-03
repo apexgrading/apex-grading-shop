@@ -5,6 +5,16 @@ import { guardPublicForm, looksLikeEmail } from "../../../lib/bot-check";
 import { checkRateLimit, recordFailedAttempt } from "../../../lib/rate-limit";
 
 export async function POST(request) {
+  try {
+    return await handle(request);
+  } catch (e) {
+    // save the reason so it can be looked at (no customer email stored)
+    try { await recordFailedAttempt("error", `subscribe-error:${String(e?.message || e).slice(0, 120)}`); } catch {}
+    return NextResponse.json({ error: "Sorry — we couldn't sign you up just now. Please try again in a minute." }, { status: 500 });
+  }
+}
+
+async function handle(request) {
   const body = await request.json().catch(() => null);
   const email = body?.email?.trim().toLowerCase();
 
@@ -28,5 +38,5 @@ export async function POST(request) {
     });
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, already: !isNew });
 }

@@ -7,6 +7,7 @@ import Link from "next/link";
 export default function MerchPage() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle"); // idle | loading | done | error
+  const [msg, setMsg] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -18,8 +19,11 @@ export default function MerchPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ botToken: await getBotToken(), email }),
       });
+      const j = await res.json().catch(() => ({}));
+      setMsg(res.ok ? "" : j.error || "");
       setStatus(res.ok ? "done" : "error");
-    } catch {
+    } catch (err) {
+      setMsg((err && err.message) || "");
       setStatus("error");
     }
   }
@@ -98,7 +102,7 @@ export default function MerchPage() {
           </button>
         </form>
       )}
-      {status === "error" && <p style={{ color: "#E08A7D", fontSize: 13, marginTop: 12 }}>Something went wrong — try again.</p>}
+      {status === "error" && <p style={{ color: "#E08A7D", fontSize: 13, marginTop: 12 }}>{msg || "Something went wrong — try again."}</p>}
 
       <div style={{ marginTop: 56 }}>
         <Link href="/shop" className="btn btn-secondary">Shop graded cards instead</Link>

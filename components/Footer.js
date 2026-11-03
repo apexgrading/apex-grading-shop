@@ -8,6 +8,7 @@ import PaymentBadges from "./PaymentBadges";
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle"); // idle | loading | done | error
+  const [msg, setMsg] = useState("");
 
   async function handleSubscribe(e) {
     e.preventDefault();
@@ -19,10 +20,13 @@ export default function Footer() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ botToken: await getBotToken(), email }),
       });
-      if (!res.ok) throw new Error();
+      const j = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(j.error || "");
+      setMsg(j.already ? "You're already on the list ✓" : "You're in — check your inbox.");
       setStatus("done");
       setEmail("");
-    } catch {
+    } catch (err) {
+      setMsg((err && err.message) || "Something went wrong — try again.");
       setStatus("error");
     }
   }
@@ -121,7 +125,7 @@ export default function Footer() {
             <h5 style={{ fontSize: 12, textTransform: "uppercase", letterSpacing: ".06em", color: "var(--grey-dim)", marginBottom: 14 }}>Get notified</h5>
             <p style={{ fontSize: 13, color: "var(--grey)", marginBottom: 12 }}>New Gem-Mint listings, straight to your inbox.</p>
             {status === "done" ? (
-              <p style={{ fontSize: 13.5, color: "var(--gold-light)" }}>You're on the list.</p>
+              <p style={{ fontSize: 13.5, color: "var(--gold-light)" }}>{msg || "You're on the list."}</p>
             ) : (
               <form onSubmit={handleSubscribe} style={{ display: "flex", gap: 8 }}>
                 <input
@@ -140,7 +144,7 @@ export default function Footer() {
                 </button>
               </form>
             )}
-            {status === "error" && <p style={{ fontSize: 12.5, color: "#E08A7D", marginTop: 8 }}>Something went wrong — try again.</p>}
+            {status === "error" && <p style={{ fontSize: 12.5, color: "#E08A7D", marginTop: 8 }}>{msg || "Something went wrong — try again."}</p>}
           </div>
         </div>
 
