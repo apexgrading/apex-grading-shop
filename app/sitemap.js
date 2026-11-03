@@ -1,5 +1,8 @@
 import { listCards } from "../lib/data";
 
+// Built fresh on each request so new listings appear straight away
+export const dynamic = "force-dynamic";
+
 export default async function sitemap() {
   const base = "https://www.shopapexcards.com";
 
