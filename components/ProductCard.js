@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 function formatPrice(cents) {
+  if (!(cents > 0)) return "Price coming soon";
   return `£${(cents / 100).toLocaleString(undefined, { minimumFractionDigits: 0 })}`;
 }
 

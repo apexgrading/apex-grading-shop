@@ -6,6 +6,7 @@ import CardImageViewer from "../../../components/CardImageViewer";
 import NotifyMeForm from "../../../components/NotifyMeForm";
 
 function formatPrice(cents) {
+  if (!(cents > 0)) return "Price coming soon";
   return `£${(cents / 100).toLocaleString()}`;
 }
 

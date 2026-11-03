@@ -5,6 +5,7 @@ import Link from "next/link";
 import AddToCartButton from "../../components/AddToCartButton";
 
 function formatPrice(cents) {
+  if (!(cents > 0)) return "Price coming soon";
   return `£${(cents / 100).toLocaleString()}`;
 }
 
