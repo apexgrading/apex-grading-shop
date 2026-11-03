@@ -117,6 +117,12 @@ export default function Footer() {
               <img src="/assets/apex-icon.jpg" alt="" />
               Get your cards graded — head over to Apex Grading
             </a>
+            <div style={{ fontSize: 12, textTransform: "uppercase", letterSpacing: ".06em", color: "var(--grey-dim)", margin: "4px 0 8px" }}>Follow Apex Grading</div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 12px", marginBottom: 12 }}>
+              {[["YouTube", "https://www.youtube.com/@apexgrading"], ["TikTok", "https://www.tiktok.com/@apexgrading"], ["Instagram", "https://www.instagram.com/apexgrading"], ["Facebook", "https://www.facebook.com/share/1C3ESK8FNd/"], ["X", "https://x.com/apex_grading"], ["Threads", "https://www.threads.com/@apexgrading"]].map(([n, u]) => (
+                <a key={n} href={u} target="_blank" rel="noopener noreferrer" style={{ fontSize: 13, color: "var(--gold)" }}>{n}</a>
+              ))}
+            </div>
             <Link href="/terms" style={{ display: "block", fontSize: 14, color: "var(--grey)", marginBottom: 10 }}>Terms &amp; conditions</Link>
             <Link href="/privacy" style={{ display: "block", fontSize: 14, color: "var(--grey)", marginBottom: 10 }}>Privacy policy</Link>
           </div>
