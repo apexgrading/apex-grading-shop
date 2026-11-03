@@ -1,5 +1,6 @@
 "use client";
 
+import { getBotToken } from "../../lib/bot-token";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -15,7 +16,7 @@ export default function MerchPage() {
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ botToken: await getBotToken(), email }),
       });
       setStatus(res.ok ? "done" : "error");
     } catch {

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { getBotToken } from "../lib/bot-token";
 import { useState } from "react";
 import PaymentBadges from "./PaymentBadges";
 
@@ -16,7 +17,7 @@ export default function Footer() {
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ botToken: await getBotToken(), email }),
       });
       if (!res.ok) throw new Error();
       setStatus("done");

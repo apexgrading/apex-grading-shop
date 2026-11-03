@@ -1,5 +1,6 @@
 "use client";
 
+import { getBotToken } from "../lib/bot-token";
 import { useEffect, useState } from "react";
 
 const STORAGE_KEY = "apex-signup-popup-seen";
@@ -36,7 +37,7 @@ export default function SignupPopup() {
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ botToken: await getBotToken(), email }),
       });
       if (res.ok) {
         setStatus("done");
