@@ -10,7 +10,6 @@ const SHOP_LINKS = [
   { href: "/singles", label: "Singles" },
   { href: "/new-arrivals", label: "New Arrivals" },
   { href: "/preorders", label: "Pre-orders" },
-  { href: "/mystery-slabs", label: "Mystery Slabs" },
   { href: "/sealed", label: "Sealed Product" },
   { href: "/sold", label: "Sold" },
   { href: "/merch", label: "Merch" },

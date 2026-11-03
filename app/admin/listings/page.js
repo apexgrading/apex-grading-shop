@@ -170,6 +170,7 @@ export default function AdminListingsPage() {
                 <div style={{ fontSize: 12.5, color: "var(--grey-dim)" }}>
                   {card.category} · {card.isGraded ? `Grade ${card.grade}` : card.condition} · {formatPrice(card.price)}
                   {card.sold && <span style={{ color: "var(--gold-light)" }}> · Sold</span>}
+                  {card.hidden && <span style={{ color: "#E08A7D" }}> · Hidden from shop{card.hiddenReason ? ` (${card.hiddenReason})` : ""}</span>}
                   {!card.sold && card.isStockItem && card.quantity <= 0 && <span style={{ color: "var(--grey)" }}> · Out of Stock</span>}
                 </div>
               </div>

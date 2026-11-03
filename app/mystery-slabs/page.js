@@ -21,13 +21,13 @@ export default async function MysterySlabsPage() {
             Guaranteed Gem Mint 10
           </p>
           <h1 style={{ fontSize: "clamp(30px,4vw,42px)" }}>Mystery Slabs</h1>
-          <div style={{
+          {nextAvailable && <div style={{
             display: "inline-block", background: "rgba(212,167,60,0.12)", border: "1px solid var(--gold)",
             color: "var(--gold-light)", fontSize: 13, fontWeight: 700, letterSpacing: "0.06em",
             padding: "6px 16px", borderRadius: 20, margin: "0 0 18px", textTransform: "uppercase",
           }}>
             {remaining} of {MYSTERY_CAP} remaining — once they're gone, they're gone
-          </div>
+          </div>}
           <p style={{ fontSize: 16, lineHeight: 1.6, margin: "0 auto 32px" }}>
             Every slab is a genuine Apex Gem Mint 10 — no exceptions. The card itself, and its era,
             is a surprise. Could be a modern chase card. Could be a piece of vintage history from
@@ -42,7 +42,7 @@ export default async function MysterySlabsPage() {
             {nextAvailable ? (
               <BuyMysterySlabButton cardId={nextAvailable.id} price={nextAvailable.price} />
             ) : (
-              <p style={{ color: "var(--grey-dim)", fontSize: 14 }}>No mystery slabs available right now — check back soon.</p>
+              <p style={{ color: "var(--grey-dim)", fontSize: 14 }}>Mystery Slabs are taking a break — something new is on the way. Check back soon.</p>
             )}
           </div>
         </div>
