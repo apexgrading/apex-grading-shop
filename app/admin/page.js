@@ -217,6 +217,8 @@ function UploadForm() {
       <p style={{ marginBottom: 32 }}>
         <a href="/admin/orders" style={{ color: "var(--gold-light)", fontSize: 13.5 }}>View orders & mark shipped →</a>
         {" · "}
+        <a href="/admin/quick-add" style={{ color: "var(--gold-light)", fontSize: 13.5 }}>Quick add raw cards →</a>
+        {" · "}
         <a href="/admin/bulk" style={{ color: "var(--gold-light)", fontSize: 13.5 }}>Bulk upload via CSV →</a>
         {" · "}
         <a href="/admin/listings" style={{ color: "var(--gold-light)", fontSize: 13.5 }}>Manage / delete listings →</a>
