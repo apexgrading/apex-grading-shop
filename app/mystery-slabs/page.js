@@ -22,7 +22,7 @@ export default async function MysterySlabsPage() {
           </p>
           <h1 style={{ fontSize: "clamp(30px,4vw,42px)" }}>Mystery Slabs</h1>
           {nextAvailable && <div style={{
-            display: "inline-block", background: "rgba(212,167,60,0.12)", border: "1px solid var(--gold)",
+            display: "inline-block", background: "rgba(255,172,50,0.12)", border: "1px solid var(--gold)",
             color: "var(--gold-light)", fontSize: 13, fontWeight: 700, letterSpacing: "0.06em",
             padding: "6px 16px", borderRadius: 20, margin: "0 0 18px", textTransform: "uppercase",
           }}>

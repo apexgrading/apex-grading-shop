@@ -119,7 +119,7 @@ function OrderRow({ order, onShipped }) {
         </div>
         <span style={{
           fontSize: 11.5, fontWeight: 600, textTransform: "uppercase", padding: "4px 10px", borderRadius: 20,
-          background: order.status === "shipped" ? "rgba(212,167,60,0.15)" : order.status === "paid" ? "rgba(245,243,238,0.1)" : "rgba(224,138,125,0.15)",
+          background: order.status === "shipped" ? "rgba(255,172,50,0.15)" : order.status === "paid" ? "rgba(245,243,238,0.1)" : "rgba(224,138,125,0.15)",
           color: order.status === "shipped" ? "var(--gold-light)" : order.status === "paid" ? "var(--grey)" : "#E08A7D",
         }}>
           {order.status}

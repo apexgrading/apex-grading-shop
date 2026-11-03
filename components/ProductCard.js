@@ -8,6 +8,22 @@ function formatPrice(cents) {
   return `£${(cents / 100).toLocaleString(undefined, { minimumFractionDigits: 0 })}`;
 }
 
+// One accent colour per kind of item, like the boxes in the Apex grading tool
+export function accentFor(card) {
+  const c = String(card.category || "");
+  if (card.sold) return "var(--grey-dim)";
+  if (card.isPreorder) return "var(--c-blue)";
+  if (!card.isGraded) {
+    if (/sealed|etb|booster|box/i.test(c + " " + (card.title || ""))) return "var(--c-purple)";
+    if (/merch|suppl/i.test(c)) return "var(--c-pink)";
+    return "var(--c-green)"; // raw singles
+  }
+  if (/one ?piece/i.test(c)) return "var(--c-red)";
+  if (/sport/i.test(c)) return "var(--c-blue)";
+  if (/mystery/i.test(c)) return "var(--c-purple)";
+  return "var(--c-gold)"; // Apex graded Pokémon and the rest
+}
+
 export default function ProductCard({ card }) {
   const [showBack, setShowBack] = useState(false);
   const hasBack = !!card.imageUrlBack;
@@ -21,7 +37,7 @@ export default function ProductCard({ card }) {
   }
 
   return (
-    <div className="product">
+    <div className="product" style={{ "--c": accentFor(card) }}>
       <Link href={`/cards/${card.id}`}>
         <div className="product-media">
           {card.sold && <div className="sold-ribbon">Sold</div>}

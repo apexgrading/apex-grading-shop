@@ -67,7 +67,7 @@ export default async function HomePage() {
       {/* HERO */}
       <section style={{
         padding: "72px 0 80px",
-        background: "radial-gradient(ellipse at 15% 0%, rgba(212,167,60,0.08), transparent 60%)",
+        background: "radial-gradient(ellipse at 15% 0%, rgba(255,172,50,0.08), transparent 60%)",
       }}>
         <div className="wrap hero-flank-grid">
           <img src="/assets/hero-slab-left.jpg" alt="Cynthia's Garchomp ex, Gem Mint 10, Apex Grading" className="hero-flank hero-flank-left" />
@@ -81,7 +81,7 @@ export default async function HomePage() {
             </div>
             <p style={{
               fontSize: 12.5, color: "var(--gold-light)", marginBottom: 18, display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
-              fontFamily: "'Anton', var(--sans)", textTransform: "uppercase", letterSpacing: "0.04em",
+              fontFamily: "'Archivo Black', var(--sans)", textTransform: "uppercase", letterSpacing: "0.04em",
             }}>
               <span style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--gold)", display: "inline-block" }} />
               UK-based · Authenticated & graded in-house

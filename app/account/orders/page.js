@@ -76,7 +76,7 @@ export default function MyOrdersPage() {
                 </div>
                 <span style={{
                   fontSize: 11.5, fontWeight: 600, textTransform: "uppercase", padding: "4px 10px", borderRadius: 20,
-                  background: order.status === "shipped" ? "rgba(212,167,60,0.15)" : "rgba(245,243,238,0.1)",
+                  background: order.status === "shipped" ? "rgba(255,172,50,0.15)" : "rgba(245,243,238,0.1)",
                   color: order.status === "shipped" ? "var(--gold-light)" : "var(--grey)",
                 }}>
                   {order.status}

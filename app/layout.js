@@ -1,4 +1,10 @@
 
+import "@fontsource/archivo-black/400.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import "@fontsource/roboto-mono/500.css";
+import "@fontsource/roboto-mono/700.css";
 import "./globals.css";
 import { CartProvider } from "../lib/cart-context";
 import Nav from "../components/Nav";
