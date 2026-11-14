@@ -4,7 +4,7 @@ import { markOrderShipped, getOrderById, isValidAdminSession } from "../../../..
 import { sendEmail, orderShippedHtml } from "../../../../../../lib/email";
 
 async function requireAdmin() {
-  const token = cookies().get("apex_admin")?.value;
+  const token = (await cookies()).get("apex_admin")?.value;
   return isValidAdminSession(token);
 }
 
@@ -13,7 +13,7 @@ export async function POST(request, { params }) {
     return NextResponse.json({ error: "Not authorized." }, { status: 401 });
   }
 
-  const orderId = parseInt(params.id, 10);
+  const orderId = parseInt((await params).id, 10);
   if (Number.isNaN(orderId)) {
     return NextResponse.json({ error: "Invalid order id." }, { status: 400 });
   }

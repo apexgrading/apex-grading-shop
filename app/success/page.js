@@ -4,7 +4,8 @@ import ClearCartOnMount from "../../components/ClearCartOnMount";
 import PurchaseTracking from "../../components/PurchaseTracking";
 
 export default async function SuccessPage({ searchParams }) {
-  const sessionId = searchParams?.session_id;
+  const sp = await searchParams;
+  const sessionId = sp?.session_id;
   const order = sessionId ? await getOrderBySessionId(sessionId) : null;
   const isPaid = order && order.status === "paid";
   const purchaseValue = isPaid

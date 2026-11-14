@@ -30,7 +30,7 @@ export async function POST(request) {
 
   const token = newSessionToken();
   await createSession(user.id, token, sessionExpiry());
-  cookies().set(SESSION_COOKIE, token, {
+  (await cookies()).set(SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",

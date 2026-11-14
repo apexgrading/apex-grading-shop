@@ -30,7 +30,7 @@ export async function POST(request) {
 
   const token = newSessionToken();
   await createAdminSession(token, sessionExpiry());
-  cookies().set("apex_admin", token, {
+  (await cookies()).set("apex_admin", token, {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",

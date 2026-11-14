@@ -8,8 +8,8 @@ import { createCard, certExists, isValidAdminSession, listCards } from "../../..
 
 const isServerless = !!process.env.VERCEL;
 
-function requireAdmin() {
-  const token = cookies().get("apex_admin")?.value;
+async function requireAdmin() {
+  const token = (await cookies()).get("apex_admin")?.value;
   return isValidAdminSession(token);
 }
 

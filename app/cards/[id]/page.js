@@ -10,7 +10,8 @@ function formatPrice(cents) {
 }
 
 export default async function CardDetailPage({ params }) {
-  const id = parseInt(params.id, 10);
+  const { id: idParam } = await params;
+  const id = parseInt(idParam, 10);
   if (Number.isNaN(id)) notFound();
 
   const card = await getCardById(id);
