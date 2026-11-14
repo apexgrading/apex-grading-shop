@@ -17,7 +17,7 @@ export async function GET(request) {
 
 // POST /api/auth/verify — signed in, not yet confirmed: email a fresh link (max 3 an hour)
 export async function POST(request) {
-  const sess = cookies().get(SESSION_COOKIE)?.value;
+  const sess = (await cookies()).get(SESSION_COOKIE)?.value;
   const user = sess ? await getSession(sess) : null;
   if (!user) return NextResponse.json({ error: "Not signed in." }, { status: 401 });
   if (user.emailVerifiedAt) return NextResponse.json({ ok: true, already: true });

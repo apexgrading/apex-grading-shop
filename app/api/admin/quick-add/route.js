@@ -18,7 +18,7 @@ const apiHeaders = process.env.POKEMONTCG_API_KEY ? { "X-Api-Key": process.env.P
 const CONDITIONS = ["Mint", "Near Mint", "Lightly Played", "Moderately Played", "Heavily Played", "Damaged"];
 
 async function requireAdmin() {
-  return isValidAdminSession(cookies().get("apex_admin")?.value);
+  return isValidAdminSession((await cookies()).get("apex_admin")?.value);
 }
 
 async function getJson(url, tries = 4) {
