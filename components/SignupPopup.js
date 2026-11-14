@@ -1,5 +1,6 @@
 "use client";
 
+import { getBotToken } from "../lib/bot-token";
 import { useEffect, useState } from "react";
 
 const STORAGE_KEY = "apex-signup-popup-seen";
@@ -8,6 +9,7 @@ export default function SignupPopup() {
   const [visible, setVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle"); // idle | loading | done | error
+  const [msg, setMsg] = useState("");
 
   useEffect(() => {
     let seen = true;
@@ -36,7 +38,7 @@ export default function SignupPopup() {
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ botToken: await getBotToken(), email }),
       });
       if (res.ok) {
         setStatus("done");
@@ -45,9 +47,12 @@ export default function SignupPopup() {
         } catch {}
         setTimeout(() => setVisible(false), 1800);
       } else {
+        const j = await res.json().catch(() => ({}));
+        setMsg(j.error || "");
         setStatus("error");
       }
-    } catch {
+    } catch (err) {
+      setMsg((err && err.message) || "");
       setStatus("error");
     }
   }
@@ -114,7 +119,7 @@ export default function SignupPopup() {
                 {status === "loading" ? "…" : "CLAIM MY OFFER"}
               </button>
             </form>
-            {status === "error" && <p style={{ color: "#E08A7D", fontSize: 12.5, marginTop: 10 }}>Something went wrong — try again.</p>}
+            {status === "error" && <p style={{ color: "#E08A7D", fontSize: 12.5, marginTop: 10 }}>{msg || "Something went wrong — try again."}</p>}
             <button onClick={dismiss} style={{ background: "none", border: "none", color: "var(--grey-dim)", fontSize: 12.5, marginTop: 16, cursor: "pointer" }}>
               Maybe later
             </button>

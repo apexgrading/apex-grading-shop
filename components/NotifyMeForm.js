@@ -1,5 +1,6 @@
 "use client";
 
+import { getBotToken } from "../lib/bot-token";
 import { useState } from "react";
 
 export default function NotifyMeForm({ category, cardTitle }) {
@@ -14,7 +15,7 @@ export default function NotifyMeForm({ category, cardTitle }) {
       const res = await fetch("/api/notify-me", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, category, cardTitle }),
+        body: JSON.stringify({ botToken: await getBotToken(), email, category, cardTitle }),
       });
       setStatus(res.ok ? "done" : "error");
     } catch {

@@ -2,7 +2,7 @@ import { listCards } from "../../lib/data";
 import ProductCard from "../../components/ProductCard";
 import BuyMysterySlabButton from "../../components/BuyMysterySlabButton";
 
-export const metadata = { title: "Gem Mint 10 Mystery Slabs — Apex Cards" };
+export const metadata = { title: "Gem Mint 10 Mystery Slabs — Shop APEX Cards" };
 export const dynamic = "force-dynamic";
 
 export default async function MysterySlabsPage() {
@@ -21,13 +21,13 @@ export default async function MysterySlabsPage() {
             Guaranteed Gem Mint 10
           </p>
           <h1 style={{ fontSize: "clamp(30px,4vw,42px)" }}>Mystery Slabs</h1>
-          <div style={{
-            display: "inline-block", background: "rgba(212,167,60,0.12)", border: "1px solid var(--gold)",
+          {nextAvailable && <div style={{
+            display: "inline-block", background: "rgba(255,172,50,0.12)", border: "1px solid var(--gold)",
             color: "var(--gold-light)", fontSize: 13, fontWeight: 700, letterSpacing: "0.06em",
             padding: "6px 16px", borderRadius: 20, margin: "0 0 18px", textTransform: "uppercase",
           }}>
             {remaining} of {MYSTERY_CAP} remaining — once they're gone, they're gone
-          </div>
+          </div>}
           <p style={{ fontSize: 16, lineHeight: 1.6, margin: "0 auto 32px" }}>
             Every slab is a genuine Apex Gem Mint 10 — no exceptions. The card itself, and its era,
             is a surprise. Could be a modern chase card. Could be a piece of vintage history from
@@ -35,14 +35,14 @@ export default async function MysterySlabsPage() {
           </p>
           <img
             src="/assets/mystery-pack.png"
-            alt="Apex Cards Gem Mint 10 Mystery Pack"
+            alt="Shop APEX Cards Gem Mint 10 Mystery Pack"
             style={{ maxWidth: 560, width: "100%", borderRadius: 16, boxShadow: "0 40px 90px rgba(0,0,0,0.65)" }}
           />
           <div style={{ marginTop: 32 }}>
             {nextAvailable ? (
               <BuyMysterySlabButton cardId={nextAvailable.id} price={nextAvailable.price} />
             ) : (
-              <p style={{ color: "var(--grey-dim)", fontSize: 14 }}>No mystery slabs available right now — check back soon.</p>
+              <p style={{ color: "var(--grey-dim)", fontSize: 14 }}>Mystery Slabs are taking a break — something new is on the way. Check back soon.</p>
             )}
           </div>
         </div>
@@ -55,7 +55,7 @@ export default async function MysterySlabsPage() {
             { title: "Always Gem Mint 10", desc: "Every card in the mystery pool has already been graded a genuine 10 by Apex — nothing lower ever goes in." },
             { title: "Any era, genuinely random", desc: "Pulled from our full graded history — 1999 Base Set through the newest releases. We don't cherry-pick which one you get." },
             { title: "Real value varies, always", desc: "That's what makes it a mystery — some pulls are modest, some are genuinely valuable. We won't pretend otherwise." },
-            { title: "Shipped like any order", desc: "Tracked, protected packaging, same as every other Apex Cards purchase — no different treatment for mystery slabs." },
+            { title: "Shipped like any order", desc: "Tracked, protected packaging, same as every other Shop APEX Cards purchase — no different treatment for mystery slabs." },
           ].map((f) => (
             <div key={f.title}>
               <div style={{

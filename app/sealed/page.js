@@ -5,6 +5,7 @@ import Link from "next/link";
 import AddToCartButton from "../../components/AddToCartButton";
 
 function formatPrice(cents) {
+  if (!(cents > 0)) return "Price coming soon";
   return `£${(cents / 100).toLocaleString()}`;
 }
 
@@ -166,7 +167,7 @@ export default function SealedProductPage() {
               {filtered.map((card) => {
                 const oos = isOutOfStock(card);
                 return (
-                  <div key={card.id} style={{ display: "flex", flexDirection: "column" }}>
+                  <div key={card.id} className="product" style={{ display: "flex", flexDirection: "column", "--c": "var(--c-purple)" }}>
                     <Link href={`/cards/${card.id}`} style={{ position: "relative" }}>
                       {oos && (
                         <div style={{

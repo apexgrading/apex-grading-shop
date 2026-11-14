@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { createUser, getUserByEmail, createSession, addSubscriber } from "../../../../lib/data";
+import { createUser, getUserByEmail, createSession, addSubscriber, setVerifyToken } from "../../../../lib/data";
+import { randomBytes, createHash } from "crypto";
 import { hashPassword, newSessionToken, sessionExpiry, SESSION_COOKIE } from "../../../../lib/auth";
-import { sendEmail, accountConfirmationHtml, adminNotificationHtml } from "../../../../lib/email";
+import { sendEmail, accountConfirmationHtml, adminNotificationHtml, SITE_URL } from "../../../../lib/email";
 import { checkRateLimit, recordFailedAttempt, getClientIp } from "../../../../lib/rate-limit";
 
 export async function POST(request) {
@@ -33,6 +34,10 @@ export async function POST(request) {
 
   const { salt, hash } = hashPassword(password);
   const user = await createUser({ email, passwordHash: hash, salt, subscribed: subscribeToNewsletter });
+  // a one-time link proves they own this email (needed before My Orders shows anything)
+  const verifyToken = randomBytes(32).toString("hex");
+  await setVerifyToken(user.id, createHash("sha256").update(verifyToken).digest("hex"));
+  const verifyUrl = `${SITE_URL}/api/auth/verify?token=${verifyToken}`;
 
   if (subscribeToNewsletter) {
     await addSubscriber(email);
@@ -42,15 +47,15 @@ export async function POST(request) {
   // of, the newsletter opt-in.
   await sendEmail({
     to: email,
-    subject: "You're signed up — Apex Cards",
-    html: accountConfirmationHtml(email, subscribeToNewsletter),
+    subject: "Confirm your email — Shop APEX Cards",
+    html: accountConfirmationHtml(email, subscribeToNewsletter, verifyUrl),
     type: "account_confirmation",
   });
 
   await sendEmail({
     to: "hello@apexgradingcompany.com",
     subject: "New account created",
-    html: adminNotificationHtml("New account created", `${email} just created an account on Apex Cards.${subscribeToNewsletter ? " They also subscribed to the newsletter." : ""}`),
+    html: adminNotificationHtml("New account created", `${email} just created an account on Shop APEX Cards.${subscribeToNewsletter ? " They also subscribed to the newsletter." : ""}`),
     type: "admin_notification",
   });
 

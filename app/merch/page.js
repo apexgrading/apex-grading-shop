@@ -1,11 +1,13 @@
 "use client";
 
+import { getBotToken } from "../../lib/bot-token";
 import { useState } from "react";
 import Link from "next/link";
 
 export default function MerchPage() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle"); // idle | loading | done | error
+  const [msg, setMsg] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -15,10 +17,13 @@ export default function MerchPage() {
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ botToken: await getBotToken(), email }),
       });
+      const j = await res.json().catch(() => ({}));
+      setMsg(res.ok ? "" : j.error || "");
       setStatus(res.ok ? "done" : "error");
-    } catch {
+    } catch (err) {
+      setMsg((err && err.message) || "");
       setStatus("error");
     }
   }
@@ -33,10 +38,10 @@ export default function MerchPage() {
         Coming soon
       </p>
       <h1 style={{ fontFamily: "var(--serif)", fontWeight: 500, fontSize: "clamp(30px,3.6vw,44px)", margin: "0 0 18px" }}>
-        Apex Cards merchandise
+        Shop APEX Cards merchandise
       </h1>
       <p style={{ color: "var(--grey)", fontSize: 15.5, lineHeight: 1.65, maxWidth: "44ch", margin: "0 auto 40px" }}>
-        Official Apex Cards gear and card-care supplies are on the way. Drop your email
+        Official Shop APEX Cards gear and card-care supplies are on the way. Drop your email
         and we'll let you know the moment it launches.
       </p>
 
@@ -97,7 +102,7 @@ export default function MerchPage() {
           </button>
         </form>
       )}
-      {status === "error" && <p style={{ color: "#E08A7D", fontSize: 13, marginTop: 12 }}>Something went wrong — try again.</p>}
+      {status === "error" && <p style={{ color: "#E08A7D", fontSize: 13, marginTop: 12 }}>{msg || "Something went wrong — try again."}</p>}
 
       <div style={{ marginTop: 56 }}>
         <Link href="/shop" className="btn btn-secondary">Shop graded cards instead</Link>

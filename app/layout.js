@@ -1,4 +1,10 @@
 
+import "@fontsource/archivo-black/400.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
+import "@fontsource/roboto-mono/500.css";
+import "@fontsource/roboto-mono/700.css";
 import "./globals.css";
 import { CartProvider } from "../lib/cart-context";
 import Nav from "../components/Nav";
@@ -11,8 +17,8 @@ import TawkChat from "../components/TawkChat";
 import GoogleAnalytics from "../components/GoogleAnalytics";
 
 export const metadata = {
-  title: "Apex Cards",
-  description: "Graded trading and sports cards, sold direct — graded in-house by Apex Grading Company.",
+  title: "Shop APEX Cards",
+  description: "Apex-graded slabs, Gem Mint 10 Mystery Slabs, raw cards, ETBs, booster boxes and merch — slabs graded in-house by Apex Grading Company.",
   verification: {
     google: "UncIGpd0yQlzwfQyNGME1IgMq2vb5JUwvN0RRQ1TiMg",
   },
@@ -20,7 +26,7 @@ export const metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Apex Cards",
+    title: "Shop APEX Cards",
   },
   icons: {
     apple: "/apple-touch-icon.png",

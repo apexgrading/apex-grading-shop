@@ -34,6 +34,11 @@ export default function AddToCartButton({ card }) {
     return <button className="btn btn-secondary" disabled>Launching soon</button>;
   }
 
+  // Listed before it has a price — shown, but can't be bought yet
+  if (!(card.price > 0)) {
+    return <button className="btn btn-secondary" disabled>Price coming soon</button>;
+  }
+
   if (outOfStock) {
     return <button className="btn btn-secondary" disabled>Out of Stock</button>;
   }

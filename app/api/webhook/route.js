@@ -41,7 +41,7 @@ export async function POST(request) {
         if (order) {
           await sendEmail({
             to: email,
-            subject: `Your Apex Cards order #${order.id} is confirmed`,
+            subject: `Order #${order.id} confirmed — Shop APEX Cards`,
             html: orderConfirmationHtml(order),
             type: "order_confirmation",
             orderId: order.id,

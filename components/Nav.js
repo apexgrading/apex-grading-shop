@@ -10,7 +10,6 @@ const SHOP_LINKS = [
   { href: "/singles", label: "Singles" },
   { href: "/new-arrivals", label: "New Arrivals" },
   { href: "/preorders", label: "Pre-orders" },
-  { href: "/mystery-slabs", label: "Mystery Slabs" },
   { href: "/sealed", label: "Sealed Product" },
   { href: "/sold", label: "Sold" },
   { href: "/merch", label: "Merch" },
@@ -76,8 +75,7 @@ export default function Nav() {
     <header className="site-header">
       <div className="wrap nav">
         <Link href="/" className="nav-mark">
-          <img src="/assets/apex-icon.jpg" alt="" />
-          <span className="nav-wordmark">APEX <span>CARDS</span></span>
+          <img src="/assets/shop-apex-cards-logo-full.jpg" alt="Shop APEX Cards" className="nav-logo" />
         </Link>
         <a
           href="https://www.apexgradingcompany.com"

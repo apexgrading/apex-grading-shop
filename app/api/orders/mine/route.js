@@ -12,6 +12,11 @@ export async function GET() {
     return NextResponse.json({ error: "Not signed in." }, { status: 401 });
   }
 
+  // orders are matched by email, so the account must have proved it owns that email first
+  if (!user.emailVerifiedAt) {
+    return NextResponse.json({ needsVerify: true, email: user.email }, { status: 403 });
+  }
+
   // Orders aren't linked by a user_id — matched by email, since that's what
   // Stripe Checkout captures regardless of whether someone was signed in at
   // checkout. This means a guest order placed under a different email won't

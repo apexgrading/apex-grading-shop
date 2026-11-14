@@ -17,7 +17,7 @@ export async function DELETE(request, { params }) {
     return NextResponse.json({ error: "Invalid card id." }, { status: 400 });
   }
 
-  const card = await getCardById(id);
+  const card = await getCardById(id, { includeHidden: true });
   if (!card) {
     return NextResponse.json({ error: "Card not found." }, { status: 404 });
   }
@@ -42,7 +42,7 @@ export async function PATCH(request, { params }) {
     return NextResponse.json({ error: "Quantity must be 0 or more." }, { status: 400 });
   }
 
-  const card = await getCardById(id);
+  const card = await getCardById(id, { includeHidden: true });
   if (!card) {
     return NextResponse.json({ error: "Card not found." }, { status: 404 });
   }
