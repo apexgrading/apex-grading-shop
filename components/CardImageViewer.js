@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useSlabsBlurred } from "../lib/useSlabsBlurred";
 
 export default function CardImageViewer({ imageUrl, imageUrlBack, title, isGraded, grade, cert, category }) {
   const [showBack, setShowBack] = useState(false);
   const [zoomed, setZoomed] = useState(false);
-  const hasBack = !!imageUrlBack;
+  const slabsBlurred = useSlabsBlurred();
+  const isBlurred = isGraded && slabsBlurred;
+  const hasBack = !!imageUrlBack && !isBlurred;
   const currentImage = showBack && imageUrlBack ? imageUrlBack : imageUrl;
 
   return (
@@ -31,23 +34,26 @@ export default function CardImageViewer({ imageUrl, imageUrlBack, title, isGrade
         style={{ position: "relative", ...(hasBack ? { cursor: "pointer" } : {}) }}
         className="card-frame-photo"
       >
-        <img src={currentImage} alt={`${title}${showBack ? " (back)" : ""}`} />
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            setZoomed(true);
-          }}
-          className="card-frame-zoom-btn"
-          aria-label="Enlarge photo"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="11" cy="11" r="7" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            <line x1="11" y1="8" x2="11" y2="14" />
-            <line x1="8" y1="11" x2="14" y2="11" />
-          </svg>
-        </button>
+        <img className={isBlurred ? "slab-blurred" : undefined} src={currentImage} alt={isBlurred ? `${title} — photo revealed at launch` : `${title}${showBack ? " (back)" : ""}`} />
+        {isBlurred && <div className="slab-blur-label">Revealed at launch</div>}
+        {!isBlurred && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setZoomed(true);
+            }}
+            className="card-frame-zoom-btn"
+            aria-label="Enlarge photo"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="11" cy="11" r="7" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              <line x1="11" y1="8" x2="11" y2="14" />
+              <line x1="8" y1="11" x2="14" y2="11" />
+            </svg>
+          </button>
+        )}
       </div>
 
       {hasBack && (
