@@ -52,7 +52,8 @@ async function fetchFromApiAndCache(name) {
 }
 
 export default async function PokemonSetDetailPage({ params }) {
-  const name = decodeURIComponent(params.name);
+  const { name: nameParam } = await params;
+  const name = decodeURIComponent(nameParam);
 
   let set = await getCachedPokemonSet(name);
   let rateLimited = false;

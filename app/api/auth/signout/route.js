@@ -4,8 +4,9 @@ import { deleteSession } from "../../../../lib/data";
 import { SESSION_COOKIE } from "../../../../lib/auth";
 
 export async function POST() {
-  const token = cookies().get(SESSION_COOKIE)?.value;
+  const cookieStore = await cookies();
+  const token = cookieStore.get(SESSION_COOKIE)?.value;
   if (token) await deleteSession(token);
-  cookies().delete(SESSION_COOKIE);
+  cookieStore.delete(SESSION_COOKIE);
   return NextResponse.json({ ok: true });
 }

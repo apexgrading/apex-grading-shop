@@ -5,7 +5,7 @@ import { SESSION_COOKIE } from "../../../../lib/auth";
 import { trackingUrl } from "../../../../lib/email";
 
 export async function GET() {
-  const token = cookies().get(SESSION_COOKIE)?.value;
+  const token = (await cookies()).get(SESSION_COOKIE)?.value;
   const user = token ? await getSession(token) : null;
 
   if (!user) {

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getCardById } from "../../../../lib/data";
 
 export async function GET(request, { params }) {
-  const id = parseInt(params.id, 10);
+  const id = parseInt((await params).id, 10);
   if (Number.isNaN(id)) {
     return NextResponse.json({ error: "Invalid card id" }, { status: 400 });
   }

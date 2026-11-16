@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { isValidAdminSession } from "../../../../lib/data";
 
 async function requireAdmin() {
-  const token = cookies().get("apex_admin")?.value;
+  const token = (await cookies()).get("apex_admin")?.value;
   return isValidAdminSession(token);
 }
 

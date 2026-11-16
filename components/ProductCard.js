@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useSlabsBlurred } from "../lib/useSlabsBlurred";
 
 function formatPrice(cents) {
   if (!(cents > 0)) return "Price coming soon";
@@ -28,6 +29,8 @@ export default function ProductCard({ card }) {
   const [showBack, setShowBack] = useState(false);
   const hasBack = !!card.imageUrlBack;
   const outOfStock = card.isStockItem && !card.sold && card.quantity <= 0;
+  const slabsBlurred = useSlabsBlurred();
+  const isBlurred = card.isGraded && slabsBlurred;
 
   function handleImageClick(e) {
     if (!hasBack) return;
@@ -44,17 +47,24 @@ export default function ProductCard({ card }) {
           {!card.sold && outOfStock && <div className="out-of-stock-ribbon">Out of Stock</div>}
           {!card.sold && !outOfStock && card.isPreorder && <div className="preorder-ribbon">Pre-order</div>}
           {card.imageUrl ? (
-            <div className="real-photo grid-frame" onClick={handleImageClick} style={hasBack ? { cursor: "pointer" } : undefined}>
+            <div className="real-photo grid-frame" onClick={isBlurred ? undefined : handleImageClick} style={hasBack && !isBlurred ? { cursor: "pointer" } : undefined}>
               <img
+                className={isBlurred ? "slab-blurred" : undefined}
                 src={showBack && card.imageUrlBack ? card.imageUrlBack : card.imageUrl}
                 alt={
-                  card.isGraded
+                  isBlurred
+                    ? `${card.title} — photo revealed at launch`
+                    : card.isGraded
                     ? `${card.title}, graded ${card.grade} by Apex Grading${showBack ? " (back)" : ""}`
                     : `${card.title}, raw single${showBack ? " (back)" : ""}`
                 }
               />
-              <img src="/assets/apex-icon.jpg" alt="" className="grid-frame-badge" />
-              {hasBack && (
+              {isBlurred ? (
+                <div className="slab-blur-label">Revealed at launch</div>
+              ) : (
+                <img src="/assets/apex-icon.jpg" alt="" className="grid-frame-badge" />
+              )}
+              {hasBack && !isBlurred && (
                 <div className="flip-indicator">
                   {showBack ? "← Front" : "Back →"}
                 </div>

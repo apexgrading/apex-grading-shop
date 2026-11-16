@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { get } from "@vercel/blob";
 
 export async function GET(request, { params }) {
-  const pathname = params.path.join("/");
+  const pathname = (await params).path.join("/");
 
   let result;
   try {

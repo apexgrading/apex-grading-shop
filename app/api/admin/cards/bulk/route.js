@@ -4,7 +4,7 @@ import { createCard, certExists, isValidAdminSession } from "../../../../../lib/
 import { csvToObjects } from "../../../../../lib/csv";
 
 async function requireAdmin() {
-  const token = cookies().get("apex_admin")?.value;
+  const token = (await cookies()).get("apex_admin")?.value;
   return isValidAdminSession(token);
 }
 

@@ -73,12 +73,18 @@ function UploadForm() {
   const [zoomedImage, setZoomedImage] = useState(null);
   const [gradedHold, setGradedHold] = useState(null); // null = loading
   const [holdSaving, setHoldSaving] = useState(false);
+  const [slabsBlurred, setSlabsBlurred] = useState(null); // null = loading
+  const [blurSaving, setBlurSaving] = useState(false);
 
   useEffect(() => {
     fetch("/api/admin/settings/graded-hold")
       .then((r) => r.json())
       .then((d) => setGradedHold(!!d.onHold))
       .catch(() => setGradedHold(false));
+    fetch("/api/admin/settings/slabs-blur")
+      .then((r) => r.json())
+      .then((d) => setSlabsBlurred(!!d.blurred))
+      .catch(() => setSlabsBlurred(true));
   }, []);
 
   async function toggleGradedHold() {
@@ -91,6 +97,18 @@ function UploadForm() {
     });
     if (res.ok) setGradedHold(next);
     setHoldSaving(false);
+  }
+
+  async function toggleSlabsBlurred() {
+    setBlurSaving(true);
+    const next = !slabsBlurred;
+    const res = await fetch("/api/admin/settings/slabs-blur", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ blurred: next }),
+    });
+    if (res.ok) setSlabsBlurred(next);
+    setBlurSaving(false);
   }
 
   function update(field, value) {
@@ -250,6 +268,34 @@ function UploadForm() {
             style={{ fontSize: 12.5, padding: "8px 14px", flexShrink: 0 }}
           >
             {holdSaving ? "…" : gradedHold ? "Launch now" : "Put on hold"}
+          </button>
+        </div>
+      )}
+
+      {slabsBlurred !== null && (
+        <div style={{
+          display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,
+          background: slabsBlurred ? "rgba(224,138,125,0.1)" : "var(--bg-panel)",
+          border: `1px solid ${slabsBlurred ? "rgba(224,138,125,0.35)" : "var(--line)"}`,
+          borderRadius: 8, padding: "12px 16px", marginBottom: 28,
+        }}>
+          <div>
+            <div style={{ fontSize: 13.5, fontWeight: 600, color: slabsBlurred ? "#E08A7D" : "var(--white)" }}>
+              {slabsBlurred ? "Slab photos are BLURRED on the site" : "Slab photos are visible on the site"}
+            </div>
+            <div style={{ fontSize: 12, color: "var(--grey-dim)", marginTop: 2 }}>
+              {slabsBlurred
+                ? "Graded cards show title, price and grade, but the real photo stays blurred everywhere (shop, search, card pages) until you launch."
+                : "Real slab photos are visible to everyone."}
+            </div>
+          </div>
+          <button
+            onClick={toggleSlabsBlurred}
+            disabled={blurSaving}
+            className={`btn ${slabsBlurred ? "btn-primary" : "btn-secondary"}`}
+            style={{ fontSize: 12.5, padding: "8px 14px", flexShrink: 0 }}
+          >
+            {blurSaving ? "…" : slabsBlurred ? "Reveal now" : "Blur again"}
           </button>
         </div>
       )}
