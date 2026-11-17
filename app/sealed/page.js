@@ -180,7 +180,7 @@ export default function SealedProductPage() {
                       )}
                       {card.imageUrl ? (
                         <div className="real-photo grid-frame grid-frame-landscape">
-                          <img src={card.imageUrl} alt={card.title} />
+                          <img className="stock-img" draggable={false} src={card.imageUrl} alt={card.title} />
                           <img src="/assets/apex-icon.jpg" alt="" className="grid-frame-badge" />
                         </div>
                       ) : (

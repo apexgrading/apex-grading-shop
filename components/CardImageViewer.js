@@ -31,7 +31,7 @@ export default function CardImageViewer({ imageUrl, imageUrlBack, title, isGrade
         style={{ position: "relative", ...(hasBack ? { cursor: "pointer" } : {}) }}
         className="card-frame-photo"
       >
-        <img src={currentImage} alt={`${title}${showBack ? " (back)" : ""}`} />
+        <img className="stock-img" draggable={false} src={currentImage} alt={`${title}${showBack ? " (back)" : ""}`} />
         <button
           type="button"
           onClick={(e) => {
@@ -85,7 +85,7 @@ export default function CardImageViewer({ imageUrl, imageUrlBack, title, isGrade
             display: "flex", alignItems: "center", justifyContent: "center", padding: 24, cursor: "zoom-out",
           }}
         >
-          <img src={currentImage} alt={`${title}${showBack ? " (back)" : ""} enlarged`} style={{ maxWidth: "92vw", maxHeight: "92vh", borderRadius: 8 }} />
+          <img className="stock-img" draggable={false} src={currentImage} alt={`${title}${showBack ? " (back)" : ""} enlarged`} style={{ maxWidth: "92vw", maxHeight: "92vh", borderRadius: 8 }} />
           <button
             onClick={(e) => { e.stopPropagation(); setZoomed(false); }}
             aria-label="Close"

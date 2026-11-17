@@ -10,6 +10,7 @@ import { CartProvider } from "../lib/cart-context";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 import AnnouncementBanner from "../components/AnnouncementBanner";
+import { CARDS_HIDDEN } from "../lib/prelaunch";
 import CookieConsent from "../components/CookieConsent";
 import ServiceWorkerRegister from "../components/ServiceWorkerRegister";
 import AddToHomeScreenPrompt from "../components/AddToHomeScreenPrompt";
@@ -40,7 +41,7 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      <body className={CARDS_HIDDEN ? "cards-hidden" : undefined}>
         <CartProvider>
           <AnnouncementBanner />
           <Nav />

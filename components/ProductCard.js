@@ -46,6 +46,8 @@ export default function ProductCard({ card }) {
           {card.imageUrl ? (
             <div className="real-photo grid-frame" onClick={handleImageClick} style={hasBack ? { cursor: "pointer" } : undefined}>
               <img
+                className="stock-img"
+                draggable={false}
                 src={showBack && card.imageUrlBack ? card.imageUrlBack : card.imageUrl}
                 alt={
                   card.isGraded

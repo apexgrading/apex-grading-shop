@@ -63,7 +63,7 @@ export default function CartPage() {
             {items.map((item) => (
               <div className="cart-row" key={item.id}>
                 {item.imageUrl ? (
-                  <img src={item.imageUrl} alt={item.title} />
+                  <img className="stock-img" draggable={false} src={item.imageUrl} alt={item.title} />
                 ) : (
                   <div className="thumb">{item.grade}</div>
                 )}
